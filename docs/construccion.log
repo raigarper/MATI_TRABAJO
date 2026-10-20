@@ -1,0 +1,48 @@
+15:26:27 ▶ Pasada 1/2: leyendo vías...
+15:26:55 ✔ Pasada 1/2: leyendo vías (27.7 s)
+15:26:55 Vías encontradas: 433223 | nodos distintos: 3381701
+15:26:55 ▶ Pasada 2/2: leyendo coordenadas de nodos...
+15:27:50 ✔ Pasada 2/2: leyendo coordenadas de nodos (54.9 s)
+15:27:50 Nodos con coordenadas: 3381701 (el extracto está recortado en la frontera)
+15:27:53 ▶ Creando las aristas dirigidas...
+15:28:03 Aristas antes de simplificar: 5076626
+15:28:03 ✔ Creando las aristas dirigidas (9.7 s)
+15:28:03 ▶ Quedándose con la componente principal (península)...
+15:28:04 ✔ Quedándose con la componente principal (península) (0.7 s)
+15:28:04 ▶ Calculando las longitudes (metros)...
+15:28:04 ✔ Calculando las longitudes (metros) (0.6 s)
+15:28:04 ▶ Simplificando la topología...
+15:28:41 Aristas tras simplificar: 328490
+15:28:41 ✔ Simplificando la topología (36.8 s)
+15:28:41 ▶ Montando el grafo de NetworkX...
+15:28:48 Grafo: 197587 nodos, 328490 aristas
+15:28:48 ✔ Montando el grafo de NetworkX (6.9 s)
+15:28:48 ▶ Garantizando la conectividad fuerte...
+15:28:56 ✔ Garantizando la conectividad fuerte (8.4 s)
+15:28:57 ▶ Calculando velocidades (speed_kph) y tiempos (travel_time)...
+15:29:16 ✔ Calculando velocidades (speed_kph) y tiempos (travel_time) (18.9 s)
+15:29:16 ▶ Limpiando atributos...
+15:29:17 ✔ Limpiando atributos (1.7 s)
+15:29:17 ▶ Guardando data\espana_red_maestra_secundarias.graphml...
+15:29:40 ✔ Guardando data\espana_red_maestra_secundarias.graphml (23.0 s)
+15:29:41 ─── RESUMEN ───
+15:29:41 Nodos:   179594
+15:29:41 Aristas: 309250 (182760 km contando cada sentido)
+15:29:41 Aristas por tipo de vía (nº aristas | km):
+15:29:41   secondary        100495 |    69150 km
+15:29:41   primary           75467 |    40454 km
+15:29:41   trunk             52029 |    31438 km
+15:29:41   motorway_link     22121 |     6789 km
+15:29:41   motorway          17618 |    31485 km
+15:29:41   trunk_link        15691 |     1876 km
+15:29:41   primary_link      13700 |      932 km
+15:29:41   secondary_link    12129 |      636 km
+15:29:41 Sentido único (oneway=True): 227446 | doble sentido: 81804
+15:29:41 Pares de nodos con aristas paralelas: 3349
+15:29:41 Nodos por street_count (calles que confluyen): {1: 1058, 2: 4612, 3: 161516, 4: 10332, 5: 505, 6: 1523, 7: 20, 8: 5, 9: 1, 10: 10, 11: 2, 12: 8, 24: 1, 26: 1}
+15:29:42 Cobertura de `ref`: 90.3 % de los km | de `name`: 72.0 %
+15:29:42 Archivo: data\espana_red_maestra_secundarias.graphml (107.6 MB)
+15:29:42 ▶ Validando data\espana_red_maestra_secundarias.graphml con nx.read_graphml...
+15:30:03 ✔ Validando data\espana_red_maestra_secundarias.graphml con nx.read_graphml (21.1 s)
+15:30:03 Validación OK: 179594 nodos, 309250 aristas, tipos correctos y fuertemente conexo
+15:30:03 Tiempo total: 0:03:35

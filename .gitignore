@@ -1,7 +1,9 @@
 __pycache__/
 *.pyc
 cache/
-# Extracto OSM de origen (1,4 GB): se regenera con descargar_red.py
+# Extracto OSM de origen (1,4 GB): se regenera con anexos/descargar_red.py
 data/*.osm.pbf
 data/*.part
 .ipynb_checkpoints/
+# Grafo base con secundarias (108 MB, supera el límite de 100 MB de GitHub): se genera con los anexos A y B
+data/espana_red_maestra_secundarias.graphml

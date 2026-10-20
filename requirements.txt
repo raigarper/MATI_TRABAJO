@@ -6,4 +6,6 @@ jupyterlab>=4.0
 # --- Solo para los anexos (descargar el extracto y construir el grafo) ---
 osmnx>=2.0             # construcción del grafo a partir de OpenStreetMap
 osmium>=4.0            # lectura del archivo .osm.pbf (pyosmium)
+numpy>=1.26            # construcción y simplificación del grafo con arrays
+scipy>=1.11            # componentes conexas
 requests>=2.31         # descarga del extracto

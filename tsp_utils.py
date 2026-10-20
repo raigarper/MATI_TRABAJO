@@ -15,9 +15,10 @@ from matplotlib.collections import LineCollection
 # de modo que los resultados sean reproducibles entre ejecuciones.
 SEED = 42
 
-# Color y grosor de cada tipo de vía (`highway`), de menos a más importante:
+# Color y grosor de cada tipo de vía (`highway`), de menos a más importante (8 tipos del grafo base):
 # se dibuja en este orden, así lo importante queda encima.
 ESTILO = {
+    "secondary": ("#cfd5dc", 0.2), "secondary_link": ("#cfd5dc", 0.2),  # carretera secundaria (gris claro)
     "primary": ("#9aa5b1", 0.3), "primary_link": ("#9aa5b1", 0.3),   # carretera principal (gris)
     "trunk": ("#e08a1e", 0.5), "trunk_link": ("#e08a1e", 0.5),       # vía rápida (naranja)
     "motorway": ("#c0392b", 0.7), "motorway_link": ("#c0392b", 0.7),  # autopista/autovía (rojo)
@@ -31,7 +32,7 @@ def dibujar_red(G, titulo="", ax=None, figsize=(9, 8)):
         G: grafo con atributos de nodo `x` (longitud) e `y` (latitud) y de arista `highway`.
         titulo: texto que aparece encima del dibujo.
         ax: eje de Matplotlib donde dibujar. Si no se indica, se crea una figura nueva y se
-            muestra directamente (plt.show()).
+            muestra directamente (plt.show()); si se indica, se dibuja ahí y se devuelve el eje.
         figsize: tamaño de la figura (solo si no se indica `ax`).
 
     Cada arista se dibuja como una línea recta entre sus dos nodos (las aristas simplificadas
@@ -57,4 +58,5 @@ def dibujar_red(G, titulo="", ax=None, figsize=(9, 8)):
         ax.set_title(titulo)
     if propio:
         plt.show()
+        return None   # la figura ya se ha mostrado: no se devuelve nada para que Jupyter no escriba <Axes...>
     return ax

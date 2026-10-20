@@ -4,7 +4,8 @@ Fuente: OpenStreetMap, extracto de España publicado por Geofabrik
 (https://download.geofabrik.de/europe/spain.html), archivo `spain-latest.osm.pbf` (~1,4 GB).
 
 Qué hace:
-  - Si el grafo ya existe en `data/espana_red_maestra.graphml`, lo avisa y termina.
+  - Si el grafo ya existe en `data/espana_red_maestra_secundarias.graphml` (el grafo base del
+    trabajo), lo avisa y termina. Con `--ligero` comprueba `data/espana_red_maestra.graphml`.
   - Si no, descarga el extracto a `data/`. La descarga se puede reanudar si se corta
     y no se repite si el archivo ya está.
 
@@ -12,6 +13,7 @@ Siguiente paso: `python anexos/construir_grafo.py` (Anexo B) convierte el extrac
 
 Uso:
     python anexos/descargar_red.py
+    python anexos/descargar_red.py --ligero      # comprobar el grafo ligero en vez del base
     python anexos/descargar_red.py --forzar      # volver a descargar aunque ya exista
 """
 from __future__ import annotations
@@ -29,7 +31,8 @@ LOG = logging.getLogger("descargar_red")
 
 RAIZ = Path(__file__).resolve().parent.parent          # carpeta del proyecto
 URL_ESPANA = "https://download.geofabrik.de/europe/spain-latest.osm.pbf"
-NOMBRE_GRAFO = "espana_red_maestra.graphml"
+NOMBRE_GRAFO = "espana_red_maestra_secundarias.graphml"     # grafo base
+NOMBRE_GRAFO_LIGERO = "espana_red_maestra.graphml"          # sin carreteras secundarias
 REINTENTOS = 100                                       # cortes de red tolerados
 
 
@@ -90,6 +93,8 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--forzar", action="store_true",
                         help="descargar de nuevo aunque el grafo o el extracto ya existan")
+    parser.add_argument("--ligero", action="store_true",
+                        help="comprobar el grafo ligero (sin secundarias) en vez del grafo base")
     parser.add_argument("--datos", type=Path, default=RAIZ / "data",
                         help="carpeta de datos (por defecto, data/); útil para pruebas")
     parser.add_argument("--pbf-url", default=URL_ESPANA, help="URL del extracto (por defecto, España)")
@@ -102,7 +107,7 @@ def main() -> int:
         handlers=[logging.StreamHandler(), logging.FileHandler(carpeta_log / "descarga.log", encoding="utf-8")],
     )
 
-    grafo = args.datos / NOMBRE_GRAFO
+    grafo = args.datos / (NOMBRE_GRAFO_LIGERO if args.ligero else NOMBRE_GRAFO)
     pbf = args.datos / Path(args.pbf_url).name
 
     if grafo.exists() and not args.forzar:
