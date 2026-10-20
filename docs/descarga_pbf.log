@@ -1,0 +1,127 @@
+11:14:43 INFO ▶ Descargando https://download.geofabrik.de/europe/spain-latest.osm.pbf...
+11:14:44 INFO Tamaño del archivo: 1424 MB
+11:14:44 INFO [  0.1%] 1/1424 MB | 2.1 MB/s | ETA 0:11:25
+11:14:54 INFO [  9.8%] 139/1424 MB | 13.2 MB/s | ETA 0:01:37
+11:15:05 INFO [ 17.6%] 251/1424 MB | 12.2 MB/s | ETA 0:01:36
+11:15:15 INFO [ 26.3%] 375/1424 MB | 12.3 MB/s | ETA 0:01:25
+11:15:25 INFO [ 35.5%] 505/1424 MB | 12.4 MB/s | ETA 0:01:13
+11:15:35 INFO [ 44.1%] 628/1424 MB | 12.4 MB/s | ETA 0:01:04
+11:15:45 INFO [ 51.8%] 738/1424 MB | 12.1 MB/s | ETA 0:00:56
+11:15:55 INFO [ 53.4%] 760/1424 MB | 10.7 MB/s | ETA 0:01:01
+11:16:05 INFO [ 54.8%] 780/1424 MB | 9.6 MB/s | ETA 0:01:07
+11:16:16 INFO [ 56.0%] 797/1424 MB | 8.6 MB/s | ETA 0:01:12
+11:16:26 INFO [ 57.4%] 818/1424 MB | 8.0 MB/s | ETA 0:01:15
+11:16:37 INFO [ 58.3%] 830/1424 MB | 7.3 MB/s | ETA 0:01:21
+11:16:48 INFO [ 59.5%] 847/1424 MB | 6.8 MB/s | ETA 0:01:24
+11:16:59 INFO [ 61.4%] 874/1424 MB | 6.5 MB/s | ETA 0:01:24
+11:17:09 INFO [ 62.4%] 888/1424 MB | 6.1 MB/s | ETA 0:01:27
+11:17:20 INFO [ 63.6%] 905/1424 MB | 5.8 MB/s | ETA 0:01:29
+11:17:30 INFO [ 65.9%] 938/1424 MB | 5.6 MB/s | ETA 0:01:26
+11:17:40 INFO [ 67.1%] 956/1424 MB | 5.4 MB/s | ETA 0:01:26
+11:17:52 INFO [ 68.0%] 968/1424 MB | 5.2 MB/s | ETA 0:01:28
+11:18:02 INFO [ 68.8%] 980/1424 MB | 5.0 MB/s | ETA 0:01:29
+11:18:14 INFO [ 70.4%] 1002/1424 MB | 4.8 MB/s | ETA 0:01:28
+11:18:24 INFO [ 71.9%] 1024/1424 MB | 4.7 MB/s | ETA 0:01:25
+11:18:34 INFO [ 73.4%] 1045/1424 MB | 4.5 MB/s | ETA 0:01:23
+11:18:45 INFO [ 75.1%] 1069/1424 MB | 4.4 MB/s | ETA 0:01:20
+11:18:56 INFO [ 76.8%] 1094/1424 MB | 4.3 MB/s | ETA 0:01:16
+11:19:07 INFO [ 78.7%] 1120/1424 MB | 4.3 MB/s | ETA 0:01:11
+11:19:17 INFO [ 79.8%] 1137/1424 MB | 4.2 MB/s | ETA 0:01:08
+11:19:27 INFO [ 81.5%] 1161/1424 MB | 4.1 MB/s | ETA 0:01:04
+11:19:38 INFO [ 83.1%] 1184/1424 MB | 4.0 MB/s | ETA 0:00:59
+11:19:48 INFO [ 84.8%] 1207/1424 MB | 4.0 MB/s | ETA 0:00:54
+11:19:59 INFO [ 87.4%] 1244/1424 MB | 3.9 MB/s | ETA 0:00:45
+11:20:09 INFO [ 89.6%] 1276/1424 MB | 3.9 MB/s | ETA 0:00:37
+11:20:19 INFO [ 90.7%] 1292/1424 MB | 3.9 MB/s | ETA 0:00:34
+11:20:31 INFO [ 92.5%] 1317/1424 MB | 3.8 MB/s | ETA 0:00:28
+11:20:41 INFO [ 94.2%] 1342/1424 MB | 3.8 MB/s | ETA 0:00:21
+11:20:52 INFO [ 95.9%] 1365/1424 MB | 3.7 MB/s | ETA 0:00:15
+11:21:02 INFO [ 97.8%] 1392/1424 MB | 3.7 MB/s | ETA 0:00:08
+11:21:12 INFO ✔ Descargando https://download.geofabrik.de/europe/spain-latest.osm.pbf (388.8 s)
+11:21:12 INFO ▶ Pasada 1/2: leyendo vías (ways)...
+11:21:38 INFO ✔ Pasada 1/2: leyendo vías (ways) (26.0 s)
+11:21:38 INFO Vías encontradas: 284026 | nodos referenciados: 2041538
+11:21:38 INFO ▶ Pasada 2/2: leyendo coordenadas de nodos...
+11:22:02 INFO ✔ Pasada 2/2: leyendo coordenadas de nodos (23.7 s)
+11:22:03 INFO Vías válidas tras recorte: 284026 | nodos con coordenadas: 2041538
+11:22:03 INFO ▶ Construyendo grafo (OSMnx)...
+11:22:51 INFO ✔ Construyendo grafo (OSMnx) (48.2 s)
+11:22:51 INFO ▶ Quedándose con la componente principal (península)...
+11:23:54 INFO ✔ Quedándose con la componente principal (península) (62.7 s)
+11:23:54 INFO ▶ Simplificando topología...
+11:26:10 INFO ✔ Simplificando topología (136.3 s)
+11:26:10 INFO ▶ Garantizando conectividad fuerte (caminos en ambos sentidos)...
+11:26:14 INFO ✔ Garantizando conectividad fuerte (caminos en ambos sentidos) (4.1 s)
+11:26:14 INFO ▶ Imputando velocidades (add_edge_speeds)...
+11:26:20 INFO ✔ Imputando velocidades (add_edge_speeds) (5.9 s)
+11:26:20 INFO ▶ Calculando tiempos de viaje (add_edge_travel_times)...
+11:26:24 INFO ✔ Calculando tiempos de viaje (add_edge_travel_times) (4.0 s)
+11:26:24 INFO ▶ Limpiando atributos de aristas...
+11:26:25 INFO ✔ Limpiando atributos de aristas (1.2 s)
+11:26:25 INFO ▶ Guardando data\espana_red_maestra.graphml...
+11:26:38 INFO ✔ Guardando data\espana_red_maestra.graphml (12.9 s)
+11:26:39 INFO ─── RESUMEN ───
+11:26:39 INFO Nodos:   108050
+11:26:39 INFO Aristas: 181006 (110128 km dirigidos)
+11:26:39 INFO Tipos de vía (highway):
+11:26:39 INFO   primary         69200
+11:26:39 INFO   trunk           48996
+11:26:39 INFO   motorway_link   18615
+11:26:39 INFO   motorway        17441
+11:26:39 INFO   trunk_link      14104
+11:26:39 INFO   primary_link    12650
+11:26:39 INFO Archivo: data\espana_red_maestra.graphml (73.2 MB)
+11:26:39 INFO ▶ Validando data\espana_red_maestra.graphml con networkx.read_graphml...
+11:26:48 INFO ✔ Validando data\espana_red_maestra.graphml con networkx.read_graphml (9.8 s)
+11:26:48 INFO Validación OK: 108050 nodos, 181006 aristas, 110128 km totales
+11:26:48 INFO Tiempo total: 0:12:05
+11:38:55 INFO ▶ Descargando https://download.geofabrik.de/europe/spain-latest.osm.pbf...
+11:38:55 INFO Ya existe data\spain-latest.osm.pbf (1424 MB): no se vuelve a descargar
+11:38:55 INFO ✔ Descargando https://download.geofabrik.de/europe/spain-latest.osm.pbf (0.0 s)
+11:38:55 INFO ▶ Pasada 1/2: leyendo vías (ways)...
+11:39:21 INFO ✔ Pasada 1/2: leyendo vías (ways) (25.9 s)
+11:39:21 INFO Vías encontradas: 284026 | nodos referenciados: 2041538
+11:39:21 INFO ▶ Pasada 2/2: leyendo coordenadas de nodos...
+11:39:39 INFO ✔ Pasada 2/2: leyendo coordenadas de nodos (18.8 s)
+11:39:40 INFO Vías válidas tras recorte: 284026 | nodos con coordenadas: 2041538
+11:39:40 INFO ▶ Construyendo grafo (OSMnx)...
+11:45:17 INFO ▶ Descargando https://download.geofabrik.de/europe/spain-latest.osm.pbf...
+11:45:17 INFO Ya existe data\spain-latest.osm.pbf (1424 MB): no se vuelve a descargar
+11:45:17 INFO ✔ Descargando https://download.geofabrik.de/europe/spain-latest.osm.pbf (0.0 s)
+11:45:17 INFO ▶ Pasada 1/2: leyendo vías (ways)...
+11:45:37 INFO ✔ Pasada 1/2: leyendo vías (ways) (20.0 s)
+11:45:37 INFO Vías encontradas: 284026 | nodos referenciados: 2041538
+11:45:37 INFO ▶ Pasada 2/2: leyendo coordenadas de nodos...
+11:45:58 INFO ✔ Pasada 2/2: leyendo coordenadas de nodos (20.8 s)
+11:45:59 INFO Vías válidas tras recorte: 284026 | nodos con coordenadas: 2041538
+11:45:59 INFO ▶ Construyendo grafo (OSMnx)...
+11:46:41 INFO ✔ Construyendo grafo (OSMnx) (42.8 s)
+11:46:41 INFO ▶ Quedándose con la componente principal (península)...
+11:47:42 INFO ✔ Quedándose con la componente principal (península) (60.9 s)
+11:47:42 INFO ▶ Simplificando topología...
+11:50:08 INFO ✔ Simplificando topología (146.1 s)
+11:50:08 INFO ▶ Garantizando conectividad fuerte (caminos en ambos sentidos)...
+11:50:12 INFO ✔ Garantizando conectividad fuerte (caminos en ambos sentidos) (3.7 s)
+11:50:12 INFO ▶ Imputando velocidades (add_edge_speeds)...
+11:50:17 INFO ✔ Imputando velocidades (add_edge_speeds) (4.7 s)
+11:50:17 INFO ▶ Calculando tiempos de viaje (add_edge_travel_times)...
+11:50:22 INFO ✔ Calculando tiempos de viaje (add_edge_travel_times) (4.9 s)
+11:50:22 INFO ▶ Limpiando atributos de aristas...
+11:50:23 INFO ✔ Limpiando atributos de aristas (0.8 s)
+11:50:23 INFO ▶ Guardando data\espana_red_maestra.graphml...
+11:50:39 INFO ✔ Guardando data\espana_red_maestra.graphml (16.1 s)
+11:50:39 INFO ─── RESUMEN ───
+11:50:39 INFO Nodos:   108050
+11:50:40 INFO Aristas: 181006 (110128 km dirigidos)
+11:50:40 INFO Tipos de vía (highway):
+11:50:40 INFO   primary         69200
+11:50:40 INFO   trunk           48996
+11:50:40 INFO   motorway_link   18615
+11:50:40 INFO   motorway        17441
+11:50:40 INFO   trunk_link      14104
+11:50:40 INFO   primary_link    12650
+11:50:40 INFO Archivo: data\espana_red_maestra.graphml (73.7 MB)
+11:50:40 INFO ▶ Validando data\espana_red_maestra.graphml con networkx.read_graphml y ox.load_graphml...
+11:51:07 INFO ✔ Validando data\espana_red_maestra.graphml con networkx.read_graphml y ox.load_graphml (27.9 s)
+11:51:07 INFO Validación OK: 108050 nodos, 181006 aristas, 110128 km totales
+11:51:07 INFO Tiempo total: 0:05:50

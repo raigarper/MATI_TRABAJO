@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+cache/
+# Extracto OSM de origen (1,4 GB): se regenera con descargar_red.py
+data/*.osm.pbf
+data/*.part
+.ipynb_checkpoints/

@@ -1,0 +1,9 @@
+# --- Para ejecutar el notebook (trabajo_tsp.ipynb) ---
+networkx>=3.2          # las prácticas de MATI usan 3.4.2
+matplotlib>=3.8
+jupyterlab>=4.0
+
+# --- Solo para los anexos (descargar el extracto y construir el grafo) ---
+osmnx>=2.0             # construcción del grafo a partir de OpenStreetMap
+osmium>=4.0            # lectura del archivo .osm.pbf (pyosmium)
+requests>=2.31         # descarga del extracto

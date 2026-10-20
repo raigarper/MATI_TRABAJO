@@ -1,0 +1,331 @@
+22:50:15 INFO ▶ Obteniendo polígono de la España peninsular...
+22:50:15 INFO Polígono peninsular: bounds=(-9.58, 35.83, 3.6, 43.99)
+22:50:15 INFO ✔ Obteniendo polígono de la España peninsular (0.1 s)
+22:50:15 INFO ▶ Descargando red OSM (puede tardar bastante)...
+22:50:15 INFO La descarga se divide en 324 subconsultas Overpass
+22:51:39 INFO [  1/324   0.3%] transcurrido 0:01:23 | ETA 7:28:54 | última subconsulta 83 s
+22:52:42 INFO [  2/324   0.6%] transcurrido 0:02:27 | ETA 6:34:27 | última subconsulta 64 s
+22:53:09 INFO ✔ Descargando red OSM (puede tardar bastante) (174.5 s)
+22:53:09 ERROR Error durante la descarga/procesado
+Traceback (most recent call last):
+  File "C:\Users\ADMiN\AppData\Local\Programs\Python\Python310\lib\site-packages\requests\models.py", line 976, in json
+    return complexjson.loads(self.text, **kwargs)
+  File "C:\Users\ADMiN\AppData\Local\Programs\Python\Python310\lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+  File "C:\Users\ADMiN\AppData\Local\Programs\Python\Python310\lib\json\decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "C:\Users\ADMiN\AppData\Local\Programs\Python\Python310\lib\json\decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ADMiN\AppData\Local\Programs\Python\Python310\lib\site-packages\osmnx\_http.py", line 314, in _parse_response
+    response_json: dict[str, Any] | list[dict[str, Any]] = response.json()
+  File "C:\Users\ADMiN\AppData\Local\Programs\Python\Python310\lib\site-packages\requests\models.py", line 980, in json
+    raise RequestsJSONDecodeError(e.msg, e.doc, e.pos)
+requests.exceptions.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\ADMiN\US\MATI-TRABAJO\descargar_red.py", line 256, in main
+    G = descargar_grafo(poligono)
+  File "C:\Users\ADMiN\US\MATI-TRABAJO\descargar_red.py", line 142, in descargar_grafo
+    return ox.graph_from_polygon(
+  File "C:\Users\ADMiN\AppData\Local\Programs\Python\Python310\lib\site-packages\osmnx\graph.py", line 495, in graph_from_polygon
+    G_buff = _create_graph(response_jsons, bidirectional)
+  File "C:\Users\ADMiN\AppData\Local\Programs\Python\Python310\lib\site-packages\osmnx\graph.py", line 624, in _create_graph
+    for response_json in response_jsons:
+  File "C:\Users\ADMiN\AppData\Local\Programs\Python\Python310\lib\site-packages\osmnx\_overpass.py", line 402, in _download_overpass_network
+    yield _overpass_request(OrderedDict(data=query_str))
+  File "C:\Users\ADMiN\US\MATI-TRABAJO\descargar_red.py", line 112, in _request
+    respuesta = self._request_orig(data)
+  File "C:\Users\ADMiN\AppData\Local\Programs\Python\Python310\lib\site-packages\osmnx\_overpass.py", line 488, in _overpass_request
+    response_json = _http._parse_response(response)
+  File "C:\Users\ADMiN\AppData\Local\Programs\Python\Python310\lib\site-packages\osmnx\_http.py", line 320, in _parse_response
+    raise ResponseStatusCodeError(msg) from e
+osmnx._errors.ResponseStatusCodeError: 'overpass-api.de' responded: 502 Bad Gateway # 502 Gateway Timeout
+
+This Overpass API server is currently at capacity. All query workers are busy
+and the request queue is full.
+
+## What to do
+
+Retry your request using exponential backoff: wait a short interval, then retry.
+If the request fails again, double the wait time and retry again.
+
+## For heavy or automated use
+
+This public endpoint is intended for browser-based and human-operated tools.
+For automated or high-volume use, run a local Overpass API instance:
+
+https://github.com/b1tw153/Overpass-API/blob/main/README.md
+
+23:47:56 INFO ▶ Obteniendo polígono de la España peninsular...
+23:47:57 INFO Polígono peninsular: bounds=(-9.58, 35.83, 3.6, 43.99)
+23:47:57 INFO ✔ Obteniendo polígono de la España peninsular (0.1 s)
+23:47:57 INFO ▶ Descargando red OSM (puede tardar bastante)...
+23:47:57 INFO La descarga se divide en 324 subconsultas Overpass
+23:47:57 INFO [  1/324   0.3%] transcurrido 0:00:00 | ETA n/d | última subconsulta 0 s
+23:47:57 INFO [  2/324   0.6%] transcurrido 0:00:00 | ETA n/d | última subconsulta 0 s
+23:49:10 INFO [  3/324   0.9%] transcurrido 0:01:13 | ETA 6:30:12 | última subconsulta 73 s
+23:50:52 INFO [  4/324   1.2%] transcurrido 0:02:55 | ETA 7:46:37 | última subconsulta 102 s
+23:51:28 WARNING Subconsulta 5/324: intento 1/20 fallido (ResponseStatusCodeError). Reintento en 30 s
+23:53:40 INFO [  5/324   1.5%] transcurrido 0:05:43 | ETA 8:10:35 | última subconsulta 102 s
+23:54:44 INFO [  6/324   1.9%] transcurrido 0:06:47 | ETA 7:31:27 | última subconsulta 64 s
+23:55:47 INFO [  7/324   2.2%] transcurrido 0:07:50 | ETA 7:06:38 | última subconsulta 63 s
+23:57:06 INFO [  8/324   2.5%] transcurrido 0:09:09 | ETA 7:04:01 | última subconsulta 79 s
+23:58:49 WARNING Subconsulta 9/324: intento 1/20 fallido (ConnectTimeout). Reintento en 30 s
+00:01:01 WARNING Subconsulta 9/324: intento 2/20 fallido (ConnectTimeout). Reintento en 60 s
+00:03:43 WARNING Subconsulta 9/324: intento 3/20 fallido (ConnectTimeout). Reintento en 120 s
+00:07:26 WARNING Subconsulta 9/324: intento 4/20 fallido (ConnectTimeout). Reintento en 240 s
+00:13:08 WARNING Subconsulta 9/324: intento 5/20 fallido (ConnectTimeout). Reintento en 300 s
+00:19:50 WARNING Subconsulta 9/324: intento 6/20 fallido (ConnectTimeout). Reintento en 300 s
+00:26:32 WARNING Subconsulta 9/324: intento 7/20 fallido (ConnectTimeout). Reintento en 300 s
+00:33:14 WARNING Subconsulta 9/324: intento 8/20 fallido (ConnectTimeout). Reintento en 300 s
+00:39:56 WARNING Subconsulta 9/324: intento 9/20 fallido (ConnectTimeout). Reintento en 300 s
+00:46:38 WARNING Subconsulta 9/324: intento 10/20 fallido (ConnectTimeout). Reintento en 300 s
+00:53:20 WARNING Subconsulta 9/324: intento 11/20 fallido (ConnectTimeout). Reintento en 300 s
+00:59:19 INFO [  9/324   2.8%] transcurrido 1:11:22 | ETA 6:45:54 | última subconsulta 58 s
+01:00:18 INFO [ 10/324   3.1%] transcurrido 1:12:21 | ETA 6:33:14 | última subconsulta 60 s
+01:01:46 INFO [ 11/324   3.4%] transcurrido 1:13:49 | ETA 6:38:54 | última subconsulta 87 s
+01:02:52 INFO [ 12/324   3.7%] transcurrido 1:14:55 | ETA 6:32:22 | última subconsulta 66 s
+01:03:56 INFO [ 13/324   4.0%] transcurrido 1:15:59 | ETA 6:25:44 | última subconsulta 64 s
+01:04:44 WARNING Subconsulta 14/324: intento 1/20 fallido (ConnectTimeout). Reintento en 30 s
+01:06:56 WARNING Subconsulta 14/324: intento 2/20 fallido (ConnectTimeout). Reintento en 60 s
+01:09:38 WARNING Subconsulta 14/324: intento 3/20 fallido (ConnectTimeout). Reintento en 120 s
+01:13:20 WARNING Subconsulta 14/324: intento 4/20 fallido (ConnectTimeout). Reintento en 240 s
+01:19:02 WARNING Subconsulta 14/324: intento 5/20 fallido (ConnectTimeout). Reintento en 300 s
+01:25:44 WARNING Subconsulta 14/324: intento 6/20 fallido (ConnectTimeout). Reintento en 300 s
+01:32:26 WARNING Subconsulta 14/324: intento 7/20 fallido (ConnectTimeout). Reintento en 300 s
+01:39:09 WARNING Subconsulta 14/324: intento 8/20 fallido (ConnectTimeout). Reintento en 300 s
+01:45:51 WARNING Subconsulta 14/324: intento 9/20 fallido (ConnectTimeout). Reintento en 300 s
+01:52:33 WARNING Subconsulta 14/324: intento 10/20 fallido (ConnectTimeout). Reintento en 300 s
+01:59:15 WARNING Subconsulta 14/324: intento 11/20 fallido (ConnectTimeout). Reintento en 300 s
+02:05:57 WARNING Subconsulta 14/324: intento 12/20 fallido (ConnectTimeout). Reintento en 300 s
+02:12:39 WARNING Subconsulta 14/324: intento 13/20 fallido (ConnectTimeout). Reintento en 300 s
+02:19:21 WARNING Subconsulta 14/324: intento 14/20 fallido (ConnectTimeout). Reintento en 300 s
+02:26:03 WARNING Subconsulta 14/324: intento 15/20 fallido (ConnectTimeout). Reintento en 300 s
+02:32:46 WARNING Subconsulta 14/324: intento 16/20 fallido (ConnectTimeout). Reintento en 300 s
+02:39:28 WARNING Subconsulta 14/324: intento 17/20 fallido (ConnectTimeout). Reintento en 300 s
+02:46:10 WARNING Subconsulta 14/324: intento 18/20 fallido (ConnectTimeout). Reintento en 300 s
+02:52:52 WARNING Subconsulta 14/324: intento 19/20 fallido (ConnectTimeout). Reintento en 300 s
+02:59:34 WARNING Subconsulta 14/324: intento 20/20 fallido (ConnectTimeout). Reintento en 300 s
+02:59:34 WARNING Descarga global: intento 1/8 fallido (ConnectTimeout)
+03:00:34 INFO La descarga se divide en 324 subconsultas Overpass
+03:00:34 INFO [  1/324   0.3%] transcurrido 3:12:37 | ETA 6:40:38 | última subconsulta 0 s
+03:00:34 INFO [  2/324   0.6%] transcurrido 3:12:37 | ETA 6:39:23 | última subconsulta 0 s
+03:00:34 INFO [  3/324   0.9%] transcurrido 3:12:37 | ETA 6:38:09 | última subconsulta 0 s
+03:00:34 INFO [  4/324   1.2%] transcurrido 3:12:37 | ETA 6:36:54 | última subconsulta 0 s
+03:00:34 INFO [  5/324   1.5%] transcurrido 3:12:37 | ETA 6:35:40 | última subconsulta 0 s
+03:00:34 INFO [  6/324   1.9%] transcurrido 3:12:37 | ETA 6:34:25 | última subconsulta 0 s
+03:00:34 INFO [  7/324   2.2%] transcurrido 3:12:37 | ETA 6:33:11 | última subconsulta 0 s
+03:00:35 INFO [  8/324   2.5%] transcurrido 3:12:37 | ETA 6:31:57 | última subconsulta 0 s
+03:00:35 INFO [  9/324   2.8%] transcurrido 3:12:37 | ETA 6:30:42 | última subconsulta 0 s
+03:00:35 INFO [ 10/324   3.1%] transcurrido 3:12:38 | ETA 6:29:28 | última subconsulta 0 s
+03:00:35 INFO [ 11/324   3.4%] transcurrido 3:12:38 | ETA 6:28:13 | última subconsulta 0 s
+03:00:35 INFO [ 12/324   3.7%] transcurrido 3:12:38 | ETA 6:26:59 | última subconsulta 0 s
+03:00:35 INFO [ 13/324   4.0%] transcurrido 3:12:38 | ETA 6:25:44 | última subconsulta 0 s
+03:02:17 WARNING Subconsulta 14/324: intento 1/20 fallido (ConnectTimeout). Reintento en 30 s
+03:04:41 INFO [ 14/324   4.3%] transcurrido 3:16:44 | ETA 6:41:33 | última subconsulta 114 s
+03:05:50 INFO [ 15/324   4.6%] transcurrido 3:17:53 | ETA 6:36:46 | última subconsulta 69 s
+03:07:03 INFO [ 16/324   4.9%] transcurrido 3:19:06 | ETA 6:34:04 | última subconsulta 73 s
+03:08:08 INFO [ 17/324   5.2%] transcurrido 3:20:11 | ETA 6:28:48 | última subconsulta 65 s
+03:09:48 WARNING Subconsulta 18/324: intento 1/20 fallido (ConnectTimeout). Reintento en 30 s
+03:12:01 WARNING Subconsulta 18/324: intento 2/20 fallido (ConnectTimeout). Reintento en 60 s
+03:14:43 WARNING Subconsulta 18/324: intento 3/20 fallido (ConnectTimeout). Reintento en 120 s
+03:18:25 WARNING Subconsulta 18/324: intento 4/20 fallido (ConnectTimeout). Reintento en 240 s
+03:24:07 WARNING Subconsulta 18/324: intento 5/20 fallido (ConnectTimeout). Reintento en 300 s
+03:30:49 WARNING Subconsulta 18/324: intento 6/20 fallido (ConnectTimeout). Reintento en 300 s
+03:37:31 WARNING Subconsulta 18/324: intento 7/20 fallido (ConnectTimeout). Reintento en 300 s
+03:44:13 WARNING Subconsulta 18/324: intento 8/20 fallido (ConnectTimeout). Reintento en 300 s
+03:50:55 WARNING Subconsulta 18/324: intento 9/20 fallido (ConnectTimeout). Reintento en 300 s
+03:57:38 WARNING Subconsulta 18/324: intento 10/20 fallido (ConnectTimeout). Reintento en 300 s
+04:04:20 WARNING Subconsulta 18/324: intento 11/20 fallido (ConnectTimeout). Reintento en 300 s
+04:11:02 WARNING Subconsulta 18/324: intento 12/20 fallido (ConnectTimeout). Reintento en 300 s
+04:17:44 WARNING Subconsulta 18/324: intento 13/20 fallido (ConnectTimeout). Reintento en 300 s
+04:24:26 WARNING Subconsulta 18/324: intento 14/20 fallido (ConnectTimeout). Reintento en 300 s
+04:31:08 WARNING Subconsulta 18/324: intento 15/20 fallido (ConnectTimeout). Reintento en 300 s
+04:37:50 WARNING Subconsulta 18/324: intento 16/20 fallido (ConnectTimeout). Reintento en 300 s
+04:44:33 WARNING Subconsulta 18/324: intento 17/20 fallido (ConnectTimeout). Reintento en 300 s
+04:51:15 WARNING Subconsulta 18/324: intento 18/20 fallido (ConnectTimeout). Reintento en 300 s
+04:57:57 WARNING Subconsulta 18/324: intento 19/20 fallido (ConnectTimeout). Reintento en 300 s
+05:04:39 WARNING Subconsulta 18/324: intento 20/20 fallido (ConnectTimeout). Reintento en 300 s
+05:04:39 WARNING Descarga global: intento 2/8 fallido (ConnectTimeout)
+05:05:39 INFO La descarga se divide en 324 subconsultas Overpass
+05:05:39 INFO [  1/324   0.3%] transcurrido 5:17:42 | ETA 6:49:04 | última subconsulta 0 s
+05:05:39 INFO [  2/324   0.6%] transcurrido 5:17:42 | ETA 6:47:48 | última subconsulta 0 s
+05:05:39 INFO [  3/324   0.9%] transcurrido 5:17:42 | ETA 6:46:32 | última subconsulta 0 s
+05:05:39 INFO [  4/324   1.2%] transcurrido 5:17:42 | ETA 6:45:16 | última subconsulta 0 s
+05:05:39 INFO [  5/324   1.5%] transcurrido 5:17:42 | ETA 6:44:00 | última subconsulta 0 s
+05:05:39 INFO [  6/324   1.9%] transcurrido 5:17:42 | ETA 6:42:44 | última subconsulta 0 s
+05:05:39 INFO [  7/324   2.2%] transcurrido 5:17:42 | ETA 6:41:28 | última subconsulta 0 s
+05:05:39 INFO [  8/324   2.5%] transcurrido 5:17:42 | ETA 6:40:12 | última subconsulta 0 s
+05:05:39 INFO [  9/324   2.8%] transcurrido 5:17:42 | ETA 6:38:56 | última subconsulta 0 s
+05:05:39 INFO [ 10/324   3.1%] transcurrido 5:17:42 | ETA 6:37:40 | última subconsulta 0 s
+05:05:39 INFO [ 11/324   3.4%] transcurrido 5:17:42 | ETA 6:36:24 | última subconsulta 0 s
+05:05:39 INFO [ 12/324   3.7%] transcurrido 5:17:42 | ETA 6:35:08 | última subconsulta 0 s
+05:05:39 INFO [ 13/324   4.0%] transcurrido 5:17:42 | ETA 6:33:52 | última subconsulta 0 s
+05:05:39 INFO [ 14/324   4.3%] transcurrido 5:17:42 | ETA 6:32:36 | última subconsulta 0 s
+05:05:39 INFO [ 15/324   4.6%] transcurrido 5:17:42 | ETA 6:31:20 | última subconsulta 0 s
+05:05:40 INFO [ 16/324   4.9%] transcurrido 5:17:42 | ETA 6:30:04 | última subconsulta 0 s
+05:05:40 INFO [ 17/324   5.2%] transcurrido 5:17:43 | ETA 6:28:48 | última subconsulta 0 s
+05:07:22 WARNING Subconsulta 18/324: intento 1/20 fallido (ConnectTimeout). Reintento en 30 s
+05:09:34 WARNING Subconsulta 18/324: intento 2/20 fallido (ConnectTimeout). Reintento en 60 s
+05:12:16 WARNING Subconsulta 18/324: intento 3/20 fallido (ConnectTimeout). Reintento en 120 s
+05:15:58 WARNING Subconsulta 18/324: intento 4/20 fallido (ConnectTimeout). Reintento en 240 s
+05:21:40 WARNING Subconsulta 18/324: intento 5/20 fallido (ConnectTimeout). Reintento en 300 s
+05:28:22 WARNING Subconsulta 18/324: intento 6/20 fallido (ConnectTimeout). Reintento en 300 s
+05:35:04 WARNING Subconsulta 18/324: intento 7/20 fallido (ConnectTimeout). Reintento en 300 s
+05:41:47 WARNING Subconsulta 18/324: intento 8/20 fallido (ConnectTimeout). Reintento en 300 s
+05:48:29 WARNING Subconsulta 18/324: intento 9/20 fallido (ConnectTimeout). Reintento en 300 s
+05:55:11 WARNING Subconsulta 18/324: intento 10/20 fallido (ConnectTimeout). Reintento en 300 s
+06:01:53 WARNING Subconsulta 18/324: intento 11/20 fallido (ConnectTimeout). Reintento en 300 s
+06:08:35 WARNING Subconsulta 18/324: intento 12/20 fallido (ConnectTimeout). Reintento en 300 s
+06:15:17 WARNING Subconsulta 18/324: intento 13/20 fallido (ConnectTimeout). Reintento en 300 s
+06:21:59 WARNING Subconsulta 18/324: intento 14/20 fallido (ConnectTimeout). Reintento en 300 s
+06:28:41 WARNING Subconsulta 18/324: intento 15/20 fallido (ConnectTimeout). Reintento en 300 s
+06:35:24 WARNING Subconsulta 18/324: intento 16/20 fallido (ConnectTimeout). Reintento en 300 s
+06:42:06 WARNING Subconsulta 18/324: intento 17/20 fallido (ConnectTimeout). Reintento en 300 s
+06:48:48 WARNING Subconsulta 18/324: intento 18/20 fallido (ConnectTimeout). Reintento en 300 s
+06:55:30 WARNING Subconsulta 18/324: intento 19/20 fallido (ConnectTimeout). Reintento en 300 s
+07:02:12 WARNING Subconsulta 18/324: intento 20/20 fallido (ConnectTimeout). Reintento en 300 s
+07:02:12 WARNING Descarga global: intento 3/8 fallido (ConnectTimeout)
+07:03:12 INFO La descarga se divide en 324 subconsultas Overpass
+07:03:12 INFO [  1/324   0.3%] transcurrido 7:15:15 | ETA 6:49:04 | última subconsulta 0 s
+07:03:12 INFO [  2/324   0.6%] transcurrido 7:15:15 | ETA 6:47:48 | última subconsulta 0 s
+07:03:12 INFO [  3/324   0.9%] transcurrido 7:15:15 | ETA 6:46:32 | última subconsulta 0 s
+07:03:12 INFO [  4/324   1.2%] transcurrido 7:15:15 | ETA 6:45:16 | última subconsulta 0 s
+07:03:12 INFO [  5/324   1.5%] transcurrido 7:15:15 | ETA 6:44:00 | última subconsulta 0 s
+07:03:12 INFO [  6/324   1.9%] transcurrido 7:15:15 | ETA 6:42:44 | última subconsulta 0 s
+07:03:13 INFO [  7/324   2.2%] transcurrido 7:15:15 | ETA 6:41:28 | última subconsulta 0 s
+07:03:13 INFO [  8/324   2.5%] transcurrido 7:15:15 | ETA 6:40:12 | última subconsulta 0 s
+07:03:13 INFO [  9/324   2.8%] transcurrido 7:15:16 | ETA 6:38:56 | última subconsulta 0 s
+07:03:13 INFO [ 10/324   3.1%] transcurrido 7:15:16 | ETA 6:37:40 | última subconsulta 0 s
+07:03:13 INFO [ 11/324   3.4%] transcurrido 7:15:16 | ETA 6:36:24 | última subconsulta 0 s
+07:03:13 INFO [ 12/324   3.7%] transcurrido 7:15:16 | ETA 6:35:08 | última subconsulta 0 s
+07:03:13 INFO [ 13/324   4.0%] transcurrido 7:15:16 | ETA 6:33:52 | última subconsulta 0 s
+07:03:13 INFO [ 14/324   4.3%] transcurrido 7:15:16 | ETA 6:32:36 | última subconsulta 0 s
+07:03:13 INFO [ 15/324   4.6%] transcurrido 7:15:16 | ETA 6:31:20 | última subconsulta 0 s
+07:03:13 INFO [ 16/324   4.9%] transcurrido 7:15:16 | ETA 6:30:04 | última subconsulta 0 s
+07:03:13 INFO [ 17/324   5.2%] transcurrido 7:15:16 | ETA 6:28:48 | última subconsulta 0 s
+07:04:55 WARNING Subconsulta 18/324: intento 1/20 fallido (ConnectTimeout). Reintento en 30 s
+07:07:07 WARNING Subconsulta 18/324: intento 2/20 fallido (ConnectTimeout). Reintento en 60 s
+07:09:11 INFO [ 18/324   5.6%] transcurrido 7:21:14 | ETA 6:23:47 | última subconsulta 64 s
+07:09:58 INFO [ 19/324   5.9%] transcurrido 7:22:01 | ETA 6:14:01 | última subconsulta 47 s
+07:11:38 WARNING Subconsulta 20/324: intento 1/20 fallido (ConnectTimeout). Reintento en 30 s
+07:13:51 WARNING Subconsulta 20/324: intento 2/20 fallido (ConnectTimeout). Reintento en 60 s
+07:16:33 WARNING Subconsulta 20/324: intento 3/20 fallido (ConnectTimeout). Reintento en 120 s
+07:20:15 WARNING Subconsulta 20/324: intento 4/20 fallido (ConnectTimeout). Reintento en 240 s
+07:25:57 WARNING Subconsulta 20/324: intento 5/20 fallido (ConnectTimeout). Reintento en 300 s
+07:32:39 WARNING Subconsulta 20/324: intento 6/20 fallido (ConnectTimeout). Reintento en 300 s
+07:39:21 WARNING Subconsulta 20/324: intento 7/20 fallido (ConnectTimeout). Reintento en 300 s
+07:46:03 WARNING Subconsulta 20/324: intento 8/20 fallido (ConnectTimeout). Reintento en 300 s
+07:52:45 WARNING Subconsulta 20/324: intento 9/20 fallido (ConnectTimeout). Reintento en 300 s
+07:59:27 WARNING Subconsulta 20/324: intento 10/20 fallido (ConnectTimeout). Reintento en 300 s
+08:06:10 WARNING Subconsulta 20/324: intento 11/20 fallido (ConnectTimeout). Reintento en 300 s
+08:12:52 WARNING Subconsulta 20/324: intento 12/20 fallido (ConnectTimeout). Reintento en 300 s
+08:19:34 WARNING Subconsulta 20/324: intento 13/20 fallido (ConnectTimeout). Reintento en 300 s
+08:26:16 WARNING Subconsulta 20/324: intento 14/20 fallido (ConnectTimeout). Reintento en 300 s
+08:32:58 WARNING Subconsulta 20/324: intento 15/20 fallido (ConnectTimeout). Reintento en 300 s
+08:39:40 WARNING Subconsulta 20/324: intento 16/20 fallido (ConnectTimeout). Reintento en 300 s
+08:46:22 WARNING Subconsulta 20/324: intento 17/20 fallido (ConnectTimeout). Reintento en 300 s
+08:53:04 WARNING Subconsulta 20/324: intento 18/20 fallido (ConnectTimeout). Reintento en 300 s
+08:59:47 WARNING Subconsulta 20/324: intento 19/20 fallido (ConnectTimeout). Reintento en 300 s
+09:06:29 WARNING Subconsulta 20/324: intento 20/20 fallido (ConnectTimeout). Reintento en 300 s
+09:06:29 WARNING Descarga global: intento 4/8 fallido (ConnectTimeout)
+09:07:29 INFO La descarga se divide en 324 subconsultas Overpass
+09:07:29 INFO [  1/324   0.3%] transcurrido 9:19:32 | ETA 6:36:06 | última subconsulta 0 s
+09:07:29 INFO [  2/324   0.6%] transcurrido 9:19:32 | ETA 6:34:52 | última subconsulta 0 s
+09:07:29 INFO [  3/324   0.9%] transcurrido 9:19:32 | ETA 6:33:39 | última subconsulta 0 s
+09:07:29 INFO [  4/324   1.2%] transcurrido 9:19:32 | ETA 6:32:25 | última subconsulta 0 s
+09:07:29 INFO [  5/324   1.5%] transcurrido 9:19:32 | ETA 6:31:12 | última subconsulta 0 s
+09:07:29 INFO [  6/324   1.9%] transcurrido 9:19:32 | ETA 6:29:58 | última subconsulta 0 s
+09:07:29 INFO [  7/324   2.2%] transcurrido 9:19:32 | ETA 6:28:44 | última subconsulta 0 s
+09:07:29 INFO [  8/324   2.5%] transcurrido 9:19:32 | ETA 6:27:31 | última subconsulta 0 s
+09:07:29 INFO [  9/324   2.8%] transcurrido 9:19:32 | ETA 6:26:17 | última subconsulta 0 s
+09:07:29 INFO [ 10/324   3.1%] transcurrido 9:19:32 | ETA 6:25:04 | última subconsulta 0 s
+09:07:29 INFO [ 11/324   3.4%] transcurrido 9:19:32 | ETA 6:23:50 | última subconsulta 0 s
+09:07:29 INFO [ 12/324   3.7%] transcurrido 9:19:32 | ETA 6:22:36 | última subconsulta 0 s
+09:07:29 INFO [ 13/324   4.0%] transcurrido 9:19:32 | ETA 6:21:23 | última subconsulta 0 s
+09:07:29 INFO [ 14/324   4.3%] transcurrido 9:19:32 | ETA 6:20:09 | última subconsulta 0 s
+09:07:29 INFO [ 15/324   4.6%] transcurrido 9:19:32 | ETA 6:18:56 | última subconsulta 0 s
+09:07:29 INFO [ 16/324   4.9%] transcurrido 9:19:32 | ETA 6:17:42 | última subconsulta 0 s
+09:07:29 INFO [ 17/324   5.2%] transcurrido 9:19:32 | ETA 6:16:29 | última subconsulta 0 s
+09:07:29 INFO [ 18/324   5.6%] transcurrido 9:19:32 | ETA 6:15:15 | última subconsulta 0 s
+09:07:29 INFO [ 19/324   5.9%] transcurrido 9:19:32 | ETA 6:14:01 | última subconsulta 0 s
+09:09:11 WARNING Subconsulta 20/324: intento 1/20 fallido (ConnectTimeout). Reintento en 30 s
+09:11:23 WARNING Subconsulta 20/324: intento 2/20 fallido (ConnectTimeout). Reintento en 60 s
+09:14:06 WARNING Subconsulta 20/324: intento 3/20 fallido (ConnectTimeout). Reintento en 120 s
+09:17:48 WARNING Subconsulta 20/324: intento 4/20 fallido (ConnectTimeout). Reintento en 240 s
+09:23:30 WARNING Subconsulta 20/324: intento 5/20 fallido (ConnectTimeout). Reintento en 300 s
+09:30:12 WARNING Subconsulta 20/324: intento 6/20 fallido (ConnectTimeout). Reintento en 300 s
+09:36:54 WARNING Subconsulta 20/324: intento 7/20 fallido (ConnectTimeout). Reintento en 300 s
+09:43:36 WARNING Subconsulta 20/324: intento 8/20 fallido (ConnectTimeout). Reintento en 300 s
+09:50:18 WARNING Subconsulta 20/324: intento 9/20 fallido (ConnectTimeout). Reintento en 300 s
+09:57:01 WARNING Subconsulta 20/324: intento 10/20 fallido (ConnectTimeout). Reintento en 300 s
+10:03:43 WARNING Subconsulta 20/324: intento 11/20 fallido (ConnectTimeout). Reintento en 300 s
+10:10:25 WARNING Subconsulta 20/324: intento 12/20 fallido (ConnectTimeout). Reintento en 300 s
+10:17:07 WARNING Subconsulta 20/324: intento 13/20 fallido (ConnectTimeout). Reintento en 300 s
+10:23:49 WARNING Subconsulta 20/324: intento 14/20 fallido (ConnectTimeout). Reintento en 300 s
+10:30:31 WARNING Subconsulta 20/324: intento 15/20 fallido (ConnectTimeout). Reintento en 300 s
+10:37:13 WARNING Subconsulta 20/324: intento 16/20 fallido (ConnectTimeout). Reintento en 300 s
+10:43:55 WARNING Subconsulta 20/324: intento 17/20 fallido (ConnectTimeout). Reintento en 300 s
+10:50:38 WARNING Subconsulta 20/324: intento 18/20 fallido (ConnectTimeout). Reintento en 300 s
+10:57:20 WARNING Subconsulta 20/324: intento 19/20 fallido (ConnectTimeout). Reintento en 300 s
+11:04:02 WARNING Subconsulta 20/324: intento 20/20 fallido (ConnectTimeout). Reintento en 300 s
+11:04:02 WARNING Descarga global: intento 5/8 fallido (ConnectTimeout)
+11:05:02 INFO La descarga se divide en 324 subconsultas Overpass
+11:05:02 INFO [  1/324   0.3%] transcurrido 11:17:05 | ETA 6:36:06 | última subconsulta 0 s
+11:05:02 INFO [  2/324   0.6%] transcurrido 11:17:05 | ETA 6:34:52 | última subconsulta 0 s
+11:05:02 INFO [  3/324   0.9%] transcurrido 11:17:05 | ETA 6:33:39 | última subconsulta 0 s
+11:05:02 INFO [  4/324   1.2%] transcurrido 11:17:05 | ETA 6:32:25 | última subconsulta 0 s
+11:05:02 INFO [  5/324   1.5%] transcurrido 11:17:05 | ETA 6:31:12 | última subconsulta 0 s
+11:05:02 INFO [  6/324   1.9%] transcurrido 11:17:05 | ETA 6:29:58 | última subconsulta 0 s
+11:05:02 INFO [  7/324   2.2%] transcurrido 11:17:05 | ETA 6:28:44 | última subconsulta 0 s
+11:05:02 INFO [  8/324   2.5%] transcurrido 11:17:05 | ETA 6:27:31 | última subconsulta 0 s
+11:05:02 INFO [  9/324   2.8%] transcurrido 11:17:05 | ETA 6:26:17 | última subconsulta 0 s
+11:05:02 INFO [ 10/324   3.1%] transcurrido 11:17:05 | ETA 6:25:04 | última subconsulta 0 s
+11:05:02 INFO [ 11/324   3.4%] transcurrido 11:17:05 | ETA 6:23:50 | última subconsulta 0 s
+11:05:02 INFO [ 12/324   3.7%] transcurrido 11:17:05 | ETA 6:22:36 | última subconsulta 0 s
+11:05:02 INFO [ 13/324   4.0%] transcurrido 11:17:05 | ETA 6:21:23 | última subconsulta 0 s
+11:05:02 INFO [ 14/324   4.3%] transcurrido 11:17:05 | ETA 6:20:09 | última subconsulta 0 s
+11:05:02 INFO [ 15/324   4.6%] transcurrido 11:17:05 | ETA 6:18:56 | última subconsulta 0 s
+11:05:02 INFO [ 16/324   4.9%] transcurrido 11:17:05 | ETA 6:17:42 | última subconsulta 0 s
+11:05:02 INFO [ 17/324   5.2%] transcurrido 11:17:05 | ETA 6:16:29 | última subconsulta 0 s
+11:05:02 INFO [ 18/324   5.6%] transcurrido 11:17:05 | ETA 6:15:15 | última subconsulta 0 s
+11:05:02 INFO [ 19/324   5.9%] transcurrido 11:17:05 | ETA 6:14:01 | última subconsulta 0 s
+11:06:45 WARNING Subconsulta 20/324: intento 1/20 fallido (ConnectTimeout). Reintento en 30 s
+11:08:26 INFO ✔ Descargando red OSM (puede tardar bastante) (40829.4 s)
+11:08:36 INFO ▶ Obteniendo polígono de la España peninsular...
+11:08:37 INFO Polígono peninsular: bounds=(-9.58, 35.83, 3.6, 43.99)
+11:08:37 INFO ✔ Obteniendo polígono de la España peninsular (0.1 s)
+11:08:37 INFO ▶ Descargando red OSM (puede tardar bastante)...
+11:08:37 INFO La descarga se divide en 324 subconsultas Overpass
+11:08:42 INFO Servidor overpass-api.de → usando IP 65.109.112.52 (candidatas: 162.55.144.139, 65.109.112.52)
+11:08:42 INFO [  1/324   0.3%] transcurrido 0:00:05 | ETA 0:27:29 | última subconsulta 5 s
+11:08:47 INFO [  2/324   0.6%] transcurrido 0:00:10 | ETA 0:27:22 | última subconsulta 5 s
+11:08:52 INFO [  3/324   0.9%] transcurrido 0:00:15 | ETA 0:27:16 | última subconsulta 5 s
+11:08:57 INFO [  4/324   1.2%] transcurrido 0:00:20 | ETA 0:27:11 | última subconsulta 5 s
+11:09:02 INFO [  5/324   1.5%] transcurrido 0:00:25 | ETA 0:27:07 | última subconsulta 5 s
+11:09:07 INFO [  6/324   1.9%] transcurrido 0:00:30 | ETA 0:27:01 | última subconsulta 5 s
+11:09:13 INFO [  7/324   2.2%] transcurrido 0:00:35 | ETA 0:26:55 | última subconsulta 5 s
+11:09:18 INFO [  8/324   2.5%] transcurrido 0:00:41 | ETA 0:26:50 | última subconsulta 5 s
+11:09:23 INFO [  9/324   2.8%] transcurrido 0:00:46 | ETA 0:26:46 | última subconsulta 5 s
+11:09:28 INFO [ 10/324   3.1%] transcurrido 0:00:51 | ETA 0:26:41 | última subconsulta 5 s
+11:09:33 INFO [ 11/324   3.4%] transcurrido 0:00:56 | ETA 0:26:36 | última subconsulta 5 s
+11:09:38 INFO [ 12/324   3.7%] transcurrido 0:01:01 | ETA 0:26:31 | última subconsulta 5 s
+11:09:43 INFO [ 13/324   4.0%] transcurrido 0:01:06 | ETA 0:26:25 | última subconsulta 5 s
+11:09:48 INFO [ 14/324   4.3%] transcurrido 0:01:11 | ETA 0:26:21 | última subconsulta 5 s
+11:09:53 INFO [ 15/324   4.6%] transcurrido 0:01:16 | ETA 0:26:16 | última subconsulta 5 s
+11:09:59 INFO [ 16/324   4.9%] transcurrido 0:01:21 | ETA 0:26:11 | última subconsulta 5 s
+11:10:04 INFO [ 17/324   5.2%] transcurrido 0:01:27 | ETA 0:26:05 | última subconsulta 5 s
+11:10:09 INFO [ 18/324   5.6%] transcurrido 0:01:32 | ETA 0:26:00 | última subconsulta 5 s
+11:10:14 INFO [ 19/324   5.9%] transcurrido 0:01:37 | ETA 0:25:55 | última subconsulta 5 s
+11:10:53 WARNING Subconsulta 20/324: intento 1/20 fallido (ResponseStatusCodeError). Reintento en 30 s
+11:12:42 INFO [ 20/324   6.2%] transcurrido 0:04:05 | ETA 0:44:30 | última subconsulta 79 s
+11:13:23 WARNING Subconsulta 21/324: intento 1/20 fallido (ResponseStatusCodeError). Reintento en 30 s
+11:15:01 INFO [ 21/324   6.5%] transcurrido 0:06:24 | ETA 1:00:10 | última subconsulta 68 s
+11:15:21 INFO ✔ Descargando red OSM (puede tardar bastante) (404.4 s)
