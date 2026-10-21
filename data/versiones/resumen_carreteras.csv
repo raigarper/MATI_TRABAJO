@@ -1,0 +1,5 @@
+carreteras,nodos,n_aristas,km,nodos_descartados,ciudades_fuera
+completo,179594,309250,182760,0,0
+autovias_principales,115476,190221,111121,5885,0
+solo_autovias,19239,24450,28921,14027,3
+sin_autovias,146903,256301,140040,8464,0

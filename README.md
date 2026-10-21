@@ -7,9 +7,9 @@ peninsulares, ciudades de más de 100.000 habitantes...).
 La arquitectura es una **única red "maestra"** guardada en local (GraphML), de la que
 se derivan versiones filtradas y grafos de ciudades en memoria con NetworkX.
 
-> **Estado:** Parte 1 (construir el grafo) **hecha**; lista de ciudades **hecha**; Parte 2 (filtrar el grafo)
-> **definida, sin implementar**. El trabajo se desarrolla en el notebook `trabajo_tsp.ipynb`; el código que
-> descarga los datos y construye el grafo se entrega aparte como **anexos**.
+> **Estado:** Parte 1 (construir el grafo) y Parte 2 (versiones del grafo) **hechas**. Pendientes: Parte 3 (algoritmos
+> del viajante), Parte 4 (estudio con datos) y Parte 5 (conclusiones). El trabajo se desarrolla en el notebook
+> `trabajo_tsp.ipynb`; solo el código que descarga los datos y construye el grafo se entrega aparte, como **anexos**.
 
 ## Estructura del proyecto
 
@@ -18,6 +18,7 @@ se derivan versiones filtradas y grafos de ciudades en memoria con NetworkX.
 | **`trabajo_tsp.ipynb`** | **El trabajo.** Notebook principal (estilo de las prácticas de MATI). Ahora mismo, la Parte 1. |
 | **`data/espana_red_maestra_secundarias.graphml`** | **El grafo base** (con carreteras secundarias; 108 MB). **No está en git** (GitHub rechaza archivos de más de 100 MB): se genera con los anexos. |
 | `data/espana_red_maestra.graphml` | Grafo **ligero**, sin secundarias (63 MB). Es un subconjunto del base; se conserva como referencia. |
+| **`data/versiones/`** | **Las versiones del grafo** (Parte 2): 16 tablas de distancias entre ciudades + catálogo. 19 archivos, 0,9 MB; **sí va a git**. Ver la sección «Parte 2». |
 | **`data/ciudades.csv`** | 75 ciudades (47 capitales peninsulares + 28 municipios peninsulares de más de 100.000 hab.). Ver más abajo. |
 | **`anexos/descargar_red.py`** | **Anexo A.** Descarga el extracto de OpenStreetMap de España. |
 | **`anexos/construir_grafo.py`** | **Anexo B.** Convierte el extracto en el grafo. |
@@ -38,6 +39,10 @@ Para **usar** el grafo solo hace falta el notebook (`networkx` y `matplotlib`):
 pip install -r requirements.txt
 jupyter lab trabajo_tsp.ipynb
 ```
+
+**¿Solo vas a programar los algoritmos (Partes 3 y 4)?** No necesitas el grafo grande ni los anexos: las versiones ya
+están calculadas en `data/versiones/`. Abre el notebook, **salta la Parte 1** y ejecuta desde la Parte 2 (la celda que
+calcula las tablas se salta sola si ya existen).
 
 Para **generar** el grafo base (hace falta si no se tiene el archivo `.graphml`, que no está en git), desde la
 carpeta del proyecto y con las librerías de los anexos instaladas (`requirements.txt`):
@@ -193,6 +198,7 @@ capitales insulares (Palma, Las Palmas de Gran Canaria, Santa Cruz de Tenerife) 
 | `nombre` | Nombre usado en el trabajo (p. ej. «A Coruña», «Alicante»). |
 | `nombre_ine` | Nombre oficial del INE (p. ej. `Coruña, A`, `Alacant/Alicante`). |
 | `capital_provincia` | `True` si es capital de provincia. |
+| `comunidad` | Comunidad autónoma (verificada con las tablas por provincia del INE). |
 | `poblacion_2025` | Habitantes a 1 de enero de 2025. |
 | `lat`, `lon` | Coordenadas (grados). |
 | `fuente_coordenadas` | Nodo `place=city` de OpenStreetMap del que salen (con su id). |
@@ -229,31 +235,69 @@ El dibujo del grafo completo está en el notebook (`dibujar_red(G)` de `tsp_util
 
 ---
 
-## Parte 2 (definida): versiones del grafo
+## Parte 2: versiones del grafo
 
-Se parte del grafo base y se **filtran aristas** por tipo de vía (`highway`, incluyendo los enlaces) quedándose con la
-mayor componente fuertemente conexa. Versiones de carreteras decididas, con lo medido en una exploración previa
-(47 capitales, `length`, red dirigida; aún no está en el notebook):
+Una **versión** del grafo se define con cuatro elecciones. Todo el código vive en la Parte 2 del notebook.
 
-| Versión | Tipos de `highway` | Aristas | Mayor comp. conexa (km) | Acceso de las ciudades a la red (máx.) | Distancia entre capitales vs completa | Madrid–Sevilla |
-|---|---|---|---|---|---|---|
-| **Completa** | los 8 | 100 % | 100 % | 1,3 km | — | 502 km |
-| **Autovías y principales** (sin secundarias) | `motorway`, `trunk`, `primary` + enlaces | 64 % | 98,4 % | 2,4 km | +1,7 % | 511 km |
-| **Solo autovías** | `motorway` + enlaces | 13 % | 75,6 % | **63 km** (Salamanca 63, Badajoz 50, Cuenca 40) | +24,7 % | 532 km |
-| **Sin autovías** | todos menos `motorway` y su enlace | 87 % | 96,9 % | 8 km (Cádiz, Algeciras) | +22,9 % | 623 km |
+| Parámetro | Valores |
+|---|---|
+| `aristas` (carreteras) | `completo` (8 tipos de vía) · `autovias_principales` (sin secundarias) · `solo_autovias` · `sin_autovias` |
+| `nodos` (ciudades) | `capitales` (47) · `capitales_y_100k` (75) |
+| `ambito` | `espana` o una de las 15 comunidades autónomas peninsulares (`galicia`, `andalucia`, `castilla_y_leon`...) |
+| `peso` | `km` (kilómetros) · `tiempo` (el registrado en el grafo, **en segundos**; de coche) |
+| `general` | `multigrafo_dirigido` · `grafo_dirigido` · `multigrafo_no_dirigido` · `grafo_simple_no_dirigido` |
+| `X_KM` | 10 km: una ciudad a más de 10 km de la red de una versión se deja fuera y se registra |
+| `N_MIN` | 4: una versión por comunidad necesita al menos 4 ciudades |
 
-Conjuntos de ciudades: **47 capitales** y **75 ciudades** (`data/ciudades.csv`). Combinándolos con las 4 versiones
-de carreteras salen **8 grafos de ciudades**: grafos completos cuyos nodos son las ciudades y cuyas aristas llevan
-la distancia (`length`) y el tiempo (`travel_time`) del mejor camino entre cada par (algoritmo de Dijkstra). El
-peso con el que se resuelve el TSP se elige después.
+**Cómo funciona.** Al viajante no le hace falta el mapa, sino una tabla de distancias entre ciudades. Se calculan
+**16 tablas** de 75×75 con Dijkstra (4 carreteras × 2 pesos × dirigido o no dirigido) y se guardan; cada versión es un
+**trozo de una tabla** (las ciudades que correspondan). Resultado: **480 versiones** en el catálogo, que corresponden a
+**240 grafos de ciudades distintos** (`multigrafo` y `grafo simple` dan la misma tabla).
 
-**«Solo autovías».** Salamanca, Badajoz y Cuenca (y algunas ciudades del área de Barcelona) no están en la
-componente principal de la red de autovías: sus tramos de autovía quedan separados del resto o conectados solo en
-un sentido. Añadir carreteras secundarias no lo arregla, porque esa red es la misma con o sin ellas. Como con las
-islas, en un primer intento **no se puede plantear el TSP con esas ciudades y se dejan fuera**; si hace falta, se
-estudiará también una segunda versión en la que cada ciudad se conecta a la autovía más cercana por carretera normal.
+**Qué hay en `data/versiones/`:** las 16 tablas (`<carreteras>__<peso>__<dirigido|no_dirigido>.csv`, con los nombres de las
+ciudades en la primera fila; se abren con Excel), `catalogo.csv` (las 480 versiones con su número de ciudades),
+`excluidas.csv` (ciudades dejadas fuera y a qué distancia estaban) y `resumen_carreteras.csv`.
 
-**«Sin autovías».** Las velocidades son de coche, así que para esta versión solo tiene sentido comparar distancias.
+**Cómo se pide una versión** (devuelve un grafo de NetworkX `K`: nodos = ciudades, con `lat` y `lon`;
+`K[a][b]["peso"]` = distancia de `a` a `b`; `K.graph` guarda los parámetros, la unidad y las ciudades que quedaron fuera):
+
+```python
+K = cargar_version(aristas="solo_autovias", nodos="capitales", ambito="espana", peso="km", general="grafo_dirigido")
+K["Madrid"]["Sevilla"]["peso"]      # km
+```
+
+`dirigido` → `nx.DiGraph` (la distancia de ida y la de vuelta pueden diferir; Madrid→Sevilla 502 km, Sevilla→Madrid 517 km);
+no dirigido → `nx.Graph` (se ignoran los sentidos únicos; una arista por par).
+
+**Lo que queda en cada versión de carreteras** (medido al calcular las tablas):
+
+| Versión | Nodos | Aristas | Km | Nodos descartados (fuera de la mayor componente) | Ciudades fuera (> 10 km) |
+|---|---|---|---|---|---|
+| `completo` | 179.594 | 309.250 | 182.760 | 0 | 0 |
+| `autovias_principales` | 115.476 | 190.221 | 111.121 | 5.885 | 0 |
+| `solo_autovias` | 19.239 | 24.450 | 28.921 | 14.027 | **3**: Salamanca (62,7 km), Badajoz (50,5 km), Cuenca (39,6 km) |
+| `sin_autovias` | 146.903 | 256.301 | 140.040 | 8.464 | 0 |
+
+**Decisiones de diseño.**
+- **`multigrafo` = `grafo simple` en el grafo de ciudades.** Entre dos nodos el camino mínimo solo usa la arista más barata, así que
+  quedarse con una no cambia ninguna distancia.
+- **Bici y andando no son versiones aparte.** Con velocidad constante, tiempo = distancia / velocidad: el camino más corto y el
+  recorrido óptimo son los mismos que con `km`. El caso «a pie o en bici» es `sin_autovias` con `km`; para horas se divide
+  (`km / 20` en bici, `km / 5` andando).
+- **Las versiones por comunidad usan toda la red**: el mejor camino entre dos ciudades de la comunidad puede salir de ella.
+  Con `N_MIN = 4` salen 5 conjuntos de capitales (Andalucía, Castilla y León, Castilla-La Mancha, Cataluña, Galicia) y 8 de
+  capitales + >100.000 (esas más Madrid, Comunidad Valenciana y País Vasco).
+- **`solo_autovias`:** Salamanca, Badajoz y Cuenca quedan fuera. Como con las islas, en un primer intento no se puede plantear el
+  viajante con ellas (por ejemplo, Castilla y León pasa de 9 a 8 capitales).
+- **Distancias de acceso:** la distancia de cada ciudad al nodo de carretera más cercano **no** se suma a la tabla.
+- **No dirigido:** se ignoran los sentidos únicos y cada tramo vale lo que la más barata de sus dos direcciones. Un atajo por una
+  rampa en contradirección es un efecto pequeño, pero existe.
+
+**Comprobaciones** (una celda del notebook): distancias finitas y no negativas; diagonal 0; tabla no dirigida simétrica; no dirigido
+nunca mayor que dirigido; desigualdad triangular. Además se cargaron las 480 versiones del catálogo sin error.
+
+**Cómo recalcular las tablas** (si se cambia `X_KM`, por ejemplo): `RECALCULAR = True` en la celda de parámetros; hace falta el grafo
+base (Parte 1). Tarda ~2 minutos.
 
 ---
 
@@ -298,22 +342,24 @@ estudiará también una segunda versión en la que cada ciudad se conecta a la a
    geocodificación con Nominatim devolvía la provincia en lugar del municipio para algunas capitales (Guadalajara,
    Palencia...) y el centro del término municipal en otras (Almería, 14 km desplazada); se sustituyó por los nodos
    `place=city/town` del propio extracto.
-8. **Validación.** El Anexo B relee el archivo con `nx.read_graphml` y comprueba tipos, valores
+8. **Versiones como tablas de distancias.** Guardar 480 grafos de carreteras ocuparía decenas de GB. Como las distancias
+   entre ciudades se calculan sobre toda la red, basta con 16 tablas de 75×75 (0,9 MB) de las que cada versión es un trozo.
+   Así los compañeros que programan los algoritmos no necesitan el grafo grande.
+9. **Comunidad de cada ciudad.** Se asignó con las tablas por provincia del INE (cada ciudad aparece en una única provincia
+   con la misma población) y la división provincia → comunidad autónoma.
+10. **Validación.** El Anexo B relee el archivo con `nx.read_graphml` y comprueba tipos, valores
    y conectividad fuerte.
 
 ## Hoja de ruta (partes del notebook)
 
-1. **Construcción del grafo** — hecha (con el grafo base de secundarias).
-2. **Filtrado del grafo** — definida: 4 versiones de carreteras, 2 conjuntos de ciudades, 8 grafos de ciudades;
-   cada ciudad se asocia a su nodo más cercano (informando de la distancia) y se calcula la matriz de distancias
-   (Dijkstra con `length` y `travel_time`). *Pendiente de implementar.* Por decidir: si «dirigido o no dirigido» es
-   una variable de estudio (en una exploración previa la distancia de ida y vuelta difería un 0,7 % de media, con
-   casos de hasta el 20 %) y la segunda versión de «solo autovías».
-3. **Algoritmos para el TSP** — teoría y eficiencia (exactos y heurísticos).
-4. **Estudio experimental** — tiempos y calidad de las soluciones al variar el nº de ciudades, el
-   algoritmo, el peso (longitud/tiempo) y la red usada. Un estudio de escala por comunidades autónomas (1–9 capitales
-   cada una) queda para más adelante.
-5. **Conclusiones.**
+1. **Construcción del grafo** — hecha (grafo base con secundarias).
+2. **Versiones del grafo** — hecha: 4 versiones de carreteras, 2 conjuntos de ciudades (en toda España y por comunidad),
+   2 pesos y 4 tipos de grafo → 480 versiones, cargables con `cargar_version(...)`.
+3. **Algoritmos para el TSP** — *pendiente.* Teoría y eficiencia (exactos y heurísticos); cada algoritmo recibe un grafo `K`
+   y devuelve `(ruta, coste)`.
+4. **Estudio experimental** — *pendiente.* Tiempos y calidad de las soluciones al variar el nº de ciudades, el algoritmo, el peso
+   y la versión de carreteras. Un estudio de escala por comunidades autónomas (con las versiones regionales) queda para más adelante.
+5. **Conclusiones** — *pendiente.*
 
 Pendiente además: sustituir en el notebook el resumen del enunciado por el enunciado literal del trabajo, y añadir
 el registro de uso de IA y las insignias de autoría que exige la asignatura.
