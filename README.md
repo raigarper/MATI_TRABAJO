@@ -19,6 +19,8 @@ se derivan versiones filtradas y grafos de ciudades en memoria con NetworkX.
 | **`data/espana_red_maestra_secundarias.graphml`** | **El grafo base** (con carreteras secundarias; 108 MB). **No está en git** (GitHub rechaza archivos de más de 100 MB): se genera con los anexos. |
 | `data/espana_red_maestra.graphml` | Grafo **ligero**, sin secundarias (63 MB). Es un subconjunto del base; se conserva como referencia. |
 | **`data/versiones/`** | **Las versiones del grafo** (Parte 2): 16 tablas de distancias entre ciudades + catálogo. 19 archivos, 0,9 MB; **sí va a git**. Ver la sección «Parte 2». |
+| **`parte3/`** | Notebooks de los algoritmos del viajante (uno por persona, a partir de `_plantilla_algoritmo.ipynb`) y `herramientas.py`, que regenera la plantilla e integra esos notebooks en el principal. |
+| `CONTRIBUTING.md` | Guía para el equipo: cómo colaborar en la Parte 3 (pasos de git, contrato de un algoritmo, reglas). |
 | **`data/ciudades.csv`** | 75 ciudades (47 capitales peninsulares + 28 municipios peninsulares de más de 100.000 hab.). Ver más abajo. |
 | **`anexos/descargar_red.py`** | **Anexo A.** Descarga el extracto de OpenStreetMap de España. |
 | **`anexos/construir_grafo.py`** | **Anexo B.** Convierte el extracto en el grafo. |
@@ -39,6 +41,8 @@ Para **usar** el grafo solo hace falta el notebook (`networkx` y `matplotlib`):
 pip install -r requirements.txt
 jupyter lab trabajo_tsp.ipynb
 ```
+
+**¿Vas a programar un algoritmo (Parte 3)?** Lee `CONTRIBUTING.md`.
 
 **¿Solo vas a programar los algoritmos (Partes 3 y 4)?** No necesitas el grafo grande ni los anexos: las versiones ya
 están calculadas en `data/versiones/`. Abre el notebook, **salta la Parte 1** y ejecuta desde la Parte 2 (la celda que
@@ -355,8 +359,9 @@ base (Parte 1). Tarda ~2 minutos.
 1. **Construcción del grafo** — hecha (grafo base con secundarias).
 2. **Versiones del grafo** — hecha: 4 versiones de carreteras, 2 conjuntos de ciudades (en toda España y por comunidad),
    2 pesos y 4 tipos de grafo → 480 versiones, cargables con `cargar_version(...)`.
-3. **Algoritmos para el TSP** — *pendiente.* Teoría y eficiencia (exactos y heurísticos); cada algoritmo recibe un grafo `K`
-   y devuelve `(ruta, coste)`.
+3. **Algoritmos para el TSP** — *en curso.* Teoría y eficiencia (exactos y heurísticos); cada algoritmo recibe un grafo `K`
+   y devuelve `(ruta, coste)`. Cada persona programa el suyo en un notebook de `parte3/` (ver `CONTRIBUTING.md`) y se
+   integran en `trabajo_tsp.ipynb` con `python parte3/herramientas.py integrar`.
 4. **Estudio experimental** — *pendiente.* Tiempos y calidad de las soluciones al variar el nº de ciudades, el algoritmo, el peso
    y la versión de carreteras. Un estudio de escala por comunidades autónomas (con las versiones regionales) queda para más adelante.
 5. **Conclusiones** — *pendiente.*
