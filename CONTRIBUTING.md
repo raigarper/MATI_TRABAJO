@@ -32,13 +32,14 @@ calculadas en `data/versiones/`.
 
 | Algoritmo | Tipo | Complejidad (tiempo) | Límite orientativo | Responsable |
 |---|---|---|---|---|
-| Fuerza bruta | exacto | O(n!) | ≈ 10 ciudades | |
-| Held–Karp (programación dinámica) | exacto | O(n²·2ⁿ) | ≈ 20 ciudades | |
-| DFJ: programación entera + restricciones de subciclo | exacto | exponencial en el peor caso | 47 ciudades (por comprobar) | |
-| Vecino más cercano | voraz | O(n²) | todas | |
-| 2-opt (cambiar cruces) | mejora local | O(n²) por pasada | todas | |
-| Christofides / MST 2-aproximado | aproximado con garantía | O(n²)–O(n³) | todas (**solo grafo no dirigido**) | |
-| Genético | metaheurística | según parámetros | todas | Raimundo |
+| Fuerza bruta | exacto | O(n!) | ≈ 10 ciudades | Pablo ✅ |
+| Held–Karp (programación dinámica) | exacto | O(n²·2ⁿ) | ≈ 20 ciudades | Raimundo ✅ |
+| DFJ: programación entera + restricciones de subciclo | exacto | exponencial en el peor caso | 75 ciudades medidas | Jiahao ✅ |
+| Vecino más cercano | voraz | O(n²) | todas | Pablo ✅ |
+| 2-opt (cambiar cruces) | mejora local | O(n²) por pasada | todas | Raimundo ✅ |
+| Christofides (aproximado, garantía 1,5) | aproximado con garantía | O(n³) | todas (**solo grafo no dirigido**) | Raimundo ✅ |
+| Genético | metaheurística | según parámetros | todas | Raimundo ✅ |
+| Recocido simulado (MCMC) | metaheurística | según parámetros | todas | Juan ✅ |
 
 Cada uno elige al menos uno (y puede hacer más). Apunta tu nombre en la tabla en el Pull Request.
 
