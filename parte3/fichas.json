@@ -1,0 +1,43 @@
+{
+  "_comentario": "Fuente única de la ficha de cada algoritmo. `python parte3/herramientas.py unificar` la copia a cada notebook y `integrar` genera con ella la tabla comparativa de la Parte 3 (y los datos de la web). La clave es el nombre del notebook sin .ipynb.",
+  "fuerza_bruta_pablo": {
+    "orden": 1, "nombre": "Fuerza bruta", "funcion": "fuerza_bruta(K, inicio=None)", "autor": "Pablo Rivas",
+    "tipo": "Exacto", "determinista": "Sí", "garantia": "Óptimo", "simetria": "No la necesita",
+    "tiempo": "O((n−1)!·n)", "memoria": "O(n)", "limite": "≈ 10–11 ciudades", "ia": null
+  },
+  "held_karp_raimundo": {
+    "orden": 2, "nombre": "Held–Karp", "funcion": "held_karp(K, inicio=None, max_ciudades=21)", "autor": "Raimundo",
+    "tipo": "Exacto (programación dinámica)", "determinista": "Sí", "garantia": "Óptimo", "simetria": "No la necesita",
+    "tiempo": "O(n²·2ⁿ)", "memoria": "O(n·2ⁿ)", "limite": "≈ 20–21 ciudades", "ia": "claude"
+  },
+  "dfj_jiahao": {
+    "orden": 3, "nombre": "DFJ", "funcion": "dfj(K, inicio)", "autor": "Jiahao",
+    "tipo": "Exacto (programación entera + restricciones de subciclo)", "determinista": "Sí", "garantia": "Óptimo", "simetria": "No la necesita",
+    "tiempo": "Exponencial en el peor caso (segundos en la práctica)", "memoria": "O(K·n²) en la práctica", "limite": "≥ 75 ciudades (3 s medidos)", "ia": null
+  },
+  "vecino_mas_cercano_pablo": {
+    "orden": 4, "nombre": "Vecino más cercano", "funcion": "vecino_mas_cercano(K, inicio=None)", "autor": "Pablo Rivas",
+    "tipo": "Heurístico constructivo (voraz)", "determinista": "Sí", "garantia": "Ninguna", "simetria": "No la necesita",
+    "tiempo": "O(n²)", "memoria": "O(n)", "limite": "Todas", "ia": null
+  },
+  "dos_opt_raimundo": {
+    "orden": 5, "nombre": "2-opt", "funcion": "dos_opt(K, inicio=None, ruta_inicial=None)", "autor": "Raimundo",
+    "tipo": "Heurístico de mejora local", "determinista": "Sí", "garantia": "Ninguna", "simetria": "No la necesita",
+    "tiempo": "O(n²) por vuelta (≈ O(n³) en la práctica)", "memoria": "O(n²)", "limite": "Todas", "ia": "claude"
+  },
+  "christofides_raimundo": {
+    "orden": 6, "nombre": "Christofides", "funcion": "christofides_tsp(K, inicio=None)", "autor": "Raimundo",
+    "tipo": "Aproximado con garantía", "determinista": "Sí", "garantia": "≤ 1,5 × óptimo", "simetria": "Necesita grafo no dirigido",
+    "tiempo": "O(n³)", "memoria": "O(n²)", "limite": "Todas", "ia": "claude"
+  },
+  "recocido_simulado_juan": {
+    "orden": 7, "nombre": "Recocido simulado (MCMC)", "funcion": "enfriamiento_simulado(K, inicio=None)", "autor": "Juan",
+    "tipo": "Metaheurística", "determinista": "No (estocástico)", "garantia": "Ninguna", "simetria": "No la necesita",
+    "tiempo": "O(niveles de temperatura × iteraciones por nivel)", "memoria": "O(n²) (caché de pesos)", "limite": "Todas", "ia": null
+  },
+  "genetico_raimundo": {
+    "orden": 8, "nombre": "Algoritmo genético", "funcion": "genetico(K, inicio=None, poblacion=150, generaciones=500, ...)", "autor": "Raimundo",
+    "tipo": "Metaheurística", "determinista": "No (reproducible fijando la semilla)", "garantia": "Ninguna", "simetria": "No la necesita",
+    "tiempo": "O(G·P·n·q)", "memoria": "O(P·n)", "limite": "Todas", "ia": "claude"
+  }
+}

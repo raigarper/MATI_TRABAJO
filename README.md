@@ -7,8 +7,8 @@ peninsulares, ciudades de más de 100.000 habitantes...).
 La arquitectura es una **única red "maestra"** guardada en local (GraphML), de la que
 se derivan versiones filtradas y grafos de ciudades en memoria con NetworkX.
 
-> **Estado:** Parte 1 (construir el grafo) y Parte 2 (versiones del grafo) **hechas**. Pendientes: Parte 3 (algoritmos
-> del viajante), Parte 4 (estudio con datos) y Parte 5 (conclusiones). El trabajo se desarrolla en el notebook
+> **Estado:** Parte 1 (construir el grafo), Parte 2 (versiones del grafo) y Parte 3 (8 algoritmos del viajante) **hechas**.
+> Pendientes: Parte 4 (estudio con datos), Parte 5 (conclusiones), la web de apoyo y la memoria. Quién hizo qué: `REGISTRO.md`. El trabajo se desarrolla en el notebook
 > `trabajo_tsp.ipynb`; solo el código que descarga los datos y construye el grafo se entrega aparte, como **anexos**.
 
 ## Estructura del proyecto
@@ -19,7 +19,8 @@ se derivan versiones filtradas y grafos de ciudades en memoria con NetworkX.
 | **`data/espana_red_maestra_secundarias.graphml`** | **El grafo base** (con carreteras secundarias; 108 MB). **No está en git** (GitHub rechaza archivos de más de 100 MB): se genera con los anexos. |
 | `data/espana_red_maestra.graphml` | Grafo **ligero**, sin secundarias (63 MB). Es un subconjunto del base; se conserva como referencia. |
 | **`data/versiones/`** | **Las versiones del grafo** (Parte 2): 16 tablas de distancias entre ciudades + catálogo. 19 archivos, 0,9 MB; **sí va a git**. Ver la sección «Parte 2». |
-| **`parte3/`** | Notebooks de los algoritmos del viajante (uno por persona, a partir de `_plantilla_algoritmo.ipynb`) y `herramientas.py`, que regenera la plantilla e integra esos notebooks en el principal. |
+| **`parte3/`** | Un notebook por algoritmo (`<algoritmo>_<autor>.ipynb`, a partir de `_plantilla_algoritmo.ipynb`), `fichas.json` (datos de la ficha de cada algoritmo) y `herramientas.py` (regenera la plantilla, unifica el formato e integra los notebooks en el principal). |
+| `REGISTRO.md` | Registro del equipo: autoría de cada parte, uso de IA, estado del trabajo y cómo se unificó el repositorio. |
 | `CONTRIBUTING.md` | Guía para el equipo: cómo colaborar en la Parte 3 (pasos de git, contrato de un algoritmo, reglas). |
 | **`data/ciudades.csv`** | 75 ciudades (47 capitales peninsulares + 28 municipios peninsulares de más de 100.000 hab.). Ver más abajo. |
 | **`anexos/descargar_red.py`** | **Anexo A.** Descarga el extracto de OpenStreetMap de España. |
@@ -359,12 +360,13 @@ base (Parte 1). Tarda ~2 minutos.
 1. **Construcción del grafo** — hecha (grafo base con secundarias).
 2. **Versiones del grafo** — hecha: 4 versiones de carreteras, 2 conjuntos de ciudades (en toda España y por comunidad),
    2 pesos y 4 tipos de grafo → 480 versiones, cargables con `cargar_version(...)`.
-3. **Algoritmos para el TSP** — *en curso.* Teoría y eficiencia (exactos y heurísticos); cada algoritmo recibe un grafo `K`
-   y devuelve `(ruta, coste)`. Cada persona programa el suyo en un notebook de `parte3/` (ver `CONTRIBUTING.md`) y se
-   integran en `trabajo_tsp.ipynb` con `python parte3/herramientas.py integrar`.
-4. **Estudio experimental** — *pendiente.* Tiempos y calidad de las soluciones al variar el nº de ciudades, el algoritmo, el peso
+3. **Algoritmos para el TSP** — hecha: fuerza bruta, Held–Karp, DFJ, vecino más cercano, 2-opt, Christofides, recocido
+   simulado y genético. Cada uno recibe un grafo `K` y devuelve `(ruta, coste)`; vive en su notebook de `parte3/` (con ficha,
+   teoría, código, pruebas y resultados) y se integra en `trabajo_tsp.ipynb` con `python parte3/herramientas.py integrar`.
+4. **Estudio experimental** — *siguiente.* Tiempos y calidad de las soluciones al variar el nº de ciudades, el algoritmo, el peso
    y la versión de carreteras. Un estudio de escala por comunidades autónomas (con las versiones regionales) queda para más adelante.
 5. **Conclusiones** — *pendiente.*
 
-Pendiente además: sustituir en el notebook el resumen del enunciado por el enunciado literal del trabajo, y añadir
-el registro de uso de IA y las insignias de autoría que exige la asignatura.
+Pendiente además: sustituir en el notebook el resumen del enunciado por el enunciado literal del trabajo, completar el
+registro de uso de IA y las insignias de autoría que exige la asignatura (ver `REGISTRO.md`), una **web interactiva** que
+explique y anime los algoritmos y muestre los resultados, y la **memoria** (LaTeX → PDF).

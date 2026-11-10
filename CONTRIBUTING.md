@@ -12,13 +12,13 @@ git checkout <tu-rama>            # dev-pablo, dev_juan, dev_jiahao...
 git pull origin main
 
 # 2. Copia la plantilla con el nombre de tu algoritmo
-cp parte3/_plantilla_algoritmo.ipynb parte3/fuerza_bruta_pablo.ipynb      # en Windows: copy
+cp parte3/_plantilla_algoritmo.ipynb parte3/<algoritmo>_<tunombre>.ipynb      # en Windows: copy
 
 # 3. Abre el notebook y trabaja SOLO debajo de la línea ✂️ (ver abajo)
 
 # 4. Sube tu notebook a tu rama
-git add parte3/fuerza_bruta_pablo.ipynb
-git commit -m "Fuerza bruta (Pablo)"
+git add parte3/<algoritmo>_<tunombre>.ipynb parte3/fichas.json
+git commit -m "<Algoritmo> (<tunombre>)"
 git push origin <tu-rama>
 
 # 5. En GitHub: abre un Pull Request de tu rama a main. Raimundo lo revisa y lo acepta.
@@ -41,7 +41,7 @@ calculadas en `data/versiones/`.
 | Genético | metaheurística | según parámetros | todas | Raimundo ✅ |
 | Recocido simulado (MCMC) | metaheurística | según parámetros | todas | Juan ✅ |
 
-Cada uno elige al menos uno (y puede hacer más). Apunta tu nombre en la tabla en el Pull Request.
+Los ocho están hechos (ver la columna *Responsable* y `REGISTRO.md`). Si se añade otro, apunta tu nombre en la tabla en el Pull Request.
 
 > **Dijkstra no está en la lista:** calcula el camino más corto entre dos puntos, no un recorrido que visite todas las ciudades. Ya se usa
 > en la Parte 2 para construir las tablas de distancias. El algoritmo del viajante equivalente a «ir siempre a lo más cercano» es el
@@ -95,6 +95,21 @@ Las notas en *cursiva entre corchetes* de la plantilla son instrucciones: **bór
 
 Usa solo librerías que ya están en `requirements.txt` (`networkx`, `numpy`, `scipy`...). Para el DFJ, `scipy.optimize.milp`.
 
+## Formato estándar de un notebook de algoritmo
+
+Todos los notebooks de `parte3/` tienen la misma estructura, para que se lean igual y se integren sin sorpresas:
+
+1. `### Nombre del algoritmo` y, justo debajo, su **ficha** (🗂️), que se genera sola con los datos de `parte3/fichas.json`.
+2. **📚 TEORÍA** (caja azul): explicación llana, pseudocódigo, **complejidad** en tiempo y memoria y **propiedades**.
+3. **💻 CÓDIGO**: la función, con un comentario por bloque lógico.
+4. **🧪 PRUEBAS**: la prueba rápida (Galicia) y las demás comprobaciones.
+5. **🧮 RESULTADOS** (caja verde): tabla de lo medido y observaciones.
+6. `---` al final.
+
+Nombre del fichero: `algoritmo_autor.ipynb`, en minúsculas y con guiones bajos (`held_karp_raimundo.ipynb`). Para la ficha, añade
+tu entrada a `parte3/fichas.json` (copia una existente) y ejecuta `python parte3/herramientas.py unificar`: pone la ficha, el
+kernel estándar (`python3`) y avisa si falta algo.
+
 ## Reglas del repositorio
 
 - Trabaja siempre en **tu rama**, nunca directamente en `main`. No renombres las ramas.
@@ -103,12 +118,13 @@ Usa solo librerías que ya están en `requirements.txt` (`networkx`, `numpy`, `s
 - **No crees archivos `.py` propios** con el código del algoritmo: el código va en el notebook.
 - **No modifiques las celdas de preparación** de la plantilla (las de encima de ✂️).
 - Dale a cada función un **nombre único** (`fuerza_bruta`, `held_karp`...), para que no choque con las de los demás cuando se integren.
-- Si usas IA, **apunta qué le has pedido**: hay que registrarlo en el trabajo.
+- Si usas IA, **apunta qué le has pedido**: hay que registrarlo en el trabajo. Añádelo a tu ficha (`"ia"` en `fichas.json`) y a `REGISTRO.md`.
 - Si git te dice que hay un **conflicto** o algo no cuadra, no lo fuerces: avisa a Raimundo.
 
 ## Cómo se integra (para Raimundo)
 
 ```bash
+python parte3/herramientas.py unificar     # (antes) fichas, kernel y formato estándar de cada notebook
 python parte3/herramientas.py integrar     # copia lo que hay bajo ✂️ de cada notebook de parte3/ a la Parte 3 de trabajo_tsp.ipynb
 # después: abrir trabajo_tsp.ipynb y Kernel → Restart & Run All
 ```

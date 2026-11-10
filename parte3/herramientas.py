@@ -5,8 +5,11 @@ Estas dos órdenes evitan conflictos de git y reutilizan el código del notebook
 
     python parte3/herramientas.py plantilla   # regenera parte3/_plantilla_algoritmo.ipynb a partir de
                                               # las celdas de la Parte 2 de trabajo_tsp.ipynb
+    python parte3/herramientas.py unificar    # pone en cada notebook la ficha (de parte3/fichas.json), el kernel
+                                              # y la cabecera de pruebas estándar
     python parte3/herramientas.py integrar    # copia lo que hay bajo la marca ✂️ de cada notebook de
-                                              # parte3/ a la Parte 3 de trabajo_tsp.ipynb
+                                              # parte3/ a la Parte 3 de trabajo_tsp.ipynb (con una tabla
+                                              # comparativa generada con las fichas)
 
 Solo usa la biblioteca estándar de Python.
 """
@@ -22,6 +25,11 @@ from pathlib import Path
 RAIZ = Path(__file__).resolve().parent.parent
 MARCA = "✂️ A PARTIR DE AQUÍ SE INTEGRA EN EL TRABAJO"
 PREFIJO_ORIGEN = "parte3/"
+CABECERA_PRUEBAS = "**🧪 PRUEBAS**"
+KERNEL = {"kernelspec": {"display_name": "Python 3", "language": "python", "name": "python3"},
+          "language_info": {"name": "python"}}
+TEXTO_IA = {"claude": "Texto y código elaborados con ayuda de Claude (Anthropic); probados y revisados por el autor.",
+            None: "Pendiente de indicar por el autor."}
 
 # Celdas de la Parte 2 del notebook principal que la plantilla reutiliza (se localizan por su primera línea)
 CELDAS_PREPARACION = [
@@ -113,6 +121,54 @@ def notebook_vacio(celdas: list[dict]) -> dict:
             "nbformat": 4, "nbformat_minor": 5}
 
 
+# ── fichas y unificación ─────────────────────────────────────────────────────
+
+def leer_fichas(raiz: Path) -> dict:
+    ruta = raiz / "parte3" / "fichas.json"
+    datos = json.loads(ruta.read_text(encoding="utf-8")) if ruta.exists() else {}
+    return {k: v for k, v in datos.items() if not k.startswith("_")}
+
+
+def ficha_md(f: dict) -> str:
+    filas = [("Autor", f["autor"]), ("Función", f"`{f['funcion']}`"), ("Tipo", f["tipo"]),
+             ("Determinista", f["determinista"]), ("Garantía de calidad", f["garantia"]),
+             ("Distancias simétricas", f["simetria"]), ("Complejidad en tiempo", f["tiempo"]),
+             ("Complejidad en memoria", f["memoria"]), ("Límite práctico", f["limite"]),
+             ("Uso de IA", TEXTO_IA.get(f.get("ia"), f.get("ia")))]
+    return "**🗂️ FICHA**\n\n| | |\n|---|---|\n" + "\n".join(f"| **{k}** | {v} |" for k, v in filas)
+
+
+def tabla_comparativa(fichas: dict, nombres: list[str]) -> str:
+    cab = "| Algoritmo | Autor | Tipo | Garantía | Tiempo | Memoria | Límite práctico |\n|---|---|---|---|---|---|---|\n"
+    ordenados = sorted((fichas[n] for n in nombres if n in fichas), key=lambda f: f["orden"])
+    return cab + "\n".join(f"| **{f['nombre']}** | {f['autor']} | {f['tipo']} | {f['garantia']} | {f['tiempo']} | {f['memoria']} | {f['limite']} |"
+                           for f in ordenados)
+
+
+def unificar(raiz: Path) -> None:
+    fichas = leer_fichas(raiz)
+    for ruta in sorted((raiz / "parte3").glob("*.ipynb")):
+        if ruta.name.startswith("_"):
+            continue
+        clave = ruta.stem
+        nb = leer(ruta)
+        nb["metadata"].update(KERNEL)
+        celdas = [c for c in nb["cells"] if not c["metadata"].get("ficha")]      # quita la ficha anterior
+        marcas = [i for i, c in enumerate(celdas) if c["cell_type"] == "markdown" and MARCA in texto(c)]
+        if len(marcas) != 1:
+            sys.exit(f"{ruta.name}: debe tener exactamente una celda con la marca «{MARCA}».")
+        titulo = marcas[0] + 1
+        if clave not in fichas:
+            print(f"AVISO: {ruta.name} no tiene ficha en parte3/fichas.json")
+        else:
+            celdas.insert(titulo + 1, celda_md(ficha_md(fichas[clave]), ficha=True))
+        if not any(c["cell_type"] == "markdown" and texto(c).lstrip().startswith(CABECERA_PRUEBAS) for c in celdas):
+            print(f"AVISO: {ruta.name} no tiene la cabecera {CABECERA_PRUEBAS}")
+        nb["cells"] = celdas
+        escribir(ruta, nb)
+        print(f"unificado: {ruta.name}")
+
+
 # ── plantilla ────────────────────────────────────────────────────────────────
 
 def crear_plantilla(raiz: Path) -> None:
@@ -127,7 +183,7 @@ def crear_plantilla(raiz: Path) -> None:
     celdas = [
         celda_md("""# Plantilla de algoritmo. Parte 3 (Problema del Viajante)
 
-**Cómo usarla:** copia este archivo como `parte3/<algoritmo>_<tunombre>.ipynb` (por ejemplo, `parte3/fuerza_bruta_pablo.ipynb`) y trabaja solo **debajo de la línea ✂️**. Lo de arriba (preparación) es el mismo código de la Parte 2 del trabajo y sirve para cargar las versiones del grafo: **no lo modifiques**. La guía completa está en `CONTRIBUTING.md`.
+**Cómo usarla:** copia este archivo como `parte3/<algoritmo>_<tunombre>.ipynb`, todo en minúsculas y con guiones bajos (por ejemplo, `parte3/fuerza_bruta_pablo.ipynb`) y trabaja solo **debajo de la línea ✂️**. Lo de arriba (preparación) es el mismo código de la Parte 2 del trabajo y sirve para cargar las versiones del grafo: **no lo modifiques**. La guía completa está en `CONTRIBUTING.md`.
 
 > ⚙️ El notebook se ejecuta desde su carpeta (`parte3/`): la primera celda sube a la raíz del proyecto para que las rutas (`data/...`) funcionen."""),
         celda_codigo("""# Sube a la raíz del proyecto para que las rutas (data/ciudades.csv, data/versiones/...) funcionen
@@ -139,6 +195,7 @@ if Path.cwd().name == "parte3":
         celda_codigo(AYUDAS),
         celda_md(f"---\n### {MARCA}\n\nTodo lo que escribas **debajo de esta línea** pasará al notebook principal (`trabajo_tsp.ipynb`, Parte 3). No modifiques esta celda."),
         celda_md("### Nombre del algoritmo"),
+        celda_md("*[La ficha de tu algoritmo (autor, tipo, complejidad, límite...) se genera sola: añade tus datos en `parte3/fichas.json` y ejecuta `python parte3/herramientas.py unificar`. Borra esta celda si prefieres.]*"),
         celda_md(caja("#4C72B0", "#EEF2FA", "📚 TEORÍA", """
 *[Explica en lenguaje llano cómo funciona el algoritmo y, después, de forma precisa: pseudocódigo o pasos, cómo se aplica al problema del viajante.]*
 
@@ -161,7 +218,9 @@ if Path.cwd().name == "parte3":
         ciudades.insert(0, inicio)
     ruta = ciudades                              # EJEMPLO MÍNIMO (sin pensar): visita en el orden de la lista
     return ruta, coste_ruta(K, ruta)'''),
-        celda_md("""**Prueba rápida** con una versión pequeña (las 6 ciudades de Galicia).
+        celda_md("""**🧪 PRUEBAS**
+
+**Prueba rápida** con una versión pequeña (las 6 ciudades de Galicia).
 
 *[Cambia los parámetros de `cargar_version` para probar otras versiones y borra este texto entre corchetes.]*"""),
         celda_codigo('''K = cargar_version(aristas="completo", nodos="capitales_y_100k", ambito="galicia", peso="km", general="grafo_dirigido")
@@ -232,6 +291,11 @@ def integrar(raiz: Path) -> None:
         nuevas.append(celda_md("Cada algoritmo se explica (teoría, complejidad y propiedades), se programa y se prueba sobre el grafo de "
                                "ciudades `K` que devuelve `cargar_version(...)` (Parte 2). Todos cumplen el mismo contrato: reciben `K` y "
                                "devuelven `(ruta, coste)`.", origen=PREFIJO_ORIGEN + "cabecera"))
+        fichas = leer_fichas(raiz)
+        if fichas:
+            nuevas.append(celda_md("**Resumen de los algoritmos** (la ficha de cada uno está al principio de su apartado):\n\n"
+                                   + tabla_comparativa(fichas, [n.removesuffix('.ipynb') for n, _ in bloques]),
+                                   origen=PREFIJO_ORIGEN + "cabecera"))
     if "coste_ruta" not in propias:
         nuevas.append(celda_md("**Funciones comunes a todos los algoritmos.** `coste_ruta` calcula el coste de un recorrido, `validar_ruta` "
                                "comprueba que visita cada ciudad una vez y `medir` ejecuta un algoritmo y anota tiempo y memoria.",
@@ -251,10 +315,10 @@ def integrar(raiz: Path) -> None:
 
 def main() -> None:
     p = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    p.add_argument("orden", choices=["plantilla", "integrar"])
+    p.add_argument("orden", choices=["plantilla", "unificar", "integrar"])
     p.add_argument("--raiz", type=Path, default=RAIZ, help="carpeta del proyecto (por defecto, la de este repositorio)")
     a = p.parse_args()
-    (crear_plantilla if a.orden == "plantilla" else integrar)(a.raiz.resolve())
+    {"plantilla": crear_plantilla, "unificar": unificar, "integrar": integrar}[a.orden](a.raiz.resolve())
 
 
 if __name__ == "__main__":
