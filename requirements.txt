@@ -4,6 +4,7 @@ numpy>=1.26
 scipy>=1.11            # algoritmo de Dijkstra, búsqueda del nodo más cercano
 matplotlib>=3.8
 jupyterlab>=4.0
+pulp[cbc]>=3.0        # programación entera del algoritmo DFJ (Parte 3)
 
 # --- Solo para los anexos (descargar el extracto y construir el grafo) ---
 osmnx>=2.0             # construcción del grafo a partir de OpenStreetMap
