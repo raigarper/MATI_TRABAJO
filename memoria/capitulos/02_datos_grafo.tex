@@ -1,0 +1,153 @@
+\chapter{Datos y construcción del grafo vial}\label{cap:grafo}
+
+Este capítulo explica de dónde salen las carreteras, cómo se convierten en un grafo utilizable por los algoritmos y qué decisiones de diseño se tomaron en el
+camino, incluidas las que no funcionaron.
+
+\section{Fuente de los datos}
+
+Las carreteras proceden de \emph{OpenStreetMap} (OSM)~\cite{haklay2008}, una base de datos geográfica colaborativa publicada bajo la licencia ODbL (\emph{Open Database License}), que obliga a citar la
+fuente como «\textcopyright\ OpenStreetMap contributors». No es una fuente oficial: la calidad de los datos depende de la comunidad de mapeadores, lo que implica
+que algunas etiquetas (por ejemplo, la velocidad máxima de un tramo) están incompletas. Aceptamos esta limitación porque OSM es la única fuente abierta que describe toda la red
+con la topología necesaria (tramos, sentidos de circulación y jerarquía de las vías).
+
+Usamos el extracto de España de \emph{Geofabrik} (\texttt{spain-latest.osm.pbf}, 1,4~GB, última modificación el 19 de octubre de 2026). Para las ciudades empleamos datos oficiales del INE
+(capítulo~\ref{cap:versiones}).
+
+\section{Un primer enfoque descartado: la API Overpass}
+
+El primer enfoque fue descargar la red directamente con OSMnx~\cite{boeing2017} a través de la API pública \emph{Overpass}, dividiendo España en 324 consultas. En unas once horas solo se completaron
+19 consultas (el 6~\%), por errores \texttt{ConnectTimeout} y \texttt{502 Bad Gateway} del servidor público, que estaba saturado; además, una de sus dos direcciones IP no aceptaba conexiones y
+OSMnx fija una sola IP por servidor. Estimamos que completar la descarga llevaría días y no sería reproducible. Se conserva el registro de aquel intento como evidencia
+(\texttt{docs/intento\_overpass/}), pero se descartó.
+
+\recuadro{Decisión}{Sustituir Overpass por un único archivo descargable y reanudable (el extracto de Geofabrik) y filtrarlo en local. La descarga completa tarda unos siete minutos y puede repetirse.}
+
+\section{Filtrado y construcción del grafo}\label{sec:construccion}
+
+El extracto de 1,4~GB contiene todos los elementos de OSM de España. Nos interesa solo la red de carreteras de coche, así que conservamos las vías cuya etiqueta
+\texttt{highway} es \texttt{motorway} (autopista y autovía), \texttt{trunk} (vía rápida), \texttt{primary} (red principal) o \texttt{secondary} (red secundaria), junto con sus
+enlaces (\texttt{*\_link}). El filtrado se hace con la biblioteca \texttt{pyosmium} en dos pasadas: la primera selecciona las vías que cumplen el filtro; la segunda recupera las coordenadas de los nodos que esas vías usan.
+
+El grafo resultante es un \emph{multigrafo dirigido}: cada tramo de carretera de doble sentido se representa con dos aristas, una en cada dirección, y una autovía con
+calzadas separadas son dos aristas distintas. Se admite más de una arista entre el mismo par de nodos (carreteras paralelas), que se distinguen por una clave.
+
+\subsection{Simplificación}
+
+Un grafo con todos los puntos del trazado tendría millones de nodos. Se \emph{simplifica}: solo se conservan como nodos las intersecciones y los extremos de carretera, y cada arista
+representa un tramo completo entre dos de ellos, con su longitud total. Seguimos las mismas reglas que OSMnx: un nodo se conserva si tiene bucle sobre sí mismo, si no tiene aristas
+de entrada o de salida, o si no es un simple punto intermedio (un nodo con exactamente dos vecinos y grado 2 o 4 se considera intermedio y se fusiona). La longitud de un tramo es la suma de los segmentos
+originales, medidos con la distancia ortodrómica (\emph{great-circle}) entre coordenadas.
+
+\subsection{Conectividad}
+
+Para que exista un camino entre cualquier par de nodos, se conserva la mayor componente \emph{fuertemente conexa} del grafo, es decir, aquella donde se puede ir de cualquier nodo a cualquier otro respetando
+los sentidos de circulación. Esto elimina también los fragmentos aislados (islas, tramos desconectados, extremos de frontera). El grafo base final es fuertemente conexo y cubre únicamente la
+\textbf{España peninsular}: Baleares, Canarias, Ceuta y Melilla no están.
+
+\section{Atributos del grafo}
+
+Cada arista guarda tres valores numéricos y varios descriptivos. La velocidad se toma de la etiqueta \texttt{maxspeed} de OSM cuando existe; si falta, se imputa la media de los tramos
+de su mismo tipo de vía. Con la longitud $L$ en metros y la velocidad $v$ en km/h, el tiempo de viaje en segundos es
+\begin{equation}\label{eq:tiempo}
+  t\;=\;\frac{L}{v/3{,}6}.
+\end{equation}
+Por ejemplo, un tramo de la AP-8 de $5.895{,}57$~m a $100$~km/h tiene un tiempo de $212{,}24$~s. La tabla~\ref{tab:atributos} resume los atributos.
+
+\begin{table}[htbp]
+  \centering
+  \caption{Atributos de las aristas del grafo base.}\label{tab:atributos}
+  \small
+  \begin{tabularx}{\linewidth}{@{}l l c X@{}}
+    \toprule
+    Atributo & Tipo & Presencia & Significado \\
+    \midrule
+    \texttt{length} & decimal & 100 \% & Longitud del tramo en metros (peso para distancias). \\
+    \texttt{travel\_time} & decimal & 100 \% & Tiempo de viaje en segundos, según la ecuación~\eqref{eq:tiempo} (peso para tiempos). \\
+    \texttt{speed\_kph} & decimal & 100 \% & Velocidad usada (km/h): la máxima de OSM o la media de su tipo de vía. \\
+    \texttt{highway} & texto & 100 \% & Tipo de vía (\texttt{motorway}, \texttt{trunk}, \texttt{primary}, \texttt{secondary} o sus enlaces). \\
+    \texttt{oneway} & booleano & 100 \% & \texttt{True} si es de sentido único (227.446 aristas) o \texttt{False} si es de doble sentido (81.804). \\
+    \texttt{ref} & texto & 90,3 \% de los km & Código de la carretera (\texttt{AP-7}, \texttt{A-4}, \texttt{N-340}\dots). \\
+    \texttt{name} & texto & 72,0 \% de los km & Nombre en lenguaje natural («Autovía del Mediterráneo»). \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+Los nodos guardan su longitud (\texttt{x}), su latitud (\texttt{y}) y el número de calles que confluyen (\texttt{street\_count}). OSM no nombra las intersecciones, por lo que
+\emph{los nodos no tienen nombre}: los nombres de ciudad se asocian a un nodo en el capítulo~\ref{cap:versiones}.
+
+Para poder guardar el grafo en un formato estándar se eliminaron dos atributos de OSM: \texttt{osmid} (listas de identificadores, inútiles para trabajar y no admitidas por el formato) y
+\texttt{maxspeed} (con listas y valores no numéricos como \texttt{ES:urban} o \texttt{50 mph}, cuya información ya está resuelta en \texttt{speed\_kph}). Los atributos
+que OSM da como lista (\texttt{ref}, \texttt{name}) se unieron en un único texto.
+
+\subsection{Formato de archivo}
+
+El grafo se guarda en \emph{GraphML}, un formato estándar de grafos basado en XML, con \texttt{nx.write\_graphml} de NetworkX. Este formato declara el tipo real de cada atributo,
+de modo que al leerlo con \texttt{nx.read\_graphml} los números llegan como números y los booleanos como booleanos, y el \emph{notebook} solo necesita NetworkX, como las prácticas de la asignatura.
+El archivo ocupa 108~MB y se carga en unos 20 segundos.
+
+\section{Descripción del grafo obtenido}
+
+El grafo base tiene \textbf{179.594 nodos} y \textbf{309.250 aristas dirigidas} (unos 183.000~km contando cada sentido). Hay 3.349 pares de nodos unidos por más de una arista.
+La tabla~\ref{tab:tipos} reparte las aristas por tipo de vía y la tabla~\ref{tab:nodos} clasifica los nodos según el número de calles que confluyen.
+
+\begin{table}[htbp]
+  \centering
+  \caption{Aristas y kilómetros por tipo de vía.}\label{tab:tipos}
+  \small
+  \begin{tabularx}{0.92\linewidth}{@{}l X r r@{}}
+    \toprule
+    Tipo (\texttt{highway}) & Qué es & Aristas & Km \\
+    \midrule
+    \texttt{motorway} & autopista y autovía & 17.618 & 31.485 \\
+    \texttt{trunk} & vía rápida o carretera desdoblada & 52.029 & 31.438 \\
+    \texttt{primary} & carretera de la red principal & 75.467 & 40.454 \\
+    \texttt{secondary} & carretera de la red secundaria & 100.495 & 69.150 \\
+    \texttt{*\_link} & enlaces y accesos de los cuatro anteriores & 63.641 & 10.233 \\
+    \midrule
+    \multicolumn{2}{@{}l}{\textbf{Total}} & \textbf{309.250} & \textbf{182.760} \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\begin{table}[htbp]
+  \centering
+  \caption{Tipos de nodo según el número de calles que confluyen (\texttt{street\_count}).}\label{tab:nodos}
+  \small
+  \begin{tabularx}{0.92\linewidth}{@{}c X r@{}}
+    \toprule
+    Calles & Significado típico & Nodos \\
+    \midrule
+    1 & extremos (fin de carretera o corte en la frontera) & 1.058 \\
+    2 & empalmes entre dos vías distintas de OSM & 4.612 \\
+    3 & bifurcaciones o incorporaciones (entradas y salidas de autovía) & 161.516 \\
+    4 & cruces de cuatro ramas & 10.332 \\
+    5 o más & nudos complejos & 2.076 \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\section{Memoria y rendimiento: reescribir la simplificación}
+
+El grafo con carreteras secundarias no cabía en memoria con el flujo habitual de OSMnx (\texttt{graph\_from\_*}): se estimaban unos 12~GB y el proceso fue finalizado por el sistema operativo por falta
+de memoria. En lugar de eso, el Anexo~B reimplementa con \emph{arrays} de NumPy las reglas de simplificación de OSMnx, sin construir un grafo gigante de NetworkX intermedio. El pico de memoria medido es de
+unos 2,2~GB y la construcción completa tarda unos cuatro minutos.
+
+Para asegurarnos de que la reimplementación es fiel, la comparamos con el grafo \emph{ligero} (solo \texttt{motorway}, \texttt{trunk}, \texttt{primary} y sus enlaces) que ya habíamos construido con el método anterior:
+los dos tienen los mismos 108.050 nodos (con los mismos identificadores), las mismas 181.006 aristas y las mismas longitudes (110.128,4~km). Solo cambian ligeramente las velocidades imputadas (diferencia media de
+0,05~km/h; 136 aristas difieren más de 1~km/h), porque el método anterior elegía de forma arbitraria el tipo de vía de las aristas mixtas y el nuevo usa el de mayor jerarquía.
+
+\section{Por qué incluir las carreteras secundarias}
+
+El grafo base incluye carreteras secundarias; el ligero no. Con solo autopistas, vías rápidas y red principal, una red \emph{sin autovías} queda llena de agujeros: Almería quedaba a 142~km de la red, y la ruta
+Madrid--Sevilla medía 761~km en lugar de unos 510. Con las secundarias el resultado es utilizable, y además las ciudades vecinas quedan mucho más cerca entre sí (en la red sin secundarias, Terrassa--Sabadell salía un 193~\% más lejos).
+Las versiones más pequeñas del grafo se obtienen después filtrando aristas del grafo base, así que mantener una sola red «maestra» no supone un problema de cómputo.
+
+\section{Limitaciones}
+
+\begin{itemize}
+  \item \textbf{Sin geometría.} Al estar simplificadas, las aristas no guardan su forma: dibujadas, son líneas rectas entre intersecciones. Las distancias no se ven afectadas, pero los mapas son aproximados: las rutas
+        dibujadas en la web (capítulo~\ref{cap:web}) siguen la sucesión de intersecciones del camino mínimo, no la forma exacta de cada curva.
+  \item \textbf{Tiempos de coche idealizados.} \texttt{travel\_time} no incluye tráfico, peajes ni semáforos, y muchas velocidades están imputadas.
+  \item \textbf{Longitud geométrica.} \texttt{length} es la longitud del trazado en OSM, no el kilometraje oficial.
+  \item \textbf{Datos colaborativos.} Pueden contener errores o carencias locales.
+\end{itemize}

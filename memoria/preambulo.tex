@@ -1,0 +1,130 @@
+% Preámbulo común de la memoria y de la guía de uso.
+% Tipografía: Libertinus (texto y matemáticas), cuerpo 11 pt, interlineado holgado. Compilar con Tectonic o XeLaTeX.
+
+\usepackage[spanish,es-noshorthands,es-tabla,es-nodecimaldot]{babel}
+\usepackage{libertinus}
+\usepackage{microtype}
+\usepackage[a4paper,top=2.7cm,bottom=2.7cm,inner=2.8cm,outer=2.4cm,headheight=15pt]{geometry}
+\linespread{1.13}
+\clubpenalty=10000
+\widowpenalty=10000
+\displaywidowpenalty=10000
+\raggedbottom
+\emergencystretch=2.5em
+\tolerance=1200
+\hbadness=3000
+
+\usepackage{amsmath}
+\usepackage{etoolbox}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{placeins}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{booktabs,tabularx,array,multirow,makecell}
+\usepackage{enumitem}
+\usepackage{needspace}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{listings}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,shapes.geometric,fit,calc}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage[hidelinks,bookmarksnumbered]{hyperref}
+
+% ── Colores (los mismos de las figuras y de la web) ──
+\definecolor{azul}{HTML}{2A78D6}
+\definecolor{naranja}{HTML}{EB6834}
+\definecolor{aqua}{HTML}{1BAF7A}
+\definecolor{amarillo}{HTML}{EDA100}
+\definecolor{rosa}{HTML}{E87BA4}
+\definecolor{verde}{HTML}{008300}
+\definecolor{violeta}{HTML}{6250D6}
+\definecolor{rojo}{HTML}{E34948}
+\definecolor{gris}{HTML}{52514E}
+\definecolor{grisclaro}{HTML}{F1F0EC}
+\definecolor{tinta}{HTML}{14203A}
+
+% ── Títulos: cada capítulo empieza en página nueva; los apartados no se quedan huérfanos al pie de la página ──
+\titleformat{\chapter}[display]{\normalfont\bfseries\color{tinta}}{\large\scshape\color{gris}Capítulo \thechapter}{0.35em}{\Huge}[\vspace{0.4em}\titlerule]
+\titlespacing*{\chapter}{0pt}{-10pt}{26pt}
+\titleformat{\section}{\normalfont\Large\bfseries\color{tinta}}{\thesection}{0.7em}{}
+\titlespacing*{\section}{0pt}{2.0ex plus 0.4ex}{1.1ex plus 0.2ex}
+\titleformat{\subsection}{\normalfont\large\bfseries\color{tinta}}{\thesubsection}{0.7em}{}
+\titlespacing*{\subsection}{0pt}{1.7ex plus 0.3ex}{0.8ex plus 0.2ex}
+\titleformat{\subsubsection}{\normalfont\normalsize\bfseries\itshape\color{gris}}{}{0pt}{}
+\titlespacing*{\subsubsection}{0pt}{1.3ex plus 0.2ex}{0.5ex plus 0.1ex}
+% Si queda menos de ~28 % de página, el apartado empieza en la página siguiente (así no se parte por la mitad)
+\pretocmd{\chapter}{\FloatBarrier}{}{}
+\pretocmd{\section}{\Needspace{0.40\textheight}}{}{}
+\pretocmd{\subsection}{\Needspace{0.22\textheight}}{}{}
+\pretocmd{\subsubsection}{\Needspace{0.10\textheight}}{}{}
+
+% ── Cabecera y pie ──
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE]{\small\slshape\leftmark}
+\fancyhead[RO]{\small\slshape\rightmark}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\renewcommand{\chaptermark}[1]{\markboth{#1}{}}
+\renewcommand{\sectionmark}[1]{\markright{\thesection\ \ #1}}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[C]{\small\thepage}\renewcommand{\headrulewidth}{0pt}}
+
+% ── Figuras, tablas y listas ──
+\captionsetup{font=small,labelfont=bf,labelsep=period,justification=centering,format=plain}
+\captionsetup[table]{position=above,skip=6pt}
+\captionsetup[figure]{position=below,skip=6pt}
+\setlist{itemsep=0.25em,topsep=0.4em,parsep=0pt}
+\renewcommand{\arraystretch}{1.18}
+\graphicspath{{figuras/}{../web/capturas/}{capturas/}}
+\renewcommand{\topfraction}{0.88}\renewcommand{\bottomfraction}{0.7}\renewcommand{\textfraction}{0.12}\renewcommand{\floatpagefraction}{0.65}\setcounter{topnumber}{3}\setcounter{totalnumber}{5}
+\setcounter{tocdepth}{2}
+\setcounter{secnumdepth}{3}
+
+% ── Pseudocódigo en español ──
+\floatname{algorithm}{Algoritmo}
+\renewcommand{\listalgorithmname}{Lista de algoritmos}
+\algrenewcommand\algorithmicrequire{\textbf{Entrada:}}
+\algrenewcommand\algorithmicensure{\textbf{Salida:}}
+\algrenewcommand\algorithmicwhile{\textbf{mientras}}
+\algrenewcommand\algorithmicdo{\textbf{hacer}}
+\algrenewcommand\algorithmicfor{\textbf{para}}
+\algrenewcommand\algorithmicforall{\textbf{para cada}}
+\algrenewcommand\algorithmicif{\textbf{si}}
+\algrenewcommand\algorithmicthen{\textbf{entonces}}
+\algrenewcommand\algorithmicelse{\textbf{si no}}
+\algrenewcommand\algorithmicrepeat{\textbf{repetir}}
+\algrenewcommand\algorithmicuntil{\textbf{hasta que}}
+\algrenewcommand\algorithmicreturn{\textbf{devolver}}
+\algrenewtext{EndWhile}{\textbf{fin mientras}}
+\algrenewtext{EndFor}{\textbf{fin para}}
+\algrenewtext{EndIf}{\textbf{fin si}}
+\algrenewtext{Else}{\textbf{si no}}
+\algrenewtext{ElsIf}[1]{\textbf{si no, si} #1 \textbf{entonces}}
+\algrenewtext{Procedure}[2]{\textbf{procedimiento} \textsc{#1}(#2)}
+\algrenewtext{EndProcedure}{\textbf{fin procedimiento}}
+\algrenewcommand\alglinenumber[1]{\footnotesize\color{gris}#1}
+\newcommand{\Comentario}[1]{\hfill\textcolor{gris}{\small\textit{#1}}}
+
+% ── Código y comandos ──
+\lstset{basicstyle=\ttfamily\small,breaklines=true,breakatwhitespace=false,columns=fullflexible,keepspaces=true,frame=single,rulecolor=\color{grisclaro},
+        backgroundcolor=\color{grisclaro},xleftmargin=0.4em,xrightmargin=0.4em,aboveskip=0.8em,belowskip=0.6em,showstringspaces=false,
+        inputencoding=utf8,extendedchars=true,literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1 {ñ}{{\~n}}1 {Á}{{\'A}}1 {É}{{\'E}}1 {Ó}{{\'O}}1 {¿}{{?`}}1 {¡}{{!`}}1 {→}{{$\rightarrow$}}1}
+\newcommand{\cod}[1]{\texttt{\small #1}}
+\newcommand{\Oh}[1]{\ensuremath{O\!\left(#1\right)}}
+
+% ── Cuadros destacados ──
+\newcommand{\recuadro}[2]{\par\vspace{0.6em}\noindent\begin{minipage}{\linewidth}\noindent\colorbox{grisclaro}{\parbox{\dimexpr\linewidth-2\fboxsep}{\small\textbf{#1.} #2}}\end{minipage}\par\vspace{0.6em}}
+
+% ── Datos de portada ──
+\newcommand{\titulotrabajo}{El problema del viajante sobre la red de carreteras de España}
+\newcommand{\subtitulotrabajo}{Construcción del grafo vial, algoritmos exactos, heurísticos y metaheurísticos, y estudio empírico de su complejidad}
+\newcommand{\autorestrabajo}{Raimundo, Pablo, Juan y Jiahao}
+\newcommand{\asignatura}{Asignatura MATI \textperiodcentered\ Curso 2026--27}
+\newcommand{\fechatrabajo}{Noviembre de 2026}
+
+% Formato de los capítulos de los apéndices (se activa tras ppendix)
+\newcommand{\apendicestyle}{\titleformat{\chapter}[display]{\normalfont\bfseries\color{tinta}}{\large\scshape\color{gris}Apéndice \thechapter}{0.35em}{\Huge}[\vspace{0.4em}\titlerule]}

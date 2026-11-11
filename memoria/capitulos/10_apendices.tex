@@ -1,0 +1,58 @@
+\chapter{Reproducir el trabajo}\label{ap:reproducir}
+
+Desde la carpeta del proyecto y con las dependencias instaladas (\texttt{pip install -r requirements.txt}):
+
+\begin{lstlisting}
+# 1. Descargar el extracto de OpenStreetMap y construir el grafo (anexos A y B)
+python anexos/descargar_red.py          # ~1,4 GB, ~7 min, reanudable
+python anexos/construir_grafo.py        # ~4 min, ~2,3 GB de RAM
+
+# 2. Abrir el notebook (el trabajo): partes 1 a 5
+jupyter lab trabajo_tsp.ipynb           # las tablas de distancias ya estan en data/versiones/
+
+# 3. Repetir el estudio empirico (anexo C)
+python anexos/ejecutar_estudio.py       # en paralelo, ~42 min
+python anexos/ejecutar_estudio.py --serie   # tiempos y memoria, ~15 min (equipo en reposo)
+
+# 4. Regenerar las figuras y compilar esta memoria
+python memoria/figuras/generar_figuras.py
+cd memoria && tectonic -X compile memoria.tex
+
+# 5. Abrir la web
+web/iniciar_web.bat                     # o: python -m http.server 8000 (dentro de web/)
+\end{lstlisting}
+
+Si solo se van a programar o probar algoritmos, no hace falta el grafo grande ni los anexos: las versiones ya están calculadas en \texttt{data/versiones/}, y basta con abrir el \emph{notebook}, saltar la Parte~1 y ejecutar desde la Parte~2.
+
+\chapter{Estructura del repositorio}\label{ap:estructura}
+
+\begin{table}[htbp]
+  \centering
+  \caption{Contenido del repositorio.}
+  \small
+  \begin{tabularx}{\linewidth}{@{}l X@{}}
+    \toprule
+    Ruta & Contenido \\
+    \midrule
+    \texttt{trabajo\_tsp.ipynb} & El trabajo: \emph{notebook} principal con las cinco partes. \\
+    \texttt{anexos/} & Anexo~A (descarga), Anexo~B (construcción del grafo) y Anexo~C (estudio empírico). \\
+    \texttt{parte3/} & Un \emph{notebook} por algoritmo, plantilla, \texttt{fichas.json} y \texttt{herramientas.py}. \\
+    \texttt{data/ciudades.csv} & Las 75 ciudades (nombre, coordenadas, población, comunidad). \\
+    \texttt{data/versiones/} & 16 tablas de distancias y catálogo de las 480 versiones. \\
+    \texttt{data/resultados/} & Resultados del estudio empírico (archivos CSV). \\
+    \texttt{web/} & La web interactiva (código, datos, librerías, pruebas y capturas). \\
+    \texttt{memoria/} & Esta memoria (fuente \LaTeX\ y figuras) y su generador de figuras. \\
+    \texttt{guia/} & La guía de uso (fuente \LaTeX). \\
+    \texttt{README.md}, \texttt{REGISTRO.md}, \texttt{CONTRIBUTING.md} & Documentación del proyecto, registro de autoría y uso de IA, y guía para colaborar. \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\chapter{Fuentes y licencias}\label{ap:licencias}
+
+\begin{itemize}
+  \item \textbf{Carreteras:} \textcopyright\ colaboradores de OpenStreetMap, bajo licencia ODbL; extracto de España de Geofabrik (\texttt{spain-latest.osm.pbf}, 19 de octubre de 2026).
+  \item \textbf{Ciudades y población:} INE, \emph{Cifras oficiales de población de los municipios españoles: Revisión del Padrón Municipal}, a 1 de enero de 2025 (BOE-A-2025-25362). Las coordenadas proceden de nodos de OpenStreetMap.
+  \item \textbf{Contornos del mapa de la web:} Natural Earth (dominio público), a través del paquete \texttt{world-atlas}.
+  \item \textbf{Librerías de la web:} HiGHS (\texttt{highs-js}) y \texttt{edmonds-blossom}, ambas con licencia MIT, incluidas en \texttt{web/vendor/}.
+\end{itemize}

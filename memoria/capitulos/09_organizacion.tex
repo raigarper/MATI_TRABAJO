@@ -1,0 +1,69 @@
+\chapter{Organización del trabajo, uso de IA y lecciones aprendidas}\label{cap:organizacion}
+
+\section{Reparto del trabajo}
+
+El trabajo lo realizan cuatro personas (tabla~\ref{tab:equipo}). La construcción del grafo, las versiones, las herramientas de integración, el estudio empírico, la web y esta memoria las llevó Raimundo, que también coordinó al resto; los demás aportaron un algoritmo cada uno como mínimo
+(Raimundo, cuatro). El reparto de algoritmos se acordó en el grupo, y a cada persona se le asignó trabajar en su propia rama del repositorio.
+
+\begin{table}[htbp]
+  \centering
+  \caption{Autoría de cada parte del trabajo.}\label{tab:equipo}
+  \small
+  \begin{tabularx}{\linewidth}{@{}l X@{}}
+    \toprule
+    Persona & Contribución \\
+    \midrule
+    Raimundo & Partes 1, 2, 4 y 5; Held--Karp, 2-opt, Christofides y genético; herramientas de integración; Anexo~C; web; memoria y guía de uso; coordinación. \\
+    Pablo & Fuerza bruta y vecino más cercano. \\
+    Jiahao & DFJ (programación entera con restricciones de subciclo). \\
+    Juan & Recocido simulado (MCMC). \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\section{Flujo de trabajo con GitHub}
+
+El código se versiona en un repositorio de GitHub. Cada persona trabaja en su rama (\texttt{dev-pablo}, \texttt{dev\_jiahao}, \texttt{dev\_juan}, \texttt{dev-raimundo}) y entrega mediante \emph{Pull Request} hacia la rama principal. Para evitar conflictos de git con un solo
+\emph{notebook} compartido, cada algoritmo se programa en su \textbf{propio \emph{notebook}} dentro de \texttt{parte3/}, a partir de una plantilla que ya contiene el código de preparación (la carga de las versiones del grafo). Una herramienta (\texttt{herramientas.py}) hace tres cosas:
+regenerar la plantilla a partir del \emph{notebook} principal, \emph{unificar} el formato de todos los \emph{notebooks} (ficha, kernel, cabecera de pruebas) e \emph{integrar} automáticamente los algoritmos en el \emph{notebook} principal, de forma repetible. Todos los \emph{notebooks} siguen la misma estructura:
+título, ficha (autor, tipo, complejidad, límite práctico), teoría, código, pruebas y resultados. Los datos de las fichas están en un único archivo (\texttt{fichas.json}), que alimenta también la tabla comparativa del \emph{notebook} y las etiquetas de la web.
+Una guía (\texttt{CONTRIBUTING.md}) explica el proceso a los compañeros.
+
+\section{Uso de herramientas de inteligencia artificial}
+
+En el trabajo se ha usado \textbf{Claude Code} (Anthropic), un asistente de programación con modelos de lenguaje, para algunas partes. Para que el uso sea transparente, se registra qué se hizo con él (tabla~\ref{tab:ia}). En todos los casos, el código y los resultados se ejecutaron y comprobaron antes de incorporarlos,
+y las pruebas de contraste entre algoritmos (capítulo~\ref{cap:resultados}) refuerzan esa comprobación.
+
+\begin{table}[htbp]
+  \centering
+  \caption{Uso de IA en el trabajo.}\label{tab:ia}
+  \small
+  \begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.34\linewidth} l X@{}}
+    \toprule
+    Parte & Herramienta & Para qué \\
+    \midrule
+    Partes 1, 2 y 4; herramientas de integración; Anexo~C; guía del equipo & Claude Code & Escribir y probar los \emph{scripts} de descarga y construcción del grafo, el código del \emph{notebook}, la plantilla, el estudio y su análisis. \\
+    Held--Karp, 2-opt, Christofides y genético & Claude Code & Teoría, código, pruebas y redacción de resultados; contrastados con la fuerza bruta y con DFJ. \\
+    Web interactiva y esta memoria & Claude Code & Programación de la web, generación de figuras y redacción, a partir de los datos y resultados del estudio. \\
+    Fuerza bruta, vecino más cercano (Pablo); DFJ (Jiahao); recocido simulado (Juan) & \multicolumn{2}{>{\raggedright\arraybackslash}p{0.60\linewidth}}{Cada autor debe indicar en \texttt{REGISTRO.md} y en su ficha el uso de IA que haya hecho.} \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\section{Problemas encontrados y lecciones aprendidas}\label{sec:problemas}
+
+Un trabajo de este tamaño no sale a la primera. Estos son los problemas más relevantes, cómo se resolvieron y qué enseñan:
+\begin{itemize}
+  \item \textbf{La API Overpass no escalaba.} Solo se completó el 6~\% de la descarga en once horas. Lección: para datos masivos, descargar un extracto y filtrarlo en local; ganó reproducibilidad (sección~\ref{sec:construccion}).
+  \item \textbf{Falta de memoria al construir el grafo.} El flujo estándar necesitaba unos 12~GB. Lección: reescribir la simplificación con \emph{arrays} (2,2~GB de pico), comprobando contra el grafo anterior que el resultado era idéntico.
+  \item \textbf{Ejecuciones largas interrumpidas por falta de memoria.} Dos veces el sistema detuvo ejecuciones del \emph{notebook} completo por memoria. Lección: dejar el equipo libre, y diseñar el estudio para que guarde cada resultado al llegar y se pueda reanudar.
+  \item \textbf{Un algoritmo exacto dependía de la versión de una librería} (la de programación entera, PuLP, devuelve cosas distintas según la versión). Se escribió de forma compatible y se añadió la dependencia a los requisitos.
+  \item \textbf{Dos fallos con grafos no dirigidos} (recocido simulado y DFJ) que solo apareció al ejecutar sistemáticamente todos los algoritmos sobre todas las versiones. Lección: probar cada algoritmo sobre \emph{todos} los tipos de entrada que admite su contrato; el estudio sirvió también de prueba.
+  \item \textbf{El paralelismo distorsiona los tiempos} unas 2,5 veces en el equipo usado. Lección: separar lo que no depende de la carga (costes) de lo que sí (tiempos), medidos en dos pasadas.
+  \item \textbf{Cifras que no coincidían con lo medido.} En algún \emph{notebook} un texto afirmaba tiempos o errores distintos de los que salían al ejecutarlo; se sustituyeron por las cifras medidas. Lección: generar las tablas de resultados a partir de la ejecución, no a mano.
+\end{itemize}
+
+\section{Reproducibilidad}
+
+Todo se puede rehacer con los comandos del apéndice~\ref{ap:reproducir}: descargar el extracto y construir el grafo (unos 11 minutos), recalcular las tablas de distancias (unos 2 minutos), ejecutar el estudio completo (unos 60 minutos) y regenerar las figuras. El grafo grande no se guarda en el repositorio (supera el límite de 100~MB de
+GitHub), pero las tablas de distancias, los resultados del estudio y los datos de la web sí, de modo que quien programa un algoritmo o usa la web no necesita el grafo.

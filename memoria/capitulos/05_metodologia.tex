@@ -1,0 +1,95 @@
+\chapter{Metodología experimental}\label{cap:metodologia}
+
+Este capítulo describe cómo se diseñó y se ejecutó el estudio empírico: qué se mide, sobre qué instancias, con qué reglas de aplicabilidad y con qué precauciones para que los resultados sean fiables y reproducibles.
+
+\section{Qué se mide}
+
+Para cada ejecución de un algoritmo sobre una instancia se registran cuatro magnitudes:
+\begin{itemize}
+  \item el \textbf{coste} $C$ de la ruta devuelta (en kilómetros o en horas, según la versión);
+  \item el \textbf{tiempo} de cálculo, medido con \texttt{perf\_counter};
+  \item el \textbf{pico de memoria} reservada por Python, medido con \texttt{tracemalloc}; y
+  \item la \textbf{desviación respecto al óptimo}, definida para cada instancia como
+  \begin{equation}\label{eq:desviacion}
+    \delta\;=\;\frac{C-C^{*}}{C^{*}}\times 100\ \%,
+  \end{equation}
+  donde $C^{*}$ es el coste óptimo de esa instancia.
+\end{itemize}
+El óptimo $C^{*}$ de cada instancia es el coste que devuelve \textbf{DFJ}, un algoritmo exacto que se ejecuta en todas las versiones. Para comprobar que esta referencia es fiable, el estudio verifica que
+\emph{los tres algoritmos exactos coinciden} siempre que se pueden comparar (sección~\ref{sec:validacion}). Un caso aparte es la memoria de DFJ, de la que solo se cuenta la reservada por Python; la del \emph{solver} CBC, que corre como proceso aparte, no se mide.
+
+\section{Instancias: dos estudios complementarios}
+
+El estudio se divide en dos partes que responden a preguntas distintas:
+\begin{description}[leftmargin=0pt,labelindent=0pt,style=nextline]
+  \item[Estudio A: versiones reales.] Los \textbf{240 grafos de ciudades distintos} del catálogo (capítulo~\ref{cap:versiones}): 4 redes, 2 conjuntos de ciudades, 16 ámbitos geográficos, 2 pesos y dirigido o no dirigido.
+        De ellos, 32 son de toda España (44 a 75 ciudades) y 208 son regionales (4 a 13 ciudades). Sirve para ver cómo cambian los resultados con la red, el peso y el sentido de las vías.
+  \item[Estudio B: curva de escalado.] Subconjuntos \textbf{aleatorios} de las 75 ciudades, de $n=5,6,\dots,12,14,16,18,20,25,30,40,47,60$ y $75$ ciudades, con tres subconjuntos distintos por tamaño (uno solo para $n=75$, que es el conjunto completo),
+        sobre la versión \texttt{completo}/km, dirigida y no dirigida. Los subconjuntos se generan con semilla fija, de modo que son reproducibles. Sirve para ajustar cómo crecen el tiempo y la memoria con $n$.
+\end{description}
+
+\section{Qué algoritmo se puede aplicar a qué versión}\label{sec:aplicabilidad}
+
+No todos los algoritmos se pueden ejecutar sobre todas las versiones, y esa limitación es un resultado en sí misma. Se aplican tres reglas, que el programa del estudio registra junto con su motivo (tabla~\ref{tab:aplicabilidad}):
+\begin{itemize}
+  \item \textbf{Fuerza bruta:} solo con $n\le 11$ ciudades. Hay $(n-1)!$ rutas: con 11 ciudades son 3,6 millones y tarda unos segundos; con 12, más de un minuto, y con 13, del orden de media hora.
+  \item \textbf{Held--Karp:} solo con $n\le 21$ ciudades, porque su tabla ocupa $8\,(n-1)\,2^{n-1}$ bytes: 170~MB con 21 ciudades y más de 700~MB con 22.
+  \item \textbf{Christofides:} solo en grafos \emph{no dirigidos}, porque necesita distancias simétricas.
+\end{itemize}
+
+\begin{table}[htbp]
+  \centering
+  \caption{Aplicabilidad de cada algoritmo sobre los 240 grafos del estudio A.}\label{tab:aplicabilidad}
+  \small
+  \begin{tabularx}{\linewidth}{@{}l r X@{}}
+    \toprule
+    Algoritmo & Versiones & Motivo de la exclusión \\
+    \midrule
+    Fuerza bruta & 192 & más de 11 ciudades (las 32 de toda España y las 16 de Andalucía, con 13 ciudades) \\
+    Held--Karp & 208 & más de 21 ciudades (las 32 de toda España) \\
+    Christofides & 120 & necesita un grafo no dirigido: se excluyen las 120 versiones dirigidas \\
+    DFJ, vecino más cercano, 2-opt, recocido, genético & 240 & ninguna \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+Una consecuencia importante: en las 32 versiones de toda España (44 a 75 ciudades), \textbf{DFJ es el único algoritmo exacto aplicable}; los exactos de enumeración solo se pueden usar en las versiones regionales y en el estudio B hasta 11 y 20 ciudades.
+
+\section{Medir el tiempo: paralelo y en serie}\label{sec:paralelo}
+
+El estudio completo supone miles de ejecuciones, que se reparten entre varios procesos. Pero el coste de una ruta no depende de la carga del ordenador y el tiempo sí: con varios procesos a la vez se comparten núcleos físicos, memoria caché y reloj.
+El equipo usado es un portátil con un procesador de cuatro núcleos físicos (ocho hilos) y frecuencia sostenida baja, y comprobamos que con seis procesos en paralelo la fuerza bruta de 11 ciudades pasa de unos 6~s a más de 40~s.
+Por eso el estudio se hace en \textbf{dos pasadas}:
+\begin{enumerate}
+  \item \textbf{En paralelo} (seis procesos, 4.470 ejecuciones, unos 42 minutos): se usa para los \emph{costes} y las comparaciones de calidad, que no dependen de la carga.
+  \item \textbf{En serie} (un solo proceso, 236 ejecuciones, unos 15 minutos): repite el estudio B con una instancia y una semilla por tamaño, con el equipo en reposo, y se usa para los \emph{tiempos y la memoria}.
+\end{enumerate}
+Una \textbf{calibración} repite en serie 15 tareas de la pasada en paralelo y mide cuánto las distorsiona (sección~\ref{sec:calibracion}).
+
+\section{Algoritmos con azar y otros controles}
+
+\begin{itemize}
+  \item \textbf{Semillas.} El genético se ejecuta con 3 semillas y el recocido con 5; los resultados de estos dos algoritmos se resumen con medias y dispersión.
+  \item \textbf{Ciudad de partida.} Es siempre Madrid (o la primera ciudad si Madrid no está en la instancia), para que las filas sean comparables. El vecino más cercano depende de ella; el resto no cambia el óptimo.
+  \item \textbf{Ruido en tiempos pequeños.} Si una ejecución determinista dura menos de 50~ms, se repite cuatro veces más y se toma el mínimo.
+  \item \textbf{Parada de seguridad.} Si pasan 15 minutos sin ningún resultado nuevo, el programa se detiene, y se puede reanudar sin perder lo hecho porque cada resultado se guarda al llegar.
+  \item \textbf{Código real.} Los algoritmos no se copian en el programa del estudio: se extrae el código de sus \emph{notebooks}, de modo que lo que se mide es exactamente lo que se explica en el trabajo.
+\end{itemize}
+
+\section{Validación cruzada y control de calidad}\label{sec:validacion}
+
+Además de medir, el estudio contrasta los algoritmos entre sí. En cada instancia se comprueba que: (i)~fuerza bruta, Held--Karp y DFJ devuelven el mismo coste (tolerancia del 0,1~\%, la del \emph{solver});
+(ii)~ninguna heurística devuelve un coste inferior al óptimo, lo que delataría un error; y (iii)~cada ruta es válida (visita cada ciudad una vez) y su coste coincide con el recalculado.
+
+Este control resultó decisivo: al ejecutar por primera vez los algoritmos sobre grafos \emph{no dirigidos}, el recocido simulado entró en un bucle infinito y el modelo de DFJ se planteaba mal; ambos fallos se debían a cómo trataban las aristas de un grafo no dirigido
+y no se habían detectado en las pruebas individuales, hechas solo con grafos dirigidos. Se corrigieron con pocas líneas y se documentaron (sección~\ref{sec:problemas}).
+
+\section{Amenazas a la validez}
+
+\begin{itemize}
+  \item \textbf{Tamaño de las instancias.} El máximo son 75 ciudades; con muchas más, DFJ dejaría de ser inmediato y los metaheurísticos podrían ganar terreno. No se ha medido.
+  \item \textbf{Un solo subconjunto con $n=75$.} Es el conjunto completo; los tamaños menores usan tres subconjuntos distintos.
+  \item \textbf{Parámetros por defecto.} Los metaheurísticos no se ajustaron a cada tamaño; con otros parámetros los resultados podrían cambiar.
+  \item \textbf{Memoria incompleta en DFJ.} Solo se contabiliza la memoria reservada por Python, no la del \emph{solver}.
+  \item \textbf{Un único equipo.} Los tiempos absolutos dependen del ordenador; lo que importa son las proporciones y el crecimiento.
+\end{itemize}

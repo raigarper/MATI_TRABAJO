@@ -1,0 +1,61 @@
+\begin{titlepage}
+  \thispagestyle{empty}
+  \centering
+  \vspace*{2.2cm}
+  {\large\scshape\color{gris}\asignatura\par}
+  \vspace{2.4cm}
+  {\fontsize{26}{32}\selectfont\bfseries\color{tinta}\titulotrabajo\par}
+  \vspace{1.0cm}
+  {\large\itshape\color{gris}\subtitulotrabajo\par}
+  \vspace{2.2cm}
+  \begin{tikzpicture}
+    \draw[line width=0.8pt,color=azul] (0,0) -- (6.0,0);
+    \foreach \x/\c in {0/azul,1.2/naranja,2.4/aqua,3.6/violeta,4.8/rojo,6.0/verde} {\fill[\c] (\x,0) circle (3.2pt);}
+  \end{tikzpicture}
+  \vspace{2.4cm}
+
+  {\Large\autorestrabajo\par}
+  \vfill
+  {\large\fechatrabajo\par}
+  \vspace{1.0cm}
+  {\small\color{gris}Código, datos y web del trabajo: repositorio \texttt{MATI\_TRABAJO} en GitHub\par}
+\end{titlepage}
+
+\chapter*{Resumen}
+\addcontentsline{toc}{chapter}{Resumen}
+\markboth{Resumen}{}
+Este trabajo estudia el \emph{problema del viajante} (TSP) sobre la red de carreteras real de la España peninsular. Partimos de un
+extracto de OpenStreetMap, del que construimos un grafo vial simplificado y fuertemente conexo con 179.594 nodos y 309.250 aristas dirigidas.
+A partir de él calculamos, para 75 ciudades (las 47 capitales de provincia peninsulares y 28 municipios de más de 100.000 habitantes),
+tablas de distancias por camino mínimo que dan lugar a 480 versiones del problema (240 grafos de ciudades distintos), según el tipo de carreteras,
+la medida (kilómetros o tiempo de viaje), el sentido de las vías y el ámbito geográfico.
+
+Implementamos ocho algoritmos que cubren las familias clásicas: tres exactos (fuerza bruta, Held--Karp y DFJ), tres heurísticos o aproximados (vecino más
+cercano, 2-opt y Christofides) y dos metaheurísticas (recocido simulado y algoritmo genético). Los comparamos en un estudio empírico de
+4.706 ejecuciones sobre las 240 versiones y sobre subconjuntos aleatorios de 5 a 75 ciudades, midiendo tiempo, memoria y desviación respecto al óptimo,
+y contrastamos la complejidad teórica con la observada en notación~$O$.
+
+Los resultados muestran que los exactos de enumeración crecen de forma exponencial (la fuerza bruta se agota en 11 ciudades y Held--Karp, por memoria, en
+unas 20), mientras que la programación entera (DFJ) resuelve las 75 ciudades al óptimo en unos 4~s; que el 2-opt ofrece la mejor relación entre calidad
+(1--5~\% sobre el óptimo) y tiempo (milisegundos); y que el tipo de red y el sentido de las vías modifican el óptimo tanto como la elección del algoritmo.
+Completan el trabajo una web interactiva que anima los algoritmos sobre el mapa y una guía de uso para el equipo.
+
+\vspace{1.2em}
+\noindent\textbf{Palabras clave:} problema del viajante, OpenStreetMap, grafos, algoritmos exactos, heurísticas, metaheurísticas, complejidad computacional.
+
+\chapter*{Abstract}
+\addcontentsline{toc}{chapter}{Abstract}
+\markboth{Abstract}{}
+\begin{otherlanguage}{english}
+This work studies the \emph{travelling salesman problem} (TSP) on the real road network of mainland Spain. From an OpenStreetMap extract we build a simplified,
+strongly connected road graph with 179,594 nodes and 309,250 directed edges. For 75 cities (the 47 mainland provincial capitals plus 28 municipalities with
+over 100,000 inhabitants) we compute shortest-path distance tables that give rise to 480 problem versions (240 distinct city graphs), depending on road type,
+cost measure (kilometres or travel time), one-way handling and geographic scope.
+
+We implement eight algorithms covering the classical families: three exact (brute force, Held--Karp and DFJ integer programming), three heuristic or
+approximation algorithms (nearest neighbour, 2-opt and Christofides) and two metaheuristics (simulated annealing and a genetic algorithm). An empirical
+study of 4,706 runs over the 240 versions and over random subsets of 5 to 75 cities measures time, memory and deviation from the optimum, and compares
+theoretical with observed complexity in $O$ notation. Enumeration-based exact methods grow exponentially, whereas integer programming solves all 75 cities
+to optimality in about 4~s; 2-opt gives the best quality--time trade-off. An interactive web application animating the algorithms on the map and a user guide complete the work.
+\end{otherlanguage}
+\clearpage

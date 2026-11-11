@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="es" data-tema="oscuro">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>El viajante por carretera · Laboratorio de algoritmos</title>
+  <meta name="description" content="Visualización interactiva de algoritmos del problema del viajante sobre la red de carreteras de España.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230a1020'/%3E%3Cpath d='M5 22 L12 9 L19 18 L27 7' fill='none' stroke='%235aa9ff' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="css/estilo.css">
+  <script src="vendor/blossom.global.js"></script>
+</head>
+<body>
+  <header class="barra">
+    <div class="marca">
+      <svg class="logo" viewBox="0 0 32 32" aria-hidden="true"><path d="M4 22 L11 8 L19 18 L28 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="4" cy="22" r="3" fill="currentColor"/><circle cx="11" cy="8" r="3" fill="currentColor"/><circle cx="19" cy="18" r="3" fill="currentColor"/><circle cx="28" cy="6" r="3" fill="currentColor"/></svg>
+      <div><h1>El viajante, por carretera</h1><p>Laboratorio visual de algoritmos sobre la red vial de España</p></div>
+    </div>
+    <nav class="pestanas" aria-label="Vistas">
+      <button data-vista="lab" class="activa">Laboratorio</button>
+      <button data-vista="carrera">Carrera</button>
+      <button data-vista="acerca">Acerca de</button>
+    </nav>
+    <button id="pantalla" class="icono" title="Pantalla completa (para presentar)" aria-label="Pantalla completa">⛶</button>
+    <button id="tema" class="icono" title="Cambiar entre tema oscuro y claro" aria-label="Cambiar tema">◐</button>
+  </header>
+
+  <div id="cargando" class="cargando">Cargando mapa, ciudades y carreteras…</div>
+  <div id="error" class="error" hidden></div>
+
+  <main hidden>
+    <!-- Panel de instancia: ciudades y versión del grafo (compartido por Laboratorio y Carrera) -->
+    <aside class="instancia">
+      <h2>Ciudades <span id="contador" class="contador"></span></h2>
+      <p class="ayuda">Pulsa en el mapa o marca en la lista. Con más ciudades, los algoritmos exactos de enumeración dejan de ser viables.</p>
+      <div class="presets" id="presets"></div>
+      <div class="grupo">
+        <span class="etiqueta">Se mide en</span>
+        <div class="seg" id="seg-peso"><button data-v="km" class="activa">Kilómetros</button><button data-v="tiempo">Tiempo</button></div>
+      </div>
+      <div class="grupo">
+        <span class="etiqueta">Carreteras</span>
+        <div class="seg" id="seg-sentido"><button data-v="dirigido" class="activa" title="Respeta los sentidos únicos: ir de A a B puede costar distinto que de B a A">Con sentidos únicos</button><button data-v="no_dirigido" title="Ida y vuelta cuestan lo mismo">Sin sentidos únicos</button></div>
+      </div>
+      <div class="grupo">
+        <label class="etiqueta" for="sel-inicio">Ciudad de salida</label>
+        <select id="sel-inicio"></select>
+      </div>
+      <input id="buscar" type="search" placeholder="Buscar ciudad…" aria-label="Buscar ciudad">
+      <ul id="lista" class="lista"></ul>
+    </aside>
+
+    <!-- ───────── Laboratorio ───────── -->
+    <section id="vista-lab" class="vista">
+      <div class="chips" id="chips" role="tablist" aria-label="Algoritmos"></div>
+      <div id="aviso" class="aviso" hidden></div>
+      <div class="zona-lab">
+        <div class="mapa-caja">
+          <div id="mapa" class="mapa"></div>
+          <div class="leyenda" id="leyenda"></div>
+          <div id="resultado" class="resultado" hidden></div>
+        </div>
+        <div class="panel">
+          <div class="cabecera-alg"><h2 id="alg-nombre"></h2><span id="alg-autor" class="autor"></span></div>
+          <p id="alg-idea" class="idea"></p>
+          <div class="bloque"><h3>Pseudocódigo</h3><ol id="pseudo" class="pseudo"></ol></div>
+          <div class="bloque paso"><h3>Qué está pasando</h3><p id="paso">Pulsa <b>Ejecutar</b> para empezar.</p></div>
+          <div class="bloque"><h3>Datos</h3>
+            <div class="cifras"><div><span>Ruta actual</span><b id="c-actual">—</b></div><div><span>Mejor encontrada</span><b id="c-mejor">—</b></div></div>
+            <div id="progreso" class="progreso" hidden><div></div></div>
+            <dl id="info" class="info"></dl>
+            <canvas id="grafica" class="grafica" height="70"></canvas>
+            <p id="grafica-pie" class="pie" hidden>Evolución del coste</p>
+          </div>
+          <div class="bloque"><h3>Ficha</h3><table id="ficha" class="ficha"></table></div>
+        </div>
+      </div>
+      <div class="controles">
+        <div class="botones">
+          <button id="b-reiniciar" title="Volver al principio" aria-label="Reiniciar">⟲</button>
+          <button id="b-atras" title="Paso atrás" aria-label="Paso atrás">◀</button>
+          <button id="b-jugar" class="principal" title="Ejecutar / pausar">▶ Ejecutar</button>
+          <button id="b-paso" title="Siguiente paso" aria-label="Siguiente paso">▶|</button>
+          <button id="b-final" title="Saltar al resultado final" aria-label="Ir al final">⏭ Final</button>
+        </div>
+        <label class="vel">Velocidad <input id="vel" type="range" min="1" max="10" value="5"><span id="vel-txt">5</span></label>
+        <label class="semilla" title="Los algoritmos con azar (genético, recocido) repiten el mismo resultado con la misma semilla">Semilla <input id="semilla" type="number" value="42" min="1" max="99999"></label>
+      </div>
+    </section>
+
+    <!-- ───────── Carrera ───────── -->
+    <section id="vista-carrera" class="vista" hidden>
+      <div class="barra-carrera">
+        <div><h2>Carrera de algoritmos</h2><p class="ayuda">Todos resuelven <b>las mismas ciudades a la vez</b>. Cada uno avanza durante el mismo tiempo de cálculo, así que el que acaba antes es el más rápido de verdad. Los que no se pueden aplicar se descartan, igual que en el estudio del trabajo.</p></div>
+        <div class="acciones"><button id="r-salida" class="principal">🏁 ¡Salida!</button><button id="r-parar">Detener</button></div>
+      </div>
+      <div class="elegir" id="r-elegir"></div>
+      <div id="r-tarjetas" class="tarjetas"></div>
+      <div id="r-tabla" class="tabla-res" hidden></div>
+    </section>
+
+    <!-- ───────── Acerca de ───────── -->
+    <section id="vista-acerca" class="vista acerca" hidden>
+      <div class="texto">
+        <h2>Acerca de esta web</h2>
+        <p>Esta web acompaña al trabajo de MATI sobre el <b>problema del viajante sobre la red de carreteras de España</b>: dado un conjunto de ciudades, encontrar la ruta más corta que pasa por todas y vuelve al principio.</p>
+        <p>Las distancias entre ciudades son <b>caminos mínimos sobre el grafo real de carreteras</b> construido a partir de OpenStreetMap (unos 180.000 cruces y 300.000 tramos de autopistas, autovías, vías rápidas y carreteras nacionales y secundarias). Las rutas dibujadas siguen esas carreteras.</p>
+        <p>Los <b>ocho algoritmos</b> se ejecutan aquí en tu navegador y dan el mismo resultado que las implementaciones en Python del trabajo (se comprueba con pruebas automáticas): fuerza bruta, Held–Karp, DFJ, vecino más cercano, 2-opt, Christofides, recocido simulado y genético.</p>
+        <h3>Cómo usarla</h3>
+        <ul>
+          <li><b>Laboratorio:</b> elige un algoritmo y unas ciudades y pulsa <i>Ejecutar</i>. Verás la ruta construirse paso a paso, el pseudocódigo resaltado y una explicación. Con <i>◀</i> y <i>▶|</i> avanzas o retrocedes de uno en uno.</li>
+          <li><b>Carrera:</b> pone a competir varios algoritmos sobre las mismas ciudades.</li>
+          <li>Pulsa sobre una ciudad del mapa para añadirla o quitarla. Con la rueda del ratón haces zoom y arrastrando te mueves.</li>
+        </ul>
+        <h3>Autoría</h3>
+        <p>Raimundo, Pablo, Juan y Jiahao. Cada algoritmo indica en su ficha quién lo implementó. Código y datos: repositorio del trabajo en GitHub.</p>
+        <h3>Notas técnicas</h3>
+        <p>Sin servidor: todo se calcula en el navegador. DFJ usa <a href="https://github.com/lovasoa/highs-js" target="_blank" rel="noopener">HiGHS</a> (solver de programación entera compilado a WebAssembly) y Christofides, el emparejamiento de Edmonds (<code>edmonds-blossom</code>); ambas librerías (licencia MIT) van incluidas en <code>vendor/</code>.</p>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

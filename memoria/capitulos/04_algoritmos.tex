@@ -1,0 +1,292 @@
+\chapter{Los algoritmos}\label{cap:algoritmos}
+
+\section{Criterios de elección}
+
+Hemos implementado ocho algoritmos de modo que estén representadas las familias clásicas de métodos para el TSP, con cuya comparación se puede responder a las preguntas del estudio:
+
+\begin{itemize}
+  \item \textbf{Exactos} (garantizan el óptimo): \emph{fuerza bruta}, que enumera todas las rutas; \emph{Held--Karp}, que reduce la enumeración con programación dinámica; y \emph{DFJ}, que usa programación entera con restricciones de subciclo.
+        Cubren tres estrategias muy distintas para llegar al mismo resultado.
+  \item \textbf{Heurísticos y aproximados}: el \emph{vecino más cercano} (constructivo, el más simple), el \emph{2-opt} (mejora local sobre una ruta existente) y \emph{Christofides} (aproximación con garantía demostrada).
+  \item \textbf{Metaheurísticas}, que exploran el espacio de soluciones con azar: el \emph{recocido simulado} (inspirado en la física) y el \emph{algoritmo genético} (inspirado en la evolución).
+\end{itemize}
+
+Quedó fuera de la lista el algoritmo de Dijkstra, que a veces se cita en este contexto pero no resuelve el viajante: calcula el camino más corto \emph{entre dos puntos}, no un recorrido que pase por todos. En este trabajo se usa
+precisamente para construir las tablas de distancias entre ciudades (capítulo~\ref{cap:versiones}). Tampoco se incluye un «algoritmo hamiltoniano» aparte, porque el TSP es, precisamente, encontrar el ciclo hamiltoniano de menor coste.
+
+\section{Notación y contrato común}
+
+Todos los algoritmos reciben el grafo de ciudades $K$, completo, donde $K[a][b]$ es el coste $c(a,b)$ de ir de $a$ a $b$, y una ciudad de partida opcional. Devuelven una ruta (lista con todas las ciudades, cada una una vez,
+en el orden en que se visitan) y su coste $C(\pi)$ según la ecuación~\eqref{eq:coste}, que incluye la vuelta. Esta interfaz común es lo que permite comparar los algoritmos con una misma batería de pruebas. Todos funcionan con grafos dirigidos
+(asimétricos) y no dirigidos, salvo Christofides, que necesita simetría.
+
+La tabla~\ref{tab:fichas} resume las propiedades de los ocho algoritmos. En las secciones siguientes se explica cada uno: la idea, el pseudocódigo, la complejidad en notación $O$ y sus propiedades. Las complejidades se expresan en
+función del número de ciudades $n$.
+
+\begin{table}[htbp]
+  \centering
+  \caption{Resumen de los ocho algoritmos. $G$ = generaciones, $P$ = población, $q$ = intentos de mutación.}\label{tab:fichas}
+  \footnotesize
+  \begin{tabularx}{\linewidth}{@{}l l l X X@{}}
+    \toprule
+    Algoritmo & Autor & Tipo & Tiempo & Memoria \\
+    \midrule
+    Fuerza bruta & Pablo & exacto & $O((n-1)!\cdot n)$ & $O(n)$ \\
+    Held--Karp & Raimundo & exacto (prog. dinámica) & $O(n^2\cdot 2^n)$ & $O(n\cdot 2^n)$ \\
+    DFJ & Jiahao & exacto (prog. entera) & $O(2^n)$ en el peor caso & $O(n^2)$ en la práctica \\
+    Vecino más cercano & Pablo & heurístico voraz & $O(n^2)$ & $O(n)$ \\
+    2-opt & Raimundo & mejora local & $O(n^2)$ por vuelta & $O(n^2)$ \\
+    Christofides & Raimundo & aproximado (1,5) & $O(n^3)$ & $O(n^2)$ \\
+    Recocido simulado & Juan & metaheurística & niveles de temperatura $\times$ iteraciones & $O(n^2)$ \\
+    Genético & Raimundo & metaheurística & $O(G\cdot P\cdot n\cdot q)$ & $O(P\cdot n)$ \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\section{Fuerza bruta}\label{sec:fuerzabruta}
+
+\textbf{Idea.} Probar todas las rutas posibles y quedarse con la más corta. Como cualquier ciclo se puede escribir empezando por la ciudad de partida, hay $(n-1)!$ rutas distintas que hay que evaluar; cada una cuesta $O(n)$ sumar,
+de ahí la complejidad $O((n-1)!\cdot n)$. La memoria es $O(n)$ porque solo se guardan la mejor ruta y la permutación en curso.
+
+\begin{algorithm}[htbp]
+  \caption{Fuerza bruta}\label{alg:fb}
+  \begin{algorithmic}[1]
+    \Require grafo $K$ con $n$ ciudades, ciudad de partida $s$
+    \Ensure ruta óptima y su coste
+    \State $mejor \gets \infty$
+    \ForAll{ordenación $\sigma$ de las $n-1$ ciudades distintas de $s$}
+      \State $ruta \gets [s]+\sigma$ \;;\; $coste \gets C(ruta)$ \Comentario{incluye la vuelta}
+      \If{$coste < mejor$} \State $mejor \gets coste$ \;;\; guardar $ruta$ \EndIf
+    \EndFor
+    \State \Return mejor ruta
+  \end{algorithmic}
+\end{algorithm}
+
+\textbf{Propiedades.} Exacto y determinista; no necesita distancias simétricas. Su problema es el tiempo: 10 ciudades se resuelven en medio segundo, 11 en unos 20 segundos y cada ciudad más multiplica el tiempo por $n$, de modo que con 13 serían
+del orden de 50 minutos. Es útil como referencia exacta para instancias muy pequeñas.
+
+\section{Held--Karp (programación dinámica)}\label{sec:heldkarp}
+
+\textbf{Idea.} Muchas de las $(n-1)!$ rutas comparten tramos: si dos rutas empiezan en la ciudad de partida, pasan por las mismas ciudades (en distinto orden) y terminan en la misma, solo importa cuál de los dos tramos es más
+corto. Held y Karp~\cite{heldkarp1962} (y, de forma independiente, Bellman~\cite{bellman1962}) aprovecharon esa observación con \emph{programación dinámica}: se resuelve cada subproblema una sola vez y se reutiliza.
+
+Se fija una ciudad de partida $0$. Para cada subconjunto $S$ de las demás ciudades y cada $j\in S$, sea $d[S][j]$ el coste del camino más corto que sale de $0$, visita exactamente las ciudades de $S$ y termina en $j$. Entonces
+\begin{equation}\label{eq:heldkarp}
+  d[S][j]\;=\;\min_{i\in S\setminus\{j\}}\Bigl(d\bigl[S\setminus\{j\}\bigr][i]+c(i,j)\Bigr),\qquad d[\{j\}][j]=c(0,j),
+\end{equation}
+y el coste óptimo es $\min_{j}\bigl(d[V\setminus\{0\}][j]+c(j,0)\bigr)$. La ruta se reconstruye hacia atrás, recordando para cada estado el $i$ que dio el mínimo.
+
+\begin{algorithm}[htbp]
+  \caption{Held--Karp}\label{alg:hk}
+  \begin{algorithmic}[1]
+    \Require grafo $K$, ciudad de partida $0$
+    \Ensure ruta óptima y su coste
+    \State $d[\{j\}][j] \gets c(0,j)$ para cada ciudad $j\neq 0$
+    \For{$k \gets 2$ \textbf{hasta} $n-1$} \Comentario{tamaño del subconjunto}
+      \ForAll{subconjunto $S$ de tamaño $k$ y cada $j\in S$}
+        \State $d[S][j] \gets \min_{i\in S\setminus\{j\}}\bigl(d[S\setminus\{j\}][i]+c(i,j)\bigr)$
+      \EndFor
+    \EndFor
+    \State $j^{*} \gets \arg\min_j\bigl(d[V\setminus\{0\}][j]+c(j,0)\bigr)$
+    \State \Return ruta reconstruida hacia atrás desde $j^{*}$
+  \end{algorithmic}
+\end{algorithm}
+
+\textbf{Complejidad.} Hay $2^{n-1}(n-1)$ estados y cada uno se calcula probando hasta $n-1$ ciudades anteriores, luego el \textbf{tiempo} es $O(n^2\cdot 2^n)$, frente al $O((n-1)!)$ de la fuerza bruta. La \textbf{memoria} es $O(n\cdot 2^n)$:
+la tabla $d$ ocupa $8\,(n-1)\,2^{n-1}$ bytes (unos 80~MB con 20 ciudades, 170~MB con 21 y más de 700~MB con 22). Es el verdadero límite de este algoritmo, y por eso la implementación se niega a trabajar con más de 21 ciudades.
+
+\textbf{Implementación.} Cada subconjunto se guarda como un entero (una máscara de bits) y los subconjuntos de cada tamaño se procesan a la vez con NumPy. \textbf{Propiedades:} exacto, determinista, sirve para el caso dirigido y el no dirigido.
+
+\section{DFJ: programación entera con restricciones de subciclo}\label{sec:dfj}
+
+\textbf{Idea.} La formulación de Dantzig, Fulkerson y Johnson~\cite{dfj1954} plantea el TSP como un problema de programación entera con una variable binaria $x_{ij}$ por arista dirigida (vale $1$ si el viajante va de $i$ a $j$):
+\begin{equation}\label{eq:dfj}
+\begin{aligned}
+  \min\ & \sum_{i\neq j} c(i,j)\,x_{ij}\\
+  \text{s.a. } & \sum_{j\neq i} x_{ij}=1\quad\forall i,\qquad \sum_{i\neq j} x_{ij}=1\quad\forall j,\qquad x_{ij}\in\{0,1\}.
+\end{aligned}
+\end{equation}
+Las dos primeras familias de restricciones (una salida y una entrada por ciudad) definen el \emph{problema de asignación}, que es más fácil que el TSP pero admite soluciones formadas por \emph{varios circuitos sueltos} (subciclos) en lugar de un único ciclo.
+Para evitarlo se añade, para cada subconjunto $S$ de ciudades que forma un subciclo, una restricción de conectividad
+\begin{equation}\label{eq:subciclo}
+  \sum_{i\in S}\ \sum_{j\notin S} x_{ij}\;\ge\;1,
+\end{equation}
+que obliga a que al menos una arista salga del grupo. Como hay un número exponencial de subconjuntos, las restricciones no se añaden todas desde el principio: se resuelve el modelo, se detectan los subciclos de la solución, se añaden sus restricciones
+y se vuelve a resolver, hasta que la solución sea un único ciclo.
+
+\begin{algorithm}[htbp]
+  \caption{DFJ con eliminación iterativa de subciclos}\label{alg:dfj}
+  \begin{algorithmic}[1]
+    \Require grafo $K$
+    \Ensure ruta óptima y su coste
+    \State modelo $\gets$ problema de asignación~\eqref{eq:dfj}
+    \Repeat
+      \State $x^{*} \gets$ resolver el modelo entero con un \emph{solver}
+      \State $\mathcal{C} \gets$ componentes (circuitos) de la solución $x^{*}$
+      \If{$|\mathcal{C}|>1$}
+        \ForAll{circuito $S\in\mathcal{C}$} \State añadir al modelo la restricción~\eqref{eq:subciclo} \EndFor
+      \EndIf
+    \Until{$|\mathcal{C}|=1$}
+    \State \Return el ciclo $x^{*}$
+  \end{algorithmic}
+\end{algorithm}
+
+\textbf{Complejidad y propiedades.} En el peor caso el tiempo es exponencial, porque resolver cada modelo es NP-difícil y el número de restricciones puede crecer exponencialmente. En la práctica, con los \emph{solvers} modernos, suele bastar con muy pocas iteraciones
+(en nuestras instancias, entre 2 y 10), y la memoria es del orden de $O(n^2)$ por las variables del modelo. Es exacto, determinista y válido para grafos dirigidos y no dirigidos (en este último caso se convierte el grafo a dirigido, con una arista por sentido y el mismo peso).
+Usamos PuLP con el \emph{solver} CBC. En el capítulo~\ref{cap:resultados} se verá que este algoritmo resuelve las 75 ciudades al óptimo en unos 4~segundos, muy por encima del límite de los exactos de enumeración.
+
+\section{Vecino más cercano}\label{sec:vecino}
+
+\textbf{Idea.} Es la ruta del viajante que no planifica: en cada ciudad, ir a la más cercana que todavía no se haya visitado. Es un algoritmo \emph{voraz}: toma siempre la mejor opción local sin mirar atrás. A cambio de su simplicidad renuncia a la optimalidad: una elección buena ahora
+puede dejar aislada una ciudad lejana y encarecer el final del recorrido.
+
+\begin{algorithm}[htbp]
+  \caption{Vecino más cercano}\label{alg:nn}
+  \begin{algorithmic}[1]
+    \Require grafo $K$, ciudad de partida $s$
+    \Ensure ruta y su coste
+    \State $ruta \gets [s]$ \;;\; $pendientes \gets V\setminus\{s\}$
+    \While{$pendientes\neq\emptyset$}
+      \State $a \gets$ última ciudad de $ruta$
+      \State $b \gets \arg\min_{x\in pendientes} c(a,x)$ \Comentario{la más cercana}
+      \State añadir $b$ a $ruta$ \;;\; quitar $b$ de $pendientes$
+    \EndWhile
+    \State \Return $ruta$, $C(ruta)$ \Comentario{la vuelta cierra el ciclo}
+  \end{algorithmic}
+\end{algorithm}
+
+\textbf{Complejidad y propiedades.} Hay $n-1$ pasos y en cada uno se comparan hasta $n-1$ ciudades, luego $O(n^2)$ en tiempo y $O(n)$ en memoria adicional. Es determinista (los empates se resuelven por orden alfabético), no necesita simetría y
+no ofrece ninguna garantía de calidad: incluso con distancias métricas, el peor caso puede ser $\Theta(\log n)$ veces el óptimo. Depende de la ciudad de partida. Se usa aquí como solución inicial de otras técnicas (2-opt) y como línea base.
+
+\section{2-opt}\label{sec:dosopt}
+
+\textbf{Idea.} Es una \emph{búsqueda local}~\cite{croes1958}: parte de una ruta cualquiera y la mejora con pequeños cambios mientras sea posible. El cambio de 2-opt es el que haría una persona mirando el mapa: si dos tramos de la ruta se cruzan,
+se deshacen y se vuelven a unir al revés, lo que elimina el cruce y casi siempre acorta el camino.
+
+Concretamente, se toman dos aristas $(a\to b)$ y $(c\to d)$ de la ruta (con $b$ justo después de $a$ y $d$ justo después de $c$) y se sustituyen por $(a\to c)$ y $(b\to d)$, invirtiendo el tramo que queda entre medias. El cambio mejora la ruta si
+\begin{equation}\label{eq:dosopt}
+  \Delta\;=\;c(a,c)+c(b,d)-c(a,b)-c(c,d)\;<\;0,
+\end{equation}
+donde, en un grafo \emph{dirigido}, hay que sumar además la diferencia entre recorrer el tramo invertido al revés y hacia delante (porque ir de $x$ a $y$ no cuesta lo mismo que de $y$ a $x$); la implementación lo calcula en tiempo constante con sumas acumuladas
+y vale igual para el caso no dirigido, donde esa diferencia es cero.
+
+\begin{algorithm}[htbp]
+  \caption{2-opt}\label{alg:2opt}
+  \begin{algorithmic}[1]
+    \Require grafo $K$, ciudad de partida $s$
+    \Ensure ruta (óptimo local) y su coste
+    \State $ruta \gets$ ruta del vecino más cercano desde $s$
+    \Repeat
+      \ForAll{par de tramos $(a\to b)$, $(c\to d)$ no contiguos de $ruta$}
+        \State calcular $\Delta$ \Comentario{ecuación~\eqref{eq:dosopt}}
+      \EndFor
+      \State $(a,b,c,d)\gets$ el par con menor $\Delta$
+      \If{$\Delta<0$} \State invertir el tramo de $b$ a $c$ en $ruta$ \EndIf
+    \Until{ningún cambio mejora la ruta}
+    \State \Return $ruta$
+  \end{algorithmic}
+\end{algorithm}
+
+\textbf{Complejidad y propiedades.} Cada vuelta evalúa todos los pares de tramos (con \texttt{numpy}, en forma de matrices $n\times n$), luego cuesta $O(n^2)$ en tiempo y memoria; el número de vueltas es del orden de $n$ en la práctica, así que el total ronda $O(n^3)$,
+aunque no hay una cota polinómica en el peor caso. Es una heurística: se detiene en el primer \emph{óptimo local}, que puede no ser el óptimo global; sin garantía de calidad útil, pero en la práctica queda a pocos puntos porcentuales del óptimo.
+Es determinista dada la ruta de partida y funciona con grafos dirigidos y no dirigidos.
+
+\section{Christofides}\label{sec:christofides}
+
+\textbf{Idea.} Es el algoritmo de aproximación con garantía más conocido para el TSP métrico: la ruta que devuelve nunca cuesta más de $1{,}5$ veces el óptimo~\cite{christofides1976}. Se construye en cinco pasos:
+\begin{enumerate}[label=\arabic*.]
+  \item \textbf{Árbol de expansión mínimo} (\emph{MST}): une todas las ciudades con el menor coste total y sin ciclos. Su coste es una cota inferior del óptimo: si a un ciclo óptimo se le quita una arista queda un árbol, y no puede costar menos que el mínimo.
+  \item Se identifican las ciudades de \textbf{grado impar} en el árbol (siempre hay un número par de ellas).
+  \item \textbf{Emparejamiento perfecto de coste mínimo} entre ellas, que se calcula con el algoritmo de Edmonds~\cite{edmonds1965} (\emph{blossom}). Su coste es, como mucho, la mitad del óptimo.
+  \item Árbol y emparejamiento forman un multigrafo en el que todas las ciudades tienen grado par, de modo que existe un \textbf{circuito euleriano}, que recorre cada arista una vez.
+  \item \textbf{Atajos}: se recorre el circuito saltándose las ciudades ya visitadas. Por la desigualdad triangular~\eqref{eq:triangular}, ir directo nunca cuesta más que dar el rodeo.
+\end{enumerate}
+La garantía sale de sumar: $C \le c(\text{MST}) + c(\text{emparejamiento}) \le C^{*} + \tfrac12 C^{*} = 1{,}5\,C^{*}$.
+
+\begin{algorithm}[htbp]
+  \caption{Christofides (grafo no dirigido)}\label{alg:chr}
+  \begin{algorithmic}[1]
+    \Require grafo no dirigido $K$ con distancias métricas
+    \Ensure ruta con coste $\le 1{,}5\,C^{*}$
+    \State $T \gets$ árbol de expansión mínimo de $K$
+    \State $I \gets$ ciudades de grado impar en $T$
+    \State $M \gets$ emparejamiento perfecto de coste mínimo entre las ciudades de $I$
+    \State $circuito \gets$ circuito euleriano del multigrafo $T\cup M$
+    \State $ruta \gets$ $circuito$ sin repetir ciudades (se salta cada ciudad ya visitada)
+    \State \Return $ruta$
+  \end{algorithmic}
+\end{algorithm}
+
+\textbf{Complejidad y propiedades.} El árbol cuesta $O(n^2\log n)$, el emparejamiento \emph{blossom} sobre las ciudades impares $O(n^3)$ en el peor caso y el circuito euleriano $O(n)$; domina el emparejamiento, luego $O(n^3)$ en tiempo y $O(n^2)$ en memoria.
+\textbf{Necesita un grafo no dirigido} (distancias simétricas) y métrico, condiciones que cumplen las versiones no dirigidas de este trabajo. La implementación rechaza grafos dirigidos con un error explícito. Es determinista en lo que depende de los datos.
+
+\section{Recocido simulado}\label{sec:recocido}
+
+\textbf{Idea.} El recocido simulado~\cite{kirkpatrick1983} es una metaheurística inspirada en el proceso metalúrgico de recocido. Una búsqueda local como el 2-opt se detiene en el primer valle (óptimo local) porque cualquier cambio inmediato
+empeora la ruta. El recocido supera esta barrera aceptando también, con cierta probabilidad, cambios que \emph{empeoran} la ruta. Esa probabilidad depende de una \emph{temperatura} $T$ que va bajando poco a poco: a temperaturas altas se acepta casi todo y se explora; al enfriarse,
+el sistema se vuelve cada vez más voraz y se asienta en un buen valle. Matemáticamente es el algoritmo de Metropolis--Hastings~\cite{metropolis1953} orientado a la optimización: un cambio que aumenta el coste en $\Delta F>0$ se acepta con probabilidad
+\begin{equation}\label{eq:metropolis}
+  P\;=\;e^{-\Delta F/T}.
+\end{equation}
+
+\begin{algorithm}[htbp]
+  \caption{Recocido simulado}\label{alg:sa}
+  \begin{algorithmic}[1]
+    \Require grafo $K$, factor de enfriamiento $\alpha=0{,}95$, temperatura mínima $T_{\min}$
+    \Ensure ruta y su coste
+    \State $ruta \gets$ ruta al azar \;;\; $mejor \gets ruta$ \;;\; $T \gets 0{,}15\cdot C(ruta)$
+    \While{$T > T_{\min}$}
+      \State repetir $n_{\text{iter}}$ veces:
+      \State \hspace{1.2em} proponer invertir un tramo al azar (cambio 2-opt) y calcular $\Delta F$
+      \State \hspace{1.2em} \textbf{si} $\Delta F\le 0$ \textbf{o} $\text{azar}(0,1)<e^{-\Delta F/T}$ \textbf{entonces} aceptar el cambio
+      \State \hspace{1.2em} actualizar $mejor$ si la ruta mejora
+      \State $T \gets \alpha\cdot T$ \Comentario{enfriar}
+    \EndWhile
+    \State \Return $mejor$
+  \end{algorithmic}
+\end{algorithm}
+
+\textbf{Complejidad y propiedades.} Es una metaheurística estocástica: no garantiza el óptimo ni ofrece una cota de calidad, y el resultado depende del azar (por eso se mide con varias semillas). Evaluar el efecto de un cambio de 2-opt cuesta $O(1)$ (solo cambian cuatro aristas), pero aceptar el cambio
+obliga a actualizar la ruta en $O(n)$; el número de iteraciones por nivel de temperatura crece con $n$. Funciona con grafos dirigidos y no dirigidos. Su implementación es obra de Juan, que además calcula una cota inferior del óptimo con un 1-árbol para acotar el error de cada ejecución.
+
+\section{Algoritmo genético}\label{sec:genetico}
+
+\textbf{Idea.} Los algoritmos genéticos~\cite{holland1975} imitan la evolución de las especies: se mantiene una \emph{población} de rutas que evoluciona durante muchas \emph{generaciones}; las rutas más cortas tienen más probabilidad de reproducirse, sus «hijos» combinan características de los padres
+y, de vez en cuando, sufren pequeñas \emph{mutaciones}. Los elementos son:
+\begin{itemize}
+  \item \textbf{Individuo:} una ruta, es decir, una permutación de las ciudades (la de partida va fija en primer lugar). Siempre es válida.
+  \item \textbf{Aptitud:} el coste del ciclo; cuanto menor, mejor.
+  \item \textbf{Selección por torneo:} cada padre es el mejor de 3 individuos elegidos al azar.
+  \item \textbf{Cruce por orden (OX)}~\cite{davis1985}: el hijo hereda de un padre un tramo seguido y el resto de ciudades en el orden en que aparecen en el otro padre, así nunca repite ni omite ninguna.
+  \item \textbf{Mutación guiada:} con probabilidad $p_m$ se prueban $q=10$ inversiones de tramo al azar (el movimiento del 2-opt) y el individuo se queda con la mejor, \emph{solo si mejora} su coste.
+  \item \textbf{Elitismo:} las 2 mejores rutas pasan intactas a la siguiente generación.
+\end{itemize}
+
+\begin{algorithm}[htbp]
+  \caption{Algoritmo genético}\label{alg:gen}
+  \begin{algorithmic}[1]
+    \Require grafo $K$, población $P=150$, generaciones máximas $G=500$, probabilidad de mutación $p_m=0{,}5$
+    \Ensure ruta y su coste
+    \State $poblacion \gets$ $P$ rutas aleatorias
+    \Repeat
+      \State $nueva \gets$ las 2 mejores rutas de $poblacion$
+      \While{$|nueva| < P$}
+        \State $p_1,p_2 \gets$ dos padres por torneo (el mejor de 3 al azar)
+        \State $hijo \gets$ \textsc{CruceOX}$(p_1,p_2)$
+        \State con probabilidad $p_m$, \textsc{MutaciónGuiada}$(hijo)$
+        \State añadir $hijo$ a $nueva$
+      \EndWhile
+      \State $poblacion \gets nueva$ \;;\; actualizar la mejor ruta
+    \Until{$G$ generaciones o 150 sin mejorar}
+    \State \Return mejor ruta
+  \end{algorithmic}
+\end{algorithm}
+
+\textbf{Complejidad y propiedades.} Cada generación cruza y evalúa $P$ rutas de longitud $n$ (y la mutación prueba $q$ variantes), así que el tiempo es $O(G\cdot P\cdot n\cdot q)$, \emph{lineal en $n$} por generación, y la memoria $O(P\cdot n)$.
+Es estocástico, pero reproducible fijando la semilla, y no tiene garantía de calidad. Una lección del desarrollo merece señalarse: la primera versión, con mutaciones aleatorias simples, quedaba entre un 19~\% y un 37~\% por encima del óptimo con 47 ciudades;
+la mutación guiada (que incorpora una pequeña búsqueda local) lo redujo a un 2--5~\%.
+
+\section{Quién hizo qué}
+
+Cuatro personas implementaron los ocho algoritmos. Pablo programó la fuerza bruta y el vecino más cercano, Jiahao programó DFJ, Juan programó el recocido simulado y Raimundo programó Held--Karp, 2-opt, Christofides y el genético. Cada algoritmo vive en su propio \emph{notebook}
+con la misma estructura (ficha, teoría, código, pruebas y resultados), que una herramienta integra después en el \emph{notebook} principal. El capítulo~\ref{cap:organizacion} describe este flujo de trabajo.

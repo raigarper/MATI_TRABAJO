@@ -29,13 +29,15 @@ Las ramas conservan su nombre original. Todo el trabajo se integra en `main`.
 | 3 | Christofides | Raimundo | `parte3/christofides_raimundo.ipynb` |
 | 3 | Algoritmo genético | Raimundo | `parte3/genetico_raimundo.ipynb` |
 | 4 | Estudio empírico (Anexo C + análisis en el notebook) | Raimundo | `anexos/ejecutar_estudio.py`, `trabajo_tsp.ipynb`, `data/resultados/` |
-| 5 | Conclusiones | Equipo | pendiente |
+| 5 | Conclusiones (con la complejidad en notación O) | Raimundo | `trabajo_tsp.ipynb` |
+| — | Web interactiva | Raimundo | `web/` |
+| — | Memoria (LaTeX → PDF) | Raimundo | `memoria/` |
 
 ## Uso de IA
 
 | Parte | Herramienta | Para qué | Revisión |
 |---|---|---|---|
-| Partes 1, 2 y 4, herramientas de `parte3/`, Anexo C, guía del equipo | Claude Code (Anthropic) | Escribir y probar los scripts de descarga y construcción del grafo, el código del notebook, la plantilla y la herramienta de integración | Raimundo ejecutó y revisó el resultado |
+| Partes 1, 2, 4 y 5, web, memoria, herramientas de `parte3/`, Anexo C, guía del equipo | Claude Code (Anthropic) | Escribir y probar los scripts de descarga y construcción del grafo, el código del notebook, la plantilla y la herramienta de integración | Raimundo ejecutó y revisó el resultado |
 | Held–Karp, 2-opt, Christofides y genético | Claude Code (Anthropic) | Teoría, código, pruebas y redacción de resultados | Raimundo; cada algoritmo se contrastó con la fuerza bruta (y con DFJ en 47 ciudades) |
 | Fuerza bruta, vecino más cercano | **Pendiente de indicar por Pablo** | | |
 | DFJ | **Pendiente de indicar por Jiahao** | | |
@@ -52,9 +54,10 @@ Las ramas conservan su nombre original. Todo el trabajo se integra en `main`.
 | 2. Versiones | Hecha |
 | 3. Algoritmos | Hecha (8 algoritmos, formato unificado) |
 | 4. Estudio empírico | Hecha (4.470 ejecuciones en paralelo + 236 en serie, 0 fallos) |
-| 5. Conclusiones | Pendiente |
-| Web interactiva | Pendiente (un único `index.html` publicable en GitHub Pages) |
-| Memoria | Pendiente (LaTeX → PDF) |
+| 5. Conclusiones | Hecha |
+| Web interactiva | Hecha (`web/`; publicable en GitHub Pages: lo activa el propietario del repositorio) |
+| Memoria | Hecha (`memoria/memoria.pdf`); pendiente de revisión y de decidir su extensión |
+| Guía de uso | Pendiente |
 
 ## Fallos encontrados por el estudio empírico
 

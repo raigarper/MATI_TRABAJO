@@ -10,3 +10,14 @@ data/espana_red_maestra_secundarias.graphml
 
 # Resultados de la prueba reducida del estudio
 data/resultados/_prueba/
+
+# Ficheros temporales de LaTeX
+memoria/*.log
+memoria/*.aux
+memoria/*.toc
+memoria/*.out
+guia/*.log
+guia/*.aux
+guia/*.toc
+guia/*.out
+web/node_modules/

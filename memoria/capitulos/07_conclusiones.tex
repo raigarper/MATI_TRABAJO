@@ -1,0 +1,61 @@
+\chapter{Conclusiones}\label{cap:conclusiones}
+
+Este capítulo responde a las preguntas planteadas en la introducción, resume lo aprendido y recoge las limitaciones y el trabajo futuro.
+
+\section{Respuestas a las preguntas del estudio}
+
+\paragraph{P1. ¿Qué algoritmo se puede usar con qué versión?} Los tres algoritmos exactos y el resto de métodos no son intercambiables. La fuerza bruta solo sirve con 11 ciudades o menos y Held--Karp con 21 o menos, por lo que solo se pueden aplicar a las versiones regionales (4 a 13 ciudades)
+y a subconjuntos pequeños; Christofides exige un grafo no dirigido. En las versiones de toda España (44 a 75 ciudades), el único exacto aplicable es DFJ. Los otros cinco algoritmos funcionan en las 240 versiones.
+
+\paragraph{P2. ¿Cómo crecen el tiempo y la memoria?} Los exactos de enumeración crecen de forma exponencial, como predice la teoría: la fuerza bruta multiplica su tiempo por 10,6 con cada ciudad y se agota en 11 (22~s; con 13 serían unos 50 minutos); Held--Karp lo multiplica por 2,1 y su memoria $O(n\cdot 2^n)$ es el verdadero límite
+(104~MB con 20 ciudades, inviable hacia las 21--22). Los demás algoritmos crecen de forma polinómica, con exponentes iguales o menores que los teóricos. DFJ, con un peor caso exponencial, resolvió las 75 ciudades al óptimo en 4,3~s.
+
+\paragraph{P3. ¿Cuánto se pierde al renunciar al óptimo?} Con 75 ciudades, el vecino más cercano queda un 32~\% por encima del óptimo, Christofides un 14~\%, el 2-opt un 4,5~\%, el recocido un 4,4~\% y el genético un 6,1~\%. El 2-opt es el mejor equilibrio entre calidad y tiempo: con un 1--5~\% de error tarda milisegundos.
+Los metaheurísticos llegan al óptimo con hasta unas 14 ciudades, pero con más no mejoran al 2-opt y tardan entre 170 y 2.000 veces más, además de variar entre ejecuciones.
+
+\paragraph{P4. ¿Qué efecto tiene la versión del grafo?} Tanto como el algoritmo. Sin autovías, el óptimo cuesta un 30--38~\% más de kilómetros y casi el doble de tiempo. Con solo autovías, los sentidos únicos cuestan un 13--19~\%, porque no se puede dar la vuelta; en las demás redes ignorarlos apenas cambia el óptimo (0,7--4~\%).
+Los heurísticos son menos robustos en grafos dirigidos y en la red más dispersa. Y la ruta más corta no es la más rápida: la de mínimo tiempo ahorra 1,2~h (1,9~\%) a cambio de 85~km más (+1,4~\%).
+
+\paragraph{P5. ¿Qué conviene usar?} Depende del caso (tabla~\ref{tab:recomendaciones}).
+
+\begin{table}[htbp]
+  \centering
+  \caption{Qué algoritmo usar en cada caso.}\label{tab:recomendaciones}
+  \small
+  \begin{tabularx}{\linewidth}{@{}X l X@{}}
+    \toprule
+    Si se quiere\dots & Usar & Notación $O$ y comportamiento \\
+    \midrule
+    El óptimo con hasta unas 19 ciudades & Held--Karp & $O(n^2\cdot 2^n)$ en tiempo y $O(n\cdot 2^n)$ en memoria: muy rápido, con un muro de memoria \\
+    El óptimo con 20 o más ciudades & DFJ & exponencial en el peor caso, pero 4,3~s con 75 ciudades \\
+    Una buena ruta en milisegundos & 2-opt & $O(n^2)$ por vuelta; 1--5~\% de error \\
+    Una calidad garantizada & Christofides & $O(n^3)$; $\le 1{,}5\times$ el óptimo (solo grafo no dirigido) \\
+    Explorar con azar & Recocido o genético & casi lineales en $n$, con un coste fijo alto y variabilidad entre ejecuciones \\
+    Una ruta de partida & Vecino más cercano & $O(n^2)$; instantáneo, pero con un 3--32~\% de error \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\section{Otras conclusiones}
+
+\begin{itemize}
+  \item \textbf{La garantía de Christofides es un peor caso, no una predicción.} Nunca superó el +20~\%, muy por debajo del +50~\% garantizado, pero queda por encima del 2-opt, que no ofrece ninguna garantía. Su valor está en la seguridad, no en la calidad media.
+  \item \textbf{Una metaheurística bien ajustada importa.} La primera versión del genético, con mutaciones aleatorias simples, se quedaba entre un 19~\% y un 37~\% por encima del óptimo; añadir una pequeña búsqueda local en la mutación lo bajó al 2--5~\%.
+  \item \textbf{Lo que se mide depende de cómo se mide.} En paralelo, los tiempos salen unas 2,5 veces más lentos; por eso los costes salen de una pasada y los tiempos de otra. Y contrastar tres algoritmos exactos independientes dio cero discrepancias y descubrió dos fallos que las pruebas por separado no habían encontrado.
+  \item \textbf{Un buen conjunto de datos es una parte del resultado.} Obtener un grafo vial fiable y justificar las versiones del problema ocupó una parte considerable del trabajo y condiciona todo lo demás.
+\end{itemize}
+
+\section{Limitaciones}
+
+Los metaheurísticos se midieron con sus parámetros por defecto y pocas semillas (3 y 5); con 75 ciudades solo hay un subconjunto (el conjunto completo); la memoria de DFJ no cuenta la del \emph{solver} CBC; y los tamaños llegan a 75 ciudades, donde DFJ sigue siendo inmediato.
+Con muchas más ciudades es probable que DFJ deje de serlo y los metaheurísticos pasen a ser la mejor opción, pero no se ha medido. Además, las distancias son de coche y no consideran tráfico, peajes ni obras, y las coordenadas de las ciudades proceden de OpenStreetMap y no de una fuente oficial.
+
+\section{Trabajo futuro}
+
+\begin{itemize}
+  \item Ajustar los parámetros del recocido y del genético a cada tamaño, y probar variantes más potentes (por ejemplo, búsqueda local de tipo Or-opt o Lin--Kernighan).
+  \item Probar instancias de cientos o miles de ciudades, donde DFJ deja de ser inmediato, y comparar con soluciones de referencia como Concorde.
+  \item Realizar el estudio de escala por comunidades autónomas con las versiones regionales, y ampliar el conjunto de ciudades a municipios más pequeños.
+  \item Añadir restricciones realistas: ventanas horarias, peajes, tráfico o límites de jornada, y pasar de un único viajante a varios vehículos.
+  \item Ampliar la web con un panel de resultados del estudio y un recorrido guiado del proyecto.
+\end{itemize}

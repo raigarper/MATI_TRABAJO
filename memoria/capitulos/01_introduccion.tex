@@ -1,0 +1,101 @@
+\chapter{Introducción}\label{cap:intro}
+
+\section{El problema del viajante}
+
+El \emph{problema del viajante} (en inglés, \emph{travelling salesman problem}, TSP) es uno de los problemas clásicos de la optimización
+combinatoria. Un viajante debe visitar un conjunto de ciudades, pasando por cada una exactamente una vez, y volver a la ciudad de partida
+recorriendo la menor distancia posible. Aunque el enunciado es sencillo, encontrar la mejor ruta es difícil: con $n$ ciudades hay $(n-1)!$ recorridos
+posibles, un número que crece más deprisa que cualquier exponencial.
+
+Formalmente, sea $V=\{0,1,\dots,n-1\}$ el conjunto de ciudades y $c(i,j)\ge 0$ el coste de ir de la ciudad $i$ a la ciudad $j$. Una ruta es una permutación
+$\pi$ de $V$ y su coste, incluida la vuelta al inicio, es
+\begin{equation}\label{eq:coste}
+  C(\pi)\;=\;\sum_{k=0}^{n-2} c\bigl(\pi_k,\pi_{k+1}\bigr)\;+\;c\bigl(\pi_{n-1},\pi_0\bigr).
+\end{equation}
+El problema consiste en encontrar la permutación $\pi^{*}$ que minimiza $C(\pi)$. Si $c(i,j)=c(j,i)$ para todo par de ciudades el problema es
+\emph{simétrico}; en caso contrario es \emph{asimétrico}. Si además se cumple la \emph{desigualdad triangular},
+\begin{equation}\label{eq:triangular}
+  c(i,k)\;\le\;c(i,j)+c(j,k)\qquad\text{para todo }i,j,k\in V,
+\end{equation}
+decimos que el problema es \emph{métrico}; esta propiedad es necesaria para algunas garantías de aproximación, como la del algoritmo de Christofides
+(sección~\ref{sec:christofides}).
+
+El TSP es un problema NP-difícil~\cite{karp1972,garey1979}: no se conoce ningún algoritmo que lo resuelva en tiempo polinómico en el caso
+general, y se cree que no existe. Eso no significa que sea imposible resolverlo en la práctica. Los algoritmos exactos modernos, basados en programación
+entera, han resuelto instancias de decenas de miles de ciudades~\cite{applegate2006}, y las heurísticas obtienen soluciones muy buenas en
+tiempos pequeños. La cuestión interesante es \emph{cuánto cuesta} cada enfoque y \emph{qué se sacrifica} a cambio de rapidez, que es lo que estudia
+este trabajo.
+
+\section{Motivación: carreteras reales}
+
+La mayoría de los estudios sobre el TSP usan instancias sintéticas (puntos en el plano con distancia euclídea) o colecciones clásicas. Aquí lo
+planteamos sobre un caso real: \emph{las ciudades de España y las carreteras que las unen}. Esto añade tres ingredientes que no aparecen en el plano:
+\begin{itemize}
+  \item \textbf{Las distancias son por carretera}, es decir, caminos mínimos sobre un grafo vial con cientos de miles de nodos, no distancias en línea recta.
+  \item \textbf{Hay vías de sentido único} (por ejemplo, las dos calzadas de una autovía son aristas distintas), de modo que ir de $A$ a $B$ puede costar distinto que de $B$ a $A$.
+        El problema es entonces asimétrico, y la elección entre un modelo dirigido y otro no dirigido pasa a ser parte del estudio.
+  \item \textbf{Se puede medir en kilómetros o en tiempo}, y la ruta más corta no tiene por qué ser la más rápida.
+\end{itemize}
+
+Estos ingredientes permiten, además, plantear preguntas que un benchmark sintético no permite: ¿cómo cambia el recorrido óptimo si solo se pueden usar autovías?
+¿Cuánto cuesta ignorar los sentidos únicos? ¿Qué algoritmos se pueden aplicar a qué versión del problema, y por qué?
+
+\section{Objetivos}
+
+El objetivo general es \textbf{medir cómo mejoran en complejidad y en tiempo los distintos algoritmos del viajante al buscar una solución óptima o completa, y qué
+se pierde en calidad cuando se renuncia al óptimo}. Lo desglosamos en cinco preguntas, que guían todo el estudio:
+\begin{enumerate}[label=\textbf{P\arabic*.}]
+  \item ¿Qué algoritmo puede usarse con qué versión del grafo, y por qué?
+  \item ¿Cómo crecen el tiempo y la memoria con el número de ciudades? ¿Coincide con la complejidad teórica?
+  \item ¿Cuánto se aleja de la ruta óptima cada algoritmo que no garantiza el óptimo?
+  \item ¿Cómo cambian los resultados con el tipo de carreteras, el peso (kilómetros o tiempo) y el sentido de las vías?
+  \item ¿Qué algoritmo conviene en cada caso, atendiendo a calidad y tiempo?
+\end{enumerate}
+Para responderlas hay que resolver antes problemas previos de ingeniería de datos: obtener un grafo vial fiable, elegir y justificar un conjunto de ciudades, y
+definir un conjunto de \emph{versiones} del problema bien especificadas y reproducibles.
+
+\section{Qué se ha hecho}
+
+El trabajo se organiza en cinco partes encadenadas (figura~\ref{fig:pipeline}), a las que se suman una web interactiva y esta memoria:
+\begin{enumerate}[label=\textbf{Parte \arabic*.},leftmargin=*,labelsep=0.5em]
+  \item \textbf{Construcción del grafo.} Descarga de un extracto de OpenStreetMap, filtrado, simplificación y asignación de longitudes y tiempos (capítulo~\ref{cap:grafo}).
+  \item \textbf{Ciudades y versiones del grafo.} Selección de 75 ciudades y cálculo de tablas de distancias que originan 480 versiones del problema (capítulo~\ref{cap:versiones}).
+  \item \textbf{Algoritmos.} Implementación de ocho algoritmos, tres exactos, tres heurísticos y dos metaheurísticos (capítulo~\ref{cap:algoritmos}).
+  \item \textbf{Estudio empírico.} Ejecución sistemática de los algoritmos y análisis de tiempo, memoria y calidad (capítulos~\ref{cap:metodologia} y~\ref{cap:resultados}).
+  \item \textbf{Conclusiones.} Respuesta a las preguntas planteadas y recomendaciones de uso (capítulo~\ref{cap:conclusiones}).
+\end{enumerate}
+
+\begin{figure}[htbp]
+  \centering
+  \begin{tikzpicture}[
+      caja/.style={draw=#1!70!black,fill=#1!10,rounded corners=3pt,align=center,minimum height=1.25cm,text width=2.9cm,font=\small,line width=0.6pt},
+      flecha/.style={-{Stealth[length=2.2mm]},line width=0.7pt,color=gris}]
+    \node[caja=azul] (a) {\textbf{OpenStreetMap}\\extracto de España\\(\texttt{.osm.pbf}, 1,4~GB)};
+    \node[caja=naranja,right=0.75cm of a] (b) {\textbf{Grafo vial}\\179.594 nodos\\309.250 aristas};
+    \node[caja=aqua,right=0.75cm of b] (c) {\textbf{Versiones}\\16 tablas de distancias\\240 grafos de ciudades};
+    \node[caja=violeta,below=0.95cm of c] (d) {\textbf{8 algoritmos}\\exactos, heurísticos,\\metaheurísticas};
+    \node[caja=rojo,left=0.75cm of d] (e) {\textbf{Estudio empírico}\\4.706 ejecuciones\\tiempo, memoria, calidad};
+    \node[caja=verde,left=0.75cm of e] (f) {\textbf{Conclusiones}\\y recomendaciones\\de uso};
+    \node[caja=amarillo,below=0.9cm of e] (g) {\textbf{Web interactiva}\\animación paso a paso\\y carrera};
+    \draw[flecha] (a) -- (b); \draw[flecha] (b) -- (c); \draw[flecha] (c) -- (d); \draw[flecha] (d) -- (e); \draw[flecha] (e) -- (f);
+    \draw[flecha,dashed] (d) |- (g.east);
+  \end{tikzpicture}
+  \caption{Esquema del trabajo: de los datos de OpenStreetMap a las conclusiones. La web reutiliza los datos y los algoritmos.}
+  \label{fig:pipeline}
+\end{figure}
+
+\section{Herramientas y reproducibilidad}
+
+Todo el trabajo está escrito en Python~3 y se entrega como un \emph{notebook} (\texttt{trabajo\_tsp.ipynb}) más tres scripts de apoyo (los \emph{anexos}):
+el Anexo~A descarga el extracto, el Anexo~B construye el grafo y el Anexo~C ejecuta el estudio empírico en paralelo. Usamos NetworkX~\cite{hagberg2008}
+para los grafos, NumPy~\cite{harris2020} y SciPy~\cite{virtanen2020} para el cálculo numérico, PuLP con el \emph{solver} CBC para la programación entera
+de DFJ y OSMnx~\cite{boeing2017} únicamente en la construcción del grafo. El código, los datos intermedios y los resultados se versionan en GitHub, y cada
+resultado de esta memoria se puede regenerar con los comandos del apéndice~\ref{ap:reproducir}.
+
+\section{Estructura de la memoria}
+
+El capítulo~\ref{cap:grafo} describe los datos y la construcción del grafo vial. El capítulo~\ref{cap:versiones} presenta las ciudades y las versiones del problema.
+El capítulo~\ref{cap:algoritmos} explica los ocho algoritmos y justifica su elección. El capítulo~\ref{cap:metodologia} detalla la metodología del estudio y el
+capítulo~\ref{cap:resultados} presenta sus resultados. El capítulo~\ref{cap:conclusiones} recoge las conclusiones. El capítulo~\ref{cap:web} describe la web interactiva
+y el capítulo~\ref{cap:organizacion} la organización del trabajo en equipo, el uso de herramientas de inteligencia artificial y los problemas encontrados. Los apéndices
+reúnen las instrucciones para reproducir el trabajo y material complementario.
