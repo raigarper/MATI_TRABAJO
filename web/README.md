@@ -76,6 +76,6 @@ mismo coste que en Python (6.772,1 y 6.326,0 km con las 47 capitales) y que DFJ 
 
 ## Publicar en GitHub Pages
 
-El repositorio incluye la acción `.github/workflows/web.yml`. Para activarla, **el propietario del repositorio** debe ir a
-*Settings → Pages → Build and deployment → Source: GitHub Actions*. Después, cada cambio en `web/` que llegue a `main` se
-publica solo.
+La web se publica sola con la acción `.github/workflows/web.yml` cada vez que cambia algo en `web/` y llega a `main` (también se
+puede lanzar a mano desde la pestaña *Actions*). Requiere *Settings → Pages → Source: GitHub Actions* (ya está activado en el
+repositorio). La dirección es **https://raigarper.github.io/MATI_TRABAJO/**.

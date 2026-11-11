@@ -1,5 +1,5 @@
-# Publica la carpeta web/ en GitHub Pages cuando cambia en main.
-# Requiere activar Settings -> Pages -> Source: GitHub Actions (lo hace el propietario del repositorio).
+# Publica la carpeta web/ en GitHub Pages cada vez que cambia en main (o a mano desde la pestana Actions).
+# Requiere Settings -> Pages -> Source: GitHub Actions (ya activado). Direccion: https://raigarper.github.io/MATI_TRABAJO/
 name: Publicar web
 on:
   push:
