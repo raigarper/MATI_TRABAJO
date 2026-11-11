@@ -1,0 +1,201 @@
+aristas,nodos,ambito,peso,general,n,algoritmo,motivo
+completo,capitales,espana,km,grafo_dirigido,47,fuerza_bruta,47 ciudades: harían falta 46! ciclos (más de 11 ciudades tarda más de un minuto)
+completo,capitales,espana,km,grafo_dirigido,47,held_karp,47 ciudades: la tabla de programación dinámica necesitaría más de 700 MB (límite 21)
+completo,capitales,espana,km,grafo_dirigido,47,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+completo,capitales,espana,km,grafo_simple_no_dirigido,47,fuerza_bruta,47 ciudades: harían falta 46! ciclos (más de 11 ciudades tarda más de un minuto)
+completo,capitales,espana,km,grafo_simple_no_dirigido,47,held_karp,47 ciudades: la tabla de programación dinámica necesitaría más de 700 MB (límite 21)
+completo,capitales,espana,tiempo,grafo_dirigido,47,fuerza_bruta,47 ciudades: harían falta 46! ciclos (más de 11 ciudades tarda más de un minuto)
+completo,capitales,espana,tiempo,grafo_dirigido,47,held_karp,47 ciudades: la tabla de programación dinámica necesitaría más de 700 MB (límite 21)
+completo,capitales,espana,tiempo,grafo_dirigido,47,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+completo,capitales,espana,tiempo,grafo_simple_no_dirigido,47,fuerza_bruta,47 ciudades: harían falta 46! ciclos (más de 11 ciudades tarda más de un minuto)
+completo,capitales,espana,tiempo,grafo_simple_no_dirigido,47,held_karp,47 ciudades: la tabla de programación dinámica necesitaría más de 700 MB (límite 21)
+completo,capitales,andalucia,km,grafo_dirigido,8,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+completo,capitales,andalucia,tiempo,grafo_dirigido,8,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+completo,capitales,castilla_la_mancha,km,grafo_dirigido,5,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+completo,capitales,castilla_la_mancha,tiempo,grafo_dirigido,5,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+completo,capitales,castilla_y_leon,km,grafo_dirigido,9,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+completo,capitales,castilla_y_leon,tiempo,grafo_dirigido,9,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+completo,capitales,cataluna,km,grafo_dirigido,4,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+completo,capitales,cataluna,tiempo,grafo_dirigido,4,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+completo,capitales,galicia,km,grafo_dirigido,4,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+completo,capitales,galicia,tiempo,grafo_dirigido,4,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+completo,capitales_y_100k,espana,km,grafo_dirigido,75,fuerza_bruta,75 ciudades: harían falta 74! ciclos (más de 11 ciudades tarda más de un minuto)
+completo,capitales_y_100k,espana,km,grafo_dirigido,75,held_karp,75 ciudades: la tabla de programación dinámica necesitaría más de 700 MB (límite 21)
+completo,capitales_y_100k,espana,km,grafo_dirigido,75,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+completo,capitales_y_100k,espana,km,grafo_simple_no_dirigido,75,fuerza_bruta,75 ciudades: harían falta 74! ciclos (más de 11 ciudades tarda más de un minuto)
+completo,capitales_y_100k,espana,km,grafo_simple_no_dirigido,75,held_karp,75 ciudades: la tabla de programación dinámica necesitaría más de 700 MB (límite 21)
+completo,capitales_y_100k,espana,tiempo,grafo_dirigido,75,fuerza_bruta,75 ciudades: harían falta 74! ciclos (más de 11 ciudades tarda más de un minuto)
+completo,capitales_y_100k,espana,tiempo,grafo_dirigido,75,held_karp,75 ciudades: la tabla de programación dinámica necesitaría más de 700 MB (límite 21)
+completo,capitales_y_100k,espana,tiempo,grafo_dirigido,75,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+completo,capitales_y_100k,espana,tiempo,grafo_simple_no_dirigido,75,fuerza_bruta,75 ciudades: harían falta 74! ciclos (más de 11 ciudades tarda más de un minuto)
+completo,capitales_y_100k,espana,tiempo,grafo_simple_no_dirigido,75,held_karp,75 ciudades: la tabla de programación dinámica necesitaría más de 700 MB (límite 21)
+completo,capitales_y_100k,andalucia,km,grafo_dirigido,13,fuerza_bruta,13 ciudades: harían falta 12! ciclos (más de 11 ciudades tarda más de un minuto)
+completo,capitales_y_100k,andalucia,km,grafo_dirigido,13,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+completo,capitales_y_100k,andalucia,km,grafo_simple_no_dirigido,13,fuerza_bruta,13 ciudades: harían falta 12! ciclos (más de 11 ciudades tarda más de un minuto)
+completo,capitales_y_100k,andalucia,tiempo,grafo_dirigido,13,fuerza_bruta,13 ciudades: harían falta 12! ciclos (más de 11 ciudades tarda más de un minuto)
+completo,capitales_y_100k,andalucia,tiempo,grafo_dirigido,13,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+completo,capitales_y_100k,andalucia,tiempo,grafo_simple_no_dirigido,13,fuerza_bruta,13 ciudades: harían falta 12! ciclos (más de 11 ciudades tarda más de un minuto)
+completo,capitales_y_100k,castilla_la_mancha,km,grafo_dirigido,5,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+completo,capitales_y_100k,castilla_la_mancha,tiempo,grafo_dirigido,5,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+completo,capitales_y_100k,castilla_y_leon,km,grafo_dirigido,9,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+completo,capitales_y_100k,castilla_y_leon,tiempo,grafo_dirigido,9,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+completo,capitales_y_100k,cataluna,km,grafo_dirigido,11,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+completo,capitales_y_100k,cataluna,tiempo,grafo_dirigido,11,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+completo,capitales_y_100k,comunidad_valenciana,km,grafo_dirigido,4,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+completo,capitales_y_100k,comunidad_valenciana,tiempo,grafo_dirigido,4,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+completo,capitales_y_100k,galicia,km,grafo_dirigido,6,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+completo,capitales_y_100k,galicia,tiempo,grafo_dirigido,6,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+completo,capitales_y_100k,madrid,km,grafo_dirigido,11,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+completo,capitales_y_100k,madrid,tiempo,grafo_dirigido,11,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+completo,capitales_y_100k,pais_vasco,km,grafo_dirigido,4,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+completo,capitales_y_100k,pais_vasco,tiempo,grafo_dirigido,4,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+autovias_principales,capitales,espana,km,grafo_dirigido,47,fuerza_bruta,47 ciudades: harían falta 46! ciclos (más de 11 ciudades tarda más de un minuto)
+autovias_principales,capitales,espana,km,grafo_dirigido,47,held_karp,47 ciudades: la tabla de programación dinámica necesitaría más de 700 MB (límite 21)
+autovias_principales,capitales,espana,km,grafo_dirigido,47,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+autovias_principales,capitales,espana,km,grafo_simple_no_dirigido,47,fuerza_bruta,47 ciudades: harían falta 46! ciclos (más de 11 ciudades tarda más de un minuto)
+autovias_principales,capitales,espana,km,grafo_simple_no_dirigido,47,held_karp,47 ciudades: la tabla de programación dinámica necesitaría más de 700 MB (límite 21)
+autovias_principales,capitales,espana,tiempo,grafo_dirigido,47,fuerza_bruta,47 ciudades: harían falta 46! ciclos (más de 11 ciudades tarda más de un minuto)
+autovias_principales,capitales,espana,tiempo,grafo_dirigido,47,held_karp,47 ciudades: la tabla de programación dinámica necesitaría más de 700 MB (límite 21)
+autovias_principales,capitales,espana,tiempo,grafo_dirigido,47,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+autovias_principales,capitales,espana,tiempo,grafo_simple_no_dirigido,47,fuerza_bruta,47 ciudades: harían falta 46! ciclos (más de 11 ciudades tarda más de un minuto)
+autovias_principales,capitales,espana,tiempo,grafo_simple_no_dirigido,47,held_karp,47 ciudades: la tabla de programación dinámica necesitaría más de 700 MB (límite 21)
+autovias_principales,capitales,andalucia,km,grafo_dirigido,8,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+autovias_principales,capitales,andalucia,tiempo,grafo_dirigido,8,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+autovias_principales,capitales,castilla_la_mancha,km,grafo_dirigido,5,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+autovias_principales,capitales,castilla_la_mancha,tiempo,grafo_dirigido,5,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+autovias_principales,capitales,castilla_y_leon,km,grafo_dirigido,9,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+autovias_principales,capitales,castilla_y_leon,tiempo,grafo_dirigido,9,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+autovias_principales,capitales,cataluna,km,grafo_dirigido,4,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+autovias_principales,capitales,cataluna,tiempo,grafo_dirigido,4,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+autovias_principales,capitales,galicia,km,grafo_dirigido,4,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+autovias_principales,capitales,galicia,tiempo,grafo_dirigido,4,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+autovias_principales,capitales_y_100k,espana,km,grafo_dirigido,75,fuerza_bruta,75 ciudades: harían falta 74! ciclos (más de 11 ciudades tarda más de un minuto)
+autovias_principales,capitales_y_100k,espana,km,grafo_dirigido,75,held_karp,75 ciudades: la tabla de programación dinámica necesitaría más de 700 MB (límite 21)
+autovias_principales,capitales_y_100k,espana,km,grafo_dirigido,75,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+autovias_principales,capitales_y_100k,espana,km,grafo_simple_no_dirigido,75,fuerza_bruta,75 ciudades: harían falta 74! ciclos (más de 11 ciudades tarda más de un minuto)
+autovias_principales,capitales_y_100k,espana,km,grafo_simple_no_dirigido,75,held_karp,75 ciudades: la tabla de programación dinámica necesitaría más de 700 MB (límite 21)
+autovias_principales,capitales_y_100k,espana,tiempo,grafo_dirigido,75,fuerza_bruta,75 ciudades: harían falta 74! ciclos (más de 11 ciudades tarda más de un minuto)
+autovias_principales,capitales_y_100k,espana,tiempo,grafo_dirigido,75,held_karp,75 ciudades: la tabla de programación dinámica necesitaría más de 700 MB (límite 21)
+autovias_principales,capitales_y_100k,espana,tiempo,grafo_dirigido,75,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+autovias_principales,capitales_y_100k,espana,tiempo,grafo_simple_no_dirigido,75,fuerza_bruta,75 ciudades: harían falta 74! ciclos (más de 11 ciudades tarda más de un minuto)
+autovias_principales,capitales_y_100k,espana,tiempo,grafo_simple_no_dirigido,75,held_karp,75 ciudades: la tabla de programación dinámica necesitaría más de 700 MB (límite 21)
+autovias_principales,capitales_y_100k,andalucia,km,grafo_dirigido,13,fuerza_bruta,13 ciudades: harían falta 12! ciclos (más de 11 ciudades tarda más de un minuto)
+autovias_principales,capitales_y_100k,andalucia,km,grafo_dirigido,13,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+autovias_principales,capitales_y_100k,andalucia,km,grafo_simple_no_dirigido,13,fuerza_bruta,13 ciudades: harían falta 12! ciclos (más de 11 ciudades tarda más de un minuto)
+autovias_principales,capitales_y_100k,andalucia,tiempo,grafo_dirigido,13,fuerza_bruta,13 ciudades: harían falta 12! ciclos (más de 11 ciudades tarda más de un minuto)
+autovias_principales,capitales_y_100k,andalucia,tiempo,grafo_dirigido,13,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+autovias_principales,capitales_y_100k,andalucia,tiempo,grafo_simple_no_dirigido,13,fuerza_bruta,13 ciudades: harían falta 12! ciclos (más de 11 ciudades tarda más de un minuto)
+autovias_principales,capitales_y_100k,castilla_la_mancha,km,grafo_dirigido,5,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+autovias_principales,capitales_y_100k,castilla_la_mancha,tiempo,grafo_dirigido,5,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+autovias_principales,capitales_y_100k,castilla_y_leon,km,grafo_dirigido,9,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+autovias_principales,capitales_y_100k,castilla_y_leon,tiempo,grafo_dirigido,9,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+autovias_principales,capitales_y_100k,cataluna,km,grafo_dirigido,11,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+autovias_principales,capitales_y_100k,cataluna,tiempo,grafo_dirigido,11,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+autovias_principales,capitales_y_100k,comunidad_valenciana,km,grafo_dirigido,4,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+autovias_principales,capitales_y_100k,comunidad_valenciana,tiempo,grafo_dirigido,4,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+autovias_principales,capitales_y_100k,galicia,km,grafo_dirigido,6,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+autovias_principales,capitales_y_100k,galicia,tiempo,grafo_dirigido,6,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+autovias_principales,capitales_y_100k,madrid,km,grafo_dirigido,11,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+autovias_principales,capitales_y_100k,madrid,tiempo,grafo_dirigido,11,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+autovias_principales,capitales_y_100k,pais_vasco,km,grafo_dirigido,4,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+autovias_principales,capitales_y_100k,pais_vasco,tiempo,grafo_dirigido,4,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+solo_autovias,capitales,espana,km,grafo_dirigido,44,fuerza_bruta,44 ciudades: harían falta 43! ciclos (más de 11 ciudades tarda más de un minuto)
+solo_autovias,capitales,espana,km,grafo_dirigido,44,held_karp,44 ciudades: la tabla de programación dinámica necesitaría más de 700 MB (límite 21)
+solo_autovias,capitales,espana,km,grafo_dirigido,44,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+solo_autovias,capitales,espana,km,grafo_simple_no_dirigido,44,fuerza_bruta,44 ciudades: harían falta 43! ciclos (más de 11 ciudades tarda más de un minuto)
+solo_autovias,capitales,espana,km,grafo_simple_no_dirigido,44,held_karp,44 ciudades: la tabla de programación dinámica necesitaría más de 700 MB (límite 21)
+solo_autovias,capitales,espana,tiempo,grafo_dirigido,44,fuerza_bruta,44 ciudades: harían falta 43! ciclos (más de 11 ciudades tarda más de un minuto)
+solo_autovias,capitales,espana,tiempo,grafo_dirigido,44,held_karp,44 ciudades: la tabla de programación dinámica necesitaría más de 700 MB (límite 21)
+solo_autovias,capitales,espana,tiempo,grafo_dirigido,44,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+solo_autovias,capitales,espana,tiempo,grafo_simple_no_dirigido,44,fuerza_bruta,44 ciudades: harían falta 43! ciclos (más de 11 ciudades tarda más de un minuto)
+solo_autovias,capitales,espana,tiempo,grafo_simple_no_dirigido,44,held_karp,44 ciudades: la tabla de programación dinámica necesitaría más de 700 MB (límite 21)
+solo_autovias,capitales,andalucia,km,grafo_dirigido,8,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+solo_autovias,capitales,andalucia,tiempo,grafo_dirigido,8,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+solo_autovias,capitales,castilla_la_mancha,km,grafo_dirigido,4,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+solo_autovias,capitales,castilla_la_mancha,tiempo,grafo_dirigido,4,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+solo_autovias,capitales,castilla_y_leon,km,grafo_dirigido,8,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+solo_autovias,capitales,castilla_y_leon,tiempo,grafo_dirigido,8,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+solo_autovias,capitales,cataluna,km,grafo_dirigido,4,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+solo_autovias,capitales,cataluna,tiempo,grafo_dirigido,4,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+solo_autovias,capitales,galicia,km,grafo_dirigido,4,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+solo_autovias,capitales,galicia,tiempo,grafo_dirigido,4,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+solo_autovias,capitales_y_100k,espana,km,grafo_dirigido,72,fuerza_bruta,72 ciudades: harían falta 71! ciclos (más de 11 ciudades tarda más de un minuto)
+solo_autovias,capitales_y_100k,espana,km,grafo_dirigido,72,held_karp,72 ciudades: la tabla de programación dinámica necesitaría más de 700 MB (límite 21)
+solo_autovias,capitales_y_100k,espana,km,grafo_dirigido,72,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+solo_autovias,capitales_y_100k,espana,km,grafo_simple_no_dirigido,72,fuerza_bruta,72 ciudades: harían falta 71! ciclos (más de 11 ciudades tarda más de un minuto)
+solo_autovias,capitales_y_100k,espana,km,grafo_simple_no_dirigido,72,held_karp,72 ciudades: la tabla de programación dinámica necesitaría más de 700 MB (límite 21)
+solo_autovias,capitales_y_100k,espana,tiempo,grafo_dirigido,72,fuerza_bruta,72 ciudades: harían falta 71! ciclos (más de 11 ciudades tarda más de un minuto)
+solo_autovias,capitales_y_100k,espana,tiempo,grafo_dirigido,72,held_karp,72 ciudades: la tabla de programación dinámica necesitaría más de 700 MB (límite 21)
+solo_autovias,capitales_y_100k,espana,tiempo,grafo_dirigido,72,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+solo_autovias,capitales_y_100k,espana,tiempo,grafo_simple_no_dirigido,72,fuerza_bruta,72 ciudades: harían falta 71! ciclos (más de 11 ciudades tarda más de un minuto)
+solo_autovias,capitales_y_100k,espana,tiempo,grafo_simple_no_dirigido,72,held_karp,72 ciudades: la tabla de programación dinámica necesitaría más de 700 MB (límite 21)
+solo_autovias,capitales_y_100k,andalucia,km,grafo_dirigido,13,fuerza_bruta,13 ciudades: harían falta 12! ciclos (más de 11 ciudades tarda más de un minuto)
+solo_autovias,capitales_y_100k,andalucia,km,grafo_dirigido,13,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+solo_autovias,capitales_y_100k,andalucia,km,grafo_simple_no_dirigido,13,fuerza_bruta,13 ciudades: harían falta 12! ciclos (más de 11 ciudades tarda más de un minuto)
+solo_autovias,capitales_y_100k,andalucia,tiempo,grafo_dirigido,13,fuerza_bruta,13 ciudades: harían falta 12! ciclos (más de 11 ciudades tarda más de un minuto)
+solo_autovias,capitales_y_100k,andalucia,tiempo,grafo_dirigido,13,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+solo_autovias,capitales_y_100k,andalucia,tiempo,grafo_simple_no_dirigido,13,fuerza_bruta,13 ciudades: harían falta 12! ciclos (más de 11 ciudades tarda más de un minuto)
+solo_autovias,capitales_y_100k,castilla_la_mancha,km,grafo_dirigido,4,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+solo_autovias,capitales_y_100k,castilla_la_mancha,tiempo,grafo_dirigido,4,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+solo_autovias,capitales_y_100k,castilla_y_leon,km,grafo_dirigido,8,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+solo_autovias,capitales_y_100k,castilla_y_leon,tiempo,grafo_dirigido,8,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+solo_autovias,capitales_y_100k,cataluna,km,grafo_dirigido,11,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+solo_autovias,capitales_y_100k,cataluna,tiempo,grafo_dirigido,11,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+solo_autovias,capitales_y_100k,comunidad_valenciana,km,grafo_dirigido,4,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+solo_autovias,capitales_y_100k,comunidad_valenciana,tiempo,grafo_dirigido,4,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+solo_autovias,capitales_y_100k,galicia,km,grafo_dirigido,6,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+solo_autovias,capitales_y_100k,galicia,tiempo,grafo_dirigido,6,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+solo_autovias,capitales_y_100k,madrid,km,grafo_dirigido,11,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+solo_autovias,capitales_y_100k,madrid,tiempo,grafo_dirigido,11,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+solo_autovias,capitales_y_100k,pais_vasco,km,grafo_dirigido,4,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+solo_autovias,capitales_y_100k,pais_vasco,tiempo,grafo_dirigido,4,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+sin_autovias,capitales,espana,km,grafo_dirigido,47,fuerza_bruta,47 ciudades: harían falta 46! ciclos (más de 11 ciudades tarda más de un minuto)
+sin_autovias,capitales,espana,km,grafo_dirigido,47,held_karp,47 ciudades: la tabla de programación dinámica necesitaría más de 700 MB (límite 21)
+sin_autovias,capitales,espana,km,grafo_dirigido,47,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+sin_autovias,capitales,espana,km,grafo_simple_no_dirigido,47,fuerza_bruta,47 ciudades: harían falta 46! ciclos (más de 11 ciudades tarda más de un minuto)
+sin_autovias,capitales,espana,km,grafo_simple_no_dirigido,47,held_karp,47 ciudades: la tabla de programación dinámica necesitaría más de 700 MB (límite 21)
+sin_autovias,capitales,espana,tiempo,grafo_dirigido,47,fuerza_bruta,47 ciudades: harían falta 46! ciclos (más de 11 ciudades tarda más de un minuto)
+sin_autovias,capitales,espana,tiempo,grafo_dirigido,47,held_karp,47 ciudades: la tabla de programación dinámica necesitaría más de 700 MB (límite 21)
+sin_autovias,capitales,espana,tiempo,grafo_dirigido,47,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+sin_autovias,capitales,espana,tiempo,grafo_simple_no_dirigido,47,fuerza_bruta,47 ciudades: harían falta 46! ciclos (más de 11 ciudades tarda más de un minuto)
+sin_autovias,capitales,espana,tiempo,grafo_simple_no_dirigido,47,held_karp,47 ciudades: la tabla de programación dinámica necesitaría más de 700 MB (límite 21)
+sin_autovias,capitales,andalucia,km,grafo_dirigido,8,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+sin_autovias,capitales,andalucia,tiempo,grafo_dirigido,8,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+sin_autovias,capitales,castilla_la_mancha,km,grafo_dirigido,5,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+sin_autovias,capitales,castilla_la_mancha,tiempo,grafo_dirigido,5,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+sin_autovias,capitales,castilla_y_leon,km,grafo_dirigido,9,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+sin_autovias,capitales,castilla_y_leon,tiempo,grafo_dirigido,9,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+sin_autovias,capitales,cataluna,km,grafo_dirigido,4,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+sin_autovias,capitales,cataluna,tiempo,grafo_dirigido,4,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+sin_autovias,capitales,galicia,km,grafo_dirigido,4,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+sin_autovias,capitales,galicia,tiempo,grafo_dirigido,4,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+sin_autovias,capitales_y_100k,espana,km,grafo_dirigido,75,fuerza_bruta,75 ciudades: harían falta 74! ciclos (más de 11 ciudades tarda más de un minuto)
+sin_autovias,capitales_y_100k,espana,km,grafo_dirigido,75,held_karp,75 ciudades: la tabla de programación dinámica necesitaría más de 700 MB (límite 21)
+sin_autovias,capitales_y_100k,espana,km,grafo_dirigido,75,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+sin_autovias,capitales_y_100k,espana,km,grafo_simple_no_dirigido,75,fuerza_bruta,75 ciudades: harían falta 74! ciclos (más de 11 ciudades tarda más de un minuto)
+sin_autovias,capitales_y_100k,espana,km,grafo_simple_no_dirigido,75,held_karp,75 ciudades: la tabla de programación dinámica necesitaría más de 700 MB (límite 21)
+sin_autovias,capitales_y_100k,espana,tiempo,grafo_dirigido,75,fuerza_bruta,75 ciudades: harían falta 74! ciclos (más de 11 ciudades tarda más de un minuto)
+sin_autovias,capitales_y_100k,espana,tiempo,grafo_dirigido,75,held_karp,75 ciudades: la tabla de programación dinámica necesitaría más de 700 MB (límite 21)
+sin_autovias,capitales_y_100k,espana,tiempo,grafo_dirigido,75,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+sin_autovias,capitales_y_100k,espana,tiempo,grafo_simple_no_dirigido,75,fuerza_bruta,75 ciudades: harían falta 74! ciclos (más de 11 ciudades tarda más de un minuto)
+sin_autovias,capitales_y_100k,espana,tiempo,grafo_simple_no_dirigido,75,held_karp,75 ciudades: la tabla de programación dinámica necesitaría más de 700 MB (límite 21)
+sin_autovias,capitales_y_100k,andalucia,km,grafo_dirigido,13,fuerza_bruta,13 ciudades: harían falta 12! ciclos (más de 11 ciudades tarda más de un minuto)
+sin_autovias,capitales_y_100k,andalucia,km,grafo_dirigido,13,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+sin_autovias,capitales_y_100k,andalucia,km,grafo_simple_no_dirigido,13,fuerza_bruta,13 ciudades: harían falta 12! ciclos (más de 11 ciudades tarda más de un minuto)
+sin_autovias,capitales_y_100k,andalucia,tiempo,grafo_dirigido,13,fuerza_bruta,13 ciudades: harían falta 12! ciclos (más de 11 ciudades tarda más de un minuto)
+sin_autovias,capitales_y_100k,andalucia,tiempo,grafo_dirigido,13,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+sin_autovias,capitales_y_100k,andalucia,tiempo,grafo_simple_no_dirigido,13,fuerza_bruta,13 ciudades: harían falta 12! ciclos (más de 11 ciudades tarda más de un minuto)
+sin_autovias,capitales_y_100k,castilla_la_mancha,km,grafo_dirigido,5,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+sin_autovias,capitales_y_100k,castilla_la_mancha,tiempo,grafo_dirigido,5,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+sin_autovias,capitales_y_100k,castilla_y_leon,km,grafo_dirigido,9,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+sin_autovias,capitales_y_100k,castilla_y_leon,tiempo,grafo_dirigido,9,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+sin_autovias,capitales_y_100k,cataluna,km,grafo_dirigido,11,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+sin_autovias,capitales_y_100k,cataluna,tiempo,grafo_dirigido,11,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+sin_autovias,capitales_y_100k,comunidad_valenciana,km,grafo_dirigido,4,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+sin_autovias,capitales_y_100k,comunidad_valenciana,tiempo,grafo_dirigido,4,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+sin_autovias,capitales_y_100k,galicia,km,grafo_dirigido,6,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+sin_autovias,capitales_y_100k,galicia,tiempo,grafo_dirigido,6,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+sin_autovias,capitales_y_100k,madrid,km,grafo_dirigido,11,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+sin_autovias,capitales_y_100k,madrid,tiempo,grafo_dirigido,11,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+sin_autovias,capitales_y_100k,pais_vasco,km,grafo_dirigido,4,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular
+sin_autovias,capitales_y_100k,pais_vasco,tiempo,grafo_dirigido,4,christofides,necesita distancias simétricas (grafo no dirigido) y desigualdad triangular

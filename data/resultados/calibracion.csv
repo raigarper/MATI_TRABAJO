@@ -1,0 +1,16 @@
+id,algoritmo,n,segundos_paralelo,segundos_serie,cociente
+A|completo|capitales_y_100k|espana|km|grafo_dirigido|75|0|genetico|1,genetico,75,20.72606,10.21253,2.029
+A|completo|capitales_y_100k|espana|km|grafo_simple_no_dirigido|75|0|genetico|1,genetico,75,20.56999,9.96784,2.064
+A|completo|capitales_y_100k|espana|tiempo|grafo_dirigido|75|0|genetico|1,genetico,75,21.92329,9.72713,2.254
+A|completo|capitales_y_100k|espana|km|grafo_dirigido|75|0|dfj|None,dfj,75,8.76411,4.25062,2.062
+A|completo|capitales_y_100k|espana|km|grafo_simple_no_dirigido|75|0|dfj|None,dfj,75,11.12712,4.71792,2.358
+A|completo|capitales_y_100k|espana|tiempo|grafo_dirigido|75|0|dfj|None,dfj,75,17.98556,8.25558,2.179
+B|completo|capitales_y_100k|espana|km|grafo_dirigido|10|0|fuerza_bruta|None,fuerza_bruta,10,4.61429,1.70874,2.7
+B|completo|capitales_y_100k|espana|km|grafo_dirigido|10|1|fuerza_bruta|None,fuerza_bruta,10,4.678,1.77236,2.639
+B|completo|capitales_y_100k|espana|km|grafo_dirigido|10|2|fuerza_bruta|None,fuerza_bruta,10,4.60748,1.84032,2.504
+A|completo|capitales_y_100k|espana|km|grafo_dirigido|75|0|recocido_simulado|1,recocido_simulado,75,4.44117,1.67551,2.651
+A|completo|capitales_y_100k|espana|km|grafo_simple_no_dirigido|75|0|recocido_simulado|1,recocido_simulado,75,4.52478,1.64677,2.748
+A|completo|capitales_y_100k|espana|tiempo|grafo_dirigido|75|0|recocido_simulado|1,recocido_simulado,75,5.01944,1.84456,2.721
+B|completo|capitales_y_100k|espana|km|grafo_dirigido|20|0|held_karp|None,held_karp,20,2.19381,1.06567,2.059
+B|completo|capitales_y_100k|espana|km|grafo_dirigido|20|1|held_karp|None,held_karp,20,2.68012,1.09035,2.458
+B|completo|capitales_y_100k|espana|km|grafo_dirigido|20|2|held_karp|None,held_karp,20,3.17334,1.07419,2.954

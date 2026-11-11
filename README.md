@@ -7,8 +7,8 @@ peninsulares, ciudades de más de 100.000 habitantes...).
 La arquitectura es una **única red "maestra"** guardada en local (GraphML), de la que
 se derivan versiones filtradas y grafos de ciudades en memoria con NetworkX.
 
-> **Estado:** Parte 1 (construir el grafo), Parte 2 (versiones del grafo) y Parte 3 (8 algoritmos del viajante) **hechas**.
-> Pendientes: Parte 4 (estudio con datos), Parte 5 (conclusiones), la web de apoyo y la memoria. Quién hizo qué: `REGISTRO.md`. El trabajo se desarrolla en el notebook
+> **Estado:** Parte 1 (construir el grafo), Parte 2 (versiones del grafo), Parte 3 (8 algoritmos del viajante) y Parte 4 (estudio empírico) **hechas**.
+> Parte 4 (estudio empírico) **hecha**. Pendientes: Parte 5 (conclusiones), la web de apoyo y la memoria. Quién hizo qué: `REGISTRO.md`. El trabajo se desarrolla en el notebook
 > `trabajo_tsp.ipynb`; solo el código que descarga los datos y construye el grafo se entrega aparte, como **anexos**.
 
 ## Estructura del proyecto
@@ -20,6 +20,8 @@ se derivan versiones filtradas y grafos de ciudades en memoria con NetworkX.
 | `data/espana_red_maestra.graphml` | Grafo **ligero**, sin secundarias (63 MB). Es un subconjunto del base; se conserva como referencia. |
 | **`data/versiones/`** | **Las versiones del grafo** (Parte 2): 16 tablas de distancias entre ciudades + catálogo. 19 archivos, 0,9 MB; **sí va a git**. Ver la sección «Parte 2». |
 | **`parte3/`** | Un notebook por algoritmo (`<algoritmo>_<autor>.ipynb`, a partir de `_plantilla_algoritmo.ipynb`), `fichas.json` (datos de la ficha de cada algoritmo) y `herramientas.py` (regenera la plantilla, unifica el formato e integra los notebooks en el principal). |
+| `anexos/ejecutar_estudio.py` | **Anexo C.** Ejecuta el estudio empírico (todos los algoritmos sobre todas las versiones aplicables) en paralelo y guarda los resultados en `data/resultados/`. |
+| `data/resultados/` | Resultados del estudio (CSV): `estudio_resultados.csv`, `tiempos_serie.csv`, `no_aplicables.csv`, `calibracion.csv`. |
 | `REGISTRO.md` | Registro del equipo: autoría de cada parte, uso de IA, estado del trabajo y cómo se unificó el repositorio. |
 | `CONTRIBUTING.md` | Guía para el equipo: cómo colaborar en la Parte 3 (pasos de git, contrato de un algoritmo, reglas). |
 | **`data/ciudades.csv`** | 75 ciudades (47 capitales peninsulares + 28 municipios peninsulares de más de 100.000 hab.). Ver más abajo. |
@@ -363,8 +365,7 @@ base (Parte 1). Tarda ~2 minutos.
 3. **Algoritmos para el TSP** — hecha: fuerza bruta, Held–Karp, DFJ, vecino más cercano, 2-opt, Christofides, recocido
    simulado y genético. Cada uno recibe un grafo `K` y devuelve `(ruta, coste)`; vive en su notebook de `parte3/` (con ficha,
    teoría, código, pruebas y resultados) y se integra en `trabajo_tsp.ipynb` con `python parte3/herramientas.py integrar`.
-4. **Estudio experimental** — *siguiente.* Tiempos y calidad de las soluciones al variar el nº de ciudades, el algoritmo, el peso
-   y la versión de carreteras. Un estudio de escala por comunidades autónomas (con las versiones regionales) queda para más adelante.
+4. **Estudio experimental** — hecha: 4.470 ejecuciones en paralelo (costes y calidad) y 236 en serie (tiempos y memoria) de los 8 algoritmos sobre las 240 versiones y sobre subconjuntos de 5 a 75 ciudades. Se explica y analiza en el notebook; para repetirlo, `python anexos/ejecutar_estudio.py` (≈ 40 min) y `--serie` (≈ 15 min, con el equipo en reposo).
 5. **Conclusiones** — *pendiente.*
 
 Pendiente además: sustituir en el notebook el resumen del enunciado por el enunciado literal del trabajo, completar el

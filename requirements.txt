@@ -3,6 +3,7 @@ networkx>=3.2          # las prácticas de MATI usan 3.4.2
 numpy>=1.26
 scipy>=1.11            # algoritmo de Dijkstra, búsqueda del nodo más cercano
 matplotlib>=3.8
+pandas>=2.0            # tablas de resultados (Parte 4)
 jupyterlab>=4.0
 pulp[cbc]>=3.0        # programación entera del algoritmo DFJ (Parte 3)
 

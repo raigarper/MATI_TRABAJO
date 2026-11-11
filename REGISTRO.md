@@ -28,14 +28,14 @@ Las ramas conservan su nombre original. Todo el trabajo se integra en `main`.
 | 3 | 2-opt | Raimundo | `parte3/dos_opt_raimundo.ipynb` |
 | 3 | Christofides | Raimundo | `parte3/christofides_raimundo.ipynb` |
 | 3 | Algoritmo genético | Raimundo | `parte3/genetico_raimundo.ipynb` |
-| 4 | Estudio empírico | Raimundo | pendiente |
+| 4 | Estudio empírico (Anexo C + análisis en el notebook) | Raimundo | `anexos/ejecutar_estudio.py`, `trabajo_tsp.ipynb`, `data/resultados/` |
 | 5 | Conclusiones | Equipo | pendiente |
 
 ## Uso de IA
 
 | Parte | Herramienta | Para qué | Revisión |
 |---|---|---|---|
-| Partes 1 y 2, herramientas de `parte3/`, guía del equipo | Claude Code (Anthropic) | Escribir y probar los scripts de descarga y construcción del grafo, el código del notebook, la plantilla y la herramienta de integración | Raimundo ejecutó y revisó el resultado |
+| Partes 1, 2 y 4, herramientas de `parte3/`, Anexo C, guía del equipo | Claude Code (Anthropic) | Escribir y probar los scripts de descarga y construcción del grafo, el código del notebook, la plantilla y la herramienta de integración | Raimundo ejecutó y revisó el resultado |
 | Held–Karp, 2-opt, Christofides y genético | Claude Code (Anthropic) | Teoría, código, pruebas y redacción de resultados | Raimundo; cada algoritmo se contrastó con la fuerza bruta (y con DFJ en 47 ciudades) |
 | Fuerza bruta, vecino más cercano | **Pendiente de indicar por Pablo** | | |
 | DFJ | **Pendiente de indicar por Jiahao** | | |
@@ -51,10 +51,19 @@ Las ramas conservan su nombre original. Todo el trabajo se integra en `main`.
 | 1. Grafo | Hecha |
 | 2. Versiones | Hecha |
 | 3. Algoritmos | Hecha (8 algoritmos, formato unificado) |
-| 4. Estudio empírico | Siguiente |
+| 4. Estudio empírico | Hecha (4.470 ejecuciones en paralelo + 236 en serie, 0 fallos) |
 | 5. Conclusiones | Pendiente |
 | Web interactiva | Pendiente (un único `index.html` publicable en GitHub Pages) |
 | Memoria | Pendiente (LaTeX → PDF) |
+
+## Fallos encontrados por el estudio empírico
+
+El estudio (Parte 4) ejecuta todos los algoritmos también sobre grafos **no dirigidos** y destapó dos fallos que las pruebas de los notebooks, hechas solo con grafos dirigidos, no detectaron. Ambos se corrigieron con pocas líneas (la lógica no cambia):
+
+- **DFJ (Jiahao):** el modelo usa `K.edges`, que en un `nx.Graph` da cada arista una sola vez; el modelo de asignación quedaba mal planteado. Se convierte el grafo a dirigido al empezar (`K.to_directed()`).
+- **Recocido simulado (Juan):** la caché de pesos solo guardaba cada arista en un sentido; en un grafo no dirigido el coste de cualquier ruta salía infinito, la temperatura inicial también y el bucle `while T > T_min` no terminaba nunca. Ahora se guarda cada arista en los dos sentidos.
+
+Avisar a Jiahao y a Juan de estos dos cambios.
 
 ## Cambios en las aportaciones de los compañeros al unificar el formato
 

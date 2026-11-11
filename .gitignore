@@ -7,3 +7,6 @@ data/*.part
 .ipynb_checkpoints/
 # Grafo base con secundarias (108 MB, supera el límite de 100 MB de GitHub): se genera con los anexos A y B
 data/espana_red_maestra_secundarias.graphml
+
+# Resultados de la prueba reducida del estudio
+data/resultados/_prueba/
